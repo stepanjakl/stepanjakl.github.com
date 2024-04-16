@@ -16,20 +16,20 @@
 
 /* Modal - Profile */
 
-#profile:target~#page #modal_profile {
+#profile:target~main #modal_profile {
     overflow: auto;
 }
 
-#profile:target~#page #modal_profile .modal_content {
+#profile:target~main #modal_profile .modal_content {
     pointer-events: auto;
 }
 
 /* Modal - Archive */
 
-#archive:target~#page #modal_archive {
+#archive:target~main #modal_archive {
     overflow: auto;
 }
 
-#archive:target~#page #modal_archive .modal_content {
+#archive:target~main #modal_archive .modal_content {
     pointer-events: auto;
 }

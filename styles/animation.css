@@ -102,13 +102,13 @@ body {
     animation-name: flicker-shadow;
 }
 
-#profile:target~#page .animate-flicker-triangle-light::after,
-#archive:target~#page .animate-flicker-triangle-light::after {
+#profile:target~main .animate-flicker-triangle-light::after,
+#archive:target~main .animate-flicker-triangle-light::after {
     animation: none;
 }
 
-#profile:target~#page .animate-flicker-triangle-shadow::after,
-#archive:target~#page .animate-flicker-triangle-shadow::after {
+#profile:target~main .animate-flicker-triangle-shadow::after,
+#archive:target~main .animate-flicker-triangle-shadow::after {
     animation: none;
 }
 
@@ -689,8 +689,8 @@ svg.animate-face-icon path {
     transform-origin: top;
 }
 
-#profile:target~#page #modal_profile .modal_content,
-#archive:target~#page #modal_archive .modal_content {
+#profile:target~main #modal_profile .modal_content,
+#archive:target~main #modal_archive .modal_content {
     visibility: visible;
     transition: opacity var(--animate-in-segment) linear, transform var(--animate-in-segment) var(--ease-out-quad);
     opacity: 1;
@@ -702,10 +702,10 @@ svg.animate-face-icon path {
     transform-origin: top;
 }
 
-#profile:target~#page #intro_left-column,
-#profile:target~#page #intro_right-column,
-#archive:target~#page #intro_left-column,
-#archive:target~#page #intro_right-column {
+#profile:target~main #intro_left-column,
+#profile:target~main #intro_right-column,
+#archive:target~main #intro_left-column,
+#archive:target~main #intro_right-column {
     transition: transform var(--animate-in-segment) var(--ease-out-quad);
     transform: scale(0.95);
 }
@@ -747,14 +747,14 @@ svg.animate-face-icon path {
     -webkit-backdrop-filter: blur(0.5rem);
 }
 
-#debug:not(:checked)~#page div:target #underlay_menu {
+#debug:not(:checked)~main div:target #underlay_menu {
     pointer-events: auto;
     opacity: 1;
     transition: opacity var(--animate-in-segment) linear;
 }
 
-#debug:not(:checked)~#profile:target~#page #underlay_modal,
-#debug:not(:checked)~#archive:target~#page #underlay_modal {
+#debug:not(:checked)~#profile:target~main #underlay_modal,
+#debug:not(:checked)~#archive:target~main #underlay_modal {
     pointer-events: auto;
     opacity: 1;
     transition: opacity var(--animate-in-segment) linear;
