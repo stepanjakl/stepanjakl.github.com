@@ -32,8 +32,8 @@ body {
 
 /* Intro */
 
-.animate-fade-in-name > span,
-.animate-fade-in-title > span,
+.animate-fade-in-name>div>span,
+.animate-fade-in-title>span,
 .animate-fade-in-cta-1,
 .animate-fade-in-cta-2,
 .animate-fade-in-logo,
@@ -44,11 +44,11 @@ body {
     animation-timing-function: var(--ease-out-quad);
 }
 
-.animate-fade-in-name span {
+.animate-fade-in-name>div>span {
     animation-delay: calc(0.3s + var(--i) * 15ms);
 }
 
-.animate-fade-in-title span {
+.animate-fade-in-title>span {
     animation-delay: calc(0.3s + var(--delay-segment) + var(--i) * 15ms);
 }
 
