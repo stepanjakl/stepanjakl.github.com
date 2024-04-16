@@ -55,9 +55,10 @@
         </script>
         <script>
             const activateHighlight = (elementToSwapText, elementToHighlight, tempInnerText) => {
+                const target = event.target;
                 let timeout
-                if (!event.target.getAttribute('data-copying')) {
-                    event.target.setAttribute('data-copying', '')
+                if (target.getAttribute('data-copying') !== '') {
+                    target.setAttribute('data-copying', '')
                     const origInnerText = elementToSwapText.innerText
                     const activateHandler = () => {
                         clearTimeout(timeout)
@@ -66,10 +67,11 @@
                         elementToHighlight.addEventListener('transitionend', deactivateHandler)
                     }
                     const deactivateHandler = () => {
+                        target.blur()
+                        target.removeAttribute('data-copying')
                         if (tempInnerText) {
                             elementToSwapText.innerText = origInnerText
                         }
-                        event.target.removeAttribute('data-copying')
                         elementToHighlight.removeEventListener('transitionend', deactivateHandler)
                     }
                     if (tempInnerText) {
@@ -190,19 +192,24 @@
                 <header id="intro">
                     <div id="intro_left-column"
                          class="z-1 flex flex-col-reverse align-items-start">
-                        <!-- Script to copy name on click -->
                         <h2 class="animate-fade-in-name cursor-pointer select-none highlight tooltip_wrapper"
-                            onclick="navigator.clipboard.writeText('Štěpán Jákl'); activateHighlight(this.querySelector('.tooltip span'), document.querySelector('h2.animate-fade-in-name'), 'Copied to the clipboard')"
-                            tabindex="0">
-                            <span style="--i: 1;">Š</span><span style="--i: 2;">t</span><span style="--i: 3;">ě</span><span style="--i: 4;">p</span><span style="--i: 5;">á</span><span style="--i: 6;">n</span><span style="--i: 7;">&nbsp;</span><span style="--i: 8;">J</span><span style="--i: 9;">á</span><span style="--i: 10;">k</span><span style="--i: 11;">l</span>
-                            <div class="tooltip-top tooltip">
-                                <p>
-                                    Pronounced: shteh-PAHN YAH-kl
-                                </p>
+                            onmousedown="if ((event.which && event.which == 3) || (event.button && event.button == 2)) { if ('speechSynthesis' in window) { let msg = new SpeechSynthesisUtterance(); msg.lang = 'cs-CZ'; msg.voice = speechSynthesis.getVoices().filter(voice => voice.name === 'Zuzana')[0]; msg.text = 'Štěpán Jákl'; speechSynthesis.speak(msg) } } else { navigator.clipboard.writeText('Štěpán Jákl'); activateHighlight(this.querySelector('.tooltip-bottom'), this, 'Copied to the clipboard') };"
+                            tabindex="0"
+                            role="button"
+                            aria-label="Click to copy name to clipboard">
+                            <div class="pointer-events-none" aria-hidden="true">
+                                <span style="--i: 1;">Š</span><span style="--i: 2;">t</span><span style="--i: 3;">ě</span><span style="--i: 4;">p</span><span style="--i: 5;">á</span><span style="--i: 6;">n</span><span style="--i: 7;">&nbsp;</span><span style="--i: 8;">J</span><span style="--i: 9;">á</span><span style="--i: 10;">k</span><span style="--i: 11;">l</span>
                             </div>
-                            <div class="tooltip-bottom tooltip">
-                                <span>Click to copy</span>
-                            </div>
+                            <abbr class="tooltip-top tooltip">
+                                <span aria-hidden="true">Pronounced: shteh-PAHN YAH-kl</span>
+                                <div class="sr-only">
+                                    <span lang="en">Pronounced:</span>
+                                    <span lang="cs">Štěpán Jákl</span>
+                                </div>
+                            </abbr>
+                            <abbr class="tooltip-bottom tooltip">
+                                <span aria-hidden="true">Click to copy</span>
+                            </abbr>
                         </h2>
                         <div id="logo" class="animate-fade-in-logo select-none">
                             <span></span>

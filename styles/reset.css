@@ -79,7 +79,8 @@ button {
     -webkit-user-select: none;
 }
 
-a {
+a,
+abbr {
     text-decoration: none;
     color: inherit;
 }
