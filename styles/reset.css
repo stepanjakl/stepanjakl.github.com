@@ -79,6 +79,12 @@ button {
     -webkit-user-select: none;
 }
 
+p a,
+p button {
+    user-select: auto;
+    -webkit-user-select: auto;
+}
+
 a,
 abbr {
     text-decoration: none;
@@ -104,6 +110,14 @@ ul,
 ol {
     margin-block-start: 0;
     margin-block-end: 0;
+}
+
+dialog {
+    display: flex;
+    background: unset;
+    border: unset;
+    background-color: unset;
+    padding: unset;
 }
 
 /* https://bubblin.io/blog/notch */
