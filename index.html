@@ -4,7 +4,7 @@
         <title>Štěpán Jákl | Full-stack web developer & interface designer</title>
         <meta charset="UTF-8">
         <meta name="description"
-              content="Experienced and detail-oriented user interface engineer who specializes in crafting intuitive digital solutions. Committed to producing high-quality results for projects with realistic and exciting propositions and tangible outcomes. Equally dedicated to code and design.">
+              content="Experienced and detail-oriented user interface engineer who specializes in crafting intuitive digital solutions. Committed to delivering high-quality results for projects with exciting propositions and realistic goals. Proficient in both back-end and front-end development, with a focus on prioritizing user experience. Equally dedicated to code and design.">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
         <meta name="color-scheme" content="dark light">
         <meta name="keywords" content="foo,bar">
@@ -23,39 +23,28 @@
         <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
         <link rel="manifest" href="manifest.json">
         <!-- Fonts -->
-        <link rel="preload"
-              href="styles/font-bai-jamjuree.css"
-              as="style"
-              onload="this.rel='stylesheet'">
-        <link rel="preload"
-              href="styles/font-chakra-petch.css"
-              as="style"
-              onload="this.rel='stylesheet'">
-        <link rel="preload"
-              href="styles/font-newsreader.css"
-              as="style"
-              onload="this.rel='stylesheet'">
+        <link rel="stylesheet" href="styles/font-bai-jamjuree.css">
+        <link rel="stylesheet" href="styles/font-chakra-petch.css">
+        <link rel="stylesheet" href="styles/font-newsreader.css">
         <!-- Styles -->
         <link rel="stylesheet" href="styles/reset.css">
         <link rel="stylesheet" href="styles/utility.css">
         <link rel="stylesheet" href="styles/style.css">
         <link rel="stylesheet" href="styles/state.css">
-        <link rel="preload"
-              href="styles/animation.css"
-              as="style"
-              onload="this.rel='stylesheet'">
+        <link rel="stylesheet" href="styles/animation.css">
         <script src="scripts/timeline.js"></script>
         <script>
             console.log('%cŠtěpán Jákl | Full-stack developer & interface designer', `border: 0.0625rem solid #4e7bff; border-radius: 0.125rem; color: #4e7bff; font-size: 0.78125rem; padding: 1.40625rem 2.1875rem 1.25rem 2.1875rem; margin: 1.25rem 1.25rem; /* padding: 1.859375rem 1.875rem 1.859375rem 5.25rem; background-image: url("data:image/svg+xml,%3Csvg width='100%' height='100%' viewBox='0 0 40 40' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M0 40V10.033L10.033 0H40V30L30 40H0ZM10 30V25H22.5L25 22.5H10V17.5H30V25L25 30H10ZM15 10H30V15H10L15 10Z' fill='%234e7bff'/%3E%3C/svg%3E%0A"); background-repeat: no-repeat; background-position: 1.25rem 50%; background-size: 2.5rem 2.5rem */`)
             console.log('%cThis website was created with HTML, CSS and sprinkled with a bit of vanilla JavaScript.', 'color: #4e7bff; margin: 0.9375rem 0 0.9375rem 1.25rem;')
             console.log('%cThe ambition has been to create a performant, pixel-perfect and responsive site.', 'color: #4e7bff; margin: 0.9375rem 0 0.9375rem 1.25rem;')
-            console.log('%cNo framework, no compiler, no site generator - just pure joy.', 'color: #4e7bff; margin: 0.9375rem 0 0.9375rem 1.25rem;')
+            console.log('%cNo framework, no compiler, no site generator - only pure joy.', 'color: #4e7bff; margin: 0.9375rem 0 0.9375rem 1.25rem;')
             /* console.log('%cMade with tears, stress and anxiety. Just joking, of course it was crafted with love ;-)', 'color: #4e7bff; margin: 0.9375rem 0 0.9375rem 1.25rem;') */
-            console.log('%cWould you like to work with me? Email me at %cstepan.jakl@outlook.com', 'color: #4e7bff; margin: 0.9375rem 0 0.9375rem 1.25rem;', 'color: #4e7bff; text-decoration: underline;')
+            console.log('%cInterested in working together? Reach out to me via email at %cstepan.jakl@outlook.com', 'color: #4e7bff; margin: 0.9375rem 0 0.9375rem 1.25rem;', 'color: #4e7bff; text-decoration: underline;')
         </script>
         <script>
             const activateHighlight = (elementToSwapText, elementToHighlight, tempInnerText) => {
                 const target = event.target;
+                console.log(event);
                 let timeout
                 if (target.getAttribute('data-copying') !== '') {
                     target.setAttribute('data-copying', '')
@@ -67,9 +56,9 @@
                         elementToHighlight.addEventListener('transitionend', deactivateHandler)
                     }
                     const deactivateHandler = () => {
-                        target.blur()
-                        target.removeAttribute('data-copying')
+                        document.activeElement.blur()
                         if (tempInnerText) {
+                            target.removeAttribute('data-copying')
                             elementToSwapText.innerText = origInnerText
                         }
                         elementToHighlight.removeEventListener('transitionend', deactivateHandler)
@@ -103,9 +92,12 @@
                     if (document.querySelector('.animate-fade-in-cta-2').getAnimations().length === 0 || document.querySelector('.animate-fade-in-cta-2').getAnimations()[0].playState === 'finished') {
                         if (document.location.hash === '#menu') {
                             document.location.hash = ''
+                            document.querySelector('#menu_dropdown').close()
+                            document.querySelector('#menu_button-open').focus()
                         } else {
                             document.location.hash = '#menu'
-                            document.querySelector('[href="#menu"]').focus()
+                            document.querySelector('#menu_dropdown').show()
+                            document.querySelector('#menu_button-close').focus()
                         }
                     }
                 }
@@ -115,7 +107,8 @@
             document.addEventListener('DOMContentLoaded', () => {
                 if (window.location.hash) {
                     document.querySelectorAll('.animate-fade-in-name span, .animate-fade-in-title span, .animate-fade-in-cta-1, .animate-fade-in-cta-2, .animate-fade-in-logo').forEach(element => {
-                        element.classList.add('noanimation');
+                        element.classList.add('noanimation')
+                        document.querySelector('#menu_dropdown').show()
                     })
                 }
             })
@@ -172,6 +165,13 @@
                 }
             })
         </script>
+        <!-- <noscript>
+            <style>
+                dialog {
+                    display: flex;
+                }
+            </style>
+        </noscript> -->
     </head>
     <body class="text-base overflow-auto primary-font">
         <input id="mode" type="checkbox"  hidden aria-hidden="true">
@@ -316,7 +316,9 @@
                                 <a href="#archive"
                                    aria-label="Explore repository of past work"
                                    rel="noreferrer"
-                                   class="flex align-items-center tooltip_wrapper">
+                                   style="cursor: progress;"
+                                   onclick="document.activeElement.blur(); return false"
+                                   class="flex align-items-center tooltip_wrapper" disabled>
                                     <span id="menu_link_icon"
                                           class="inline-flex rounded-full"
                                           style="padding: 0.65625rem;
@@ -339,26 +341,30 @@
                                                   text-underline-position: from-font;
                                                   text-underline-offset: 0.125rem">A</u>rchive</span>
                                     <span class="tooltip-bottom tooltip">
-                                        <span>Explore snippets of my past work</span>
+                                        <span>WIP - Coming soon...</span>
+                                        <!-- <span>Explore snippets of my past work</span> -->
                                     </span>
                                 </a>
                             </div>
                             <div id="menu_button_wrapper" class="relative flex">
                                 <a href="#menu"
+                                   id="menu_button-open"
                                    tabindex="0"
-                                   onclick="event.preventDefault(); window.location.hash = 'menu'; this.focus()"
+                                   onclick="event.preventDefault(); document.querySelector('#menu_dropdown').show(); window.location.hash = 'menu'; document.querySelector('#menu_button-close').focus()"
                                    class="z-2 inset-0"
                                    style="position: absolute"
                                    aria-label="Open dropdown menu"></a>
                                 <a href="#"
+                                   id="menu_button-close"
                                    tabindex="0"
+                                   onclick="document.querySelector('#menu_dropdown').close(); document.querySelector('#menu_button-open').focus()"
                                    class="z-2 inset-0"
                                    style="position: absolute"
                                    aria-label="Close dropdown menu"></a>
                                 <button id="menu_button"
                                         type="button"
                                         class="relative z-1 flex flex-grow justify-content-center align-items-center"
-                                        aria-label="Toggle dropdown menu"
+                                        aria-hidden="true"
                                         tabindex="-1">
                                     <div>
                                         <span></span>
@@ -370,7 +376,7 @@
                                 <a href="#"
                                    id="underlay_menu"
                                    class="fixed inset-0 cursor-default pointer-events-none"></a>
-                                <div id="menu_dropdown" class="z-1 absolute px-1/2 pt-1/2">
+                                <dialog id="menu_dropdown" class="z-1 absolute px-1/2 pt-1/2">
                                     <div>
                                         <a href="https://calendly.com/stepanjakl"
                                            target="_blank"
@@ -493,7 +499,7 @@
                                             <span class="text-sm whitespace-nowrap">Debug</span>
                                         </label>
                                     </div>
-                                </div>
+                                </dialog>
                             </div>
                         </nav>
                     </div>
@@ -545,10 +551,9 @@
                                             Experienced and detail-oriented user interface engineer who specializes in crafting intuitive digital solutions. Committed to delivering high-quality results for projects with exciting propositions and realistic goals. Proficient in both back-end and front-end development, with a focus on prioritizing user experience.
                                         </p>
                                         <p>
-                                            custom-tailored designs and user experience, intuitive interface features that surprise and spark joy (TODO: look at inspire list)
-                                            TODO: copy to console log and readme
+                                            Excited to explore cutting-edge frameworks and tools while prioritizing foundational web development elements like good semantics, cross-compatibility, and accessibility.
                                         </p>
-                                        <p style="padding: var(--segment-third) 0;">
+                                        <p>
                                             In recent years, my efforts have been devoted to building and overseeing a significant number of websites using the <a href="https://apostrophecms.com/" target="_blank"><u>ApostropheCMS</u></a> framework.
                                         </p>
                                         <p style="padding-bottom: var(--segment-third);">
@@ -629,7 +634,7 @@
                                     <dd id="modal_profile_tags">
                                         <ul>
                                             <li>
-                                                <span>Dashboard SPA??? app</span>
+                                                <span>Dashboard/Single-page app</span>
                                             </li>
                                             <li>
                                                 <span>Landing page</span>
@@ -645,6 +650,9 @@
                                             </li>
                                             <li>
                                                 <span>Wireframe</span>
+                                            </li>
+                                            <li>
+                                                <span>& other</span>
                                             </li>
                                         </ul>
                                     </dd>
@@ -977,7 +985,7 @@
                      class="z-0 fixed inset-0 animate-flicker-triangle-light invisible overflow-hidden pointer-events-none select-none">
                 </div>
             </div>
-            <div id="footer" class="select-none">
+            <footer class="select-none">
                 <div class="flex px-1/2 pb-1/2 w-full">
                     <div class="flex" style="column-gap: 0.5rem;">
                         <span id="square-1"></span>
@@ -990,7 +998,7 @@
                     <div id="rectangle">
                     </div>
                 </div>
-            </div>
+            </footer>
             <svg id="debug-grid"
                  width="100%"
                  height="100%"

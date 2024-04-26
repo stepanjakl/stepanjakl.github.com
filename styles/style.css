@@ -1115,7 +1115,7 @@ body {
 #modal_profile .information dl dd#modal_profile_text {
     display: inline-flex;
     flex-direction: column;
-    row-gap: 1.5rem;
+    row-gap: 2rem;
 }
 
 #modal_profile .information dl dd>span,
@@ -1382,7 +1382,7 @@ body {
 
 /* Footer */
 
-#footer>div {
+footer>div {
     column-gap: 1.125rem;
     max-width: var(--breakpoint-xl);
     padding: 0 var(--segment-half) var(--segment-half) var(--segment-half);
@@ -1432,7 +1432,7 @@ body {
         padding: 3rem;
     }
 
-    #footer>div {
+    footer>div {
         max-width: var(--breakpoint-2xl);
         padding: 3.5rem 5rem;
     }
@@ -1446,7 +1446,7 @@ body {
         padding-bottom: 6rem;
     }
 
-    #footer>div {
+    footer>div {
         padding: 5rem 5rem;
     }
 }
@@ -1456,7 +1456,7 @@ body {
 /* @media (max-height: 55rem) {
     rules here apply to devices with height from 45rem and lower
 
-    #footer {
+    footer {
         display: none;
     }
 } */
@@ -1476,7 +1476,7 @@ body {
         max-width: var(--breakpoint-xl);
     }
 
-    /* #footer>div {
+    /* footer>div {
         max-width: var(--breakpoint-xl);
     } */
 }
@@ -1485,7 +1485,7 @@ body {
     /* rules here apply to devices from 75rem (lg) and lower */
 
     /* .intro_wrapper,
-    #footer>div {
+    footer>div {
         max-width: var(--breakpoint-lg);
     } */
 
@@ -1493,7 +1493,7 @@ body {
         padding-left: 0;
     }
 
-    /* #footer>div {
+    /* footer>div {
         padding: 2.5rem 2rem;
     } */
 
@@ -1547,7 +1547,7 @@ body {
         padding-bottom: 0.171875rem;
     }
 
-    /* #footer>div {
+    /* footer>div {
         padding: 2rem 1.5rem;
     } */
 

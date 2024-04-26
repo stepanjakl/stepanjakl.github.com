@@ -135,11 +135,11 @@ body {
 
 /* Universal Text Higlight */
 
-.highlight {
+.highlight:focus {
     transition: color calc(2 * var(--animate-out-segment)) var(--ease-in-quad) var(--delay-segment);
 }
 
-.highlight.active, .highlight-hover.active {
+.highlight:focus.active, .highlight-hover.active {
     color: var(--highlight-primary) !important;
     transition: color calc(2 * var(--animate-in-segment)) var(--ease-out-quad) !important;
 }
@@ -624,19 +624,22 @@ svg.animate-face-icon path {
 }
 
 #menu_dropdown a:hover::before,
-#menu_dropdown label:hover::before {
+#menu_dropdown label:hover::before,
+#menu_dropdown a:focus::before,
+#menu_dropdown label:focus::before,
+#menu_dropdown a:focus-within::before,
+#menu_dropdown label:focus-within::before {
     transition: opacity var(--animate-in-segment-2\/3) linear, inset var(--animate-in-segment-2\/3) var(--ease-out-quad);
     opacity: 1;
     inset: 0.1875rem 0.25rem 0.25rem 0.25rem;
     /* transform: scale(1); */
 }
 
-#menu_dropdown a:focus::before,
-#menu_dropdown label:focus::before {
+/* {
     transition: opacity var(--animate-in-segment-2\/3) linear, inset var(--animate-in-segment-2\/3) var(--ease-out-quad);
     opacity: 0.75;
     inset: 0.375rem 0.4375rem 0.4375rem 0.4375rem;
-}
+} */
 
 #menu_dropdown a span,
 #menu_dropdown label span {
@@ -747,7 +750,7 @@ svg.animate-face-icon path {
     -webkit-backdrop-filter: blur(0.5rem);
 }
 
-#debug:not(:checked)~main div:target #underlay_menu {
+#debug:not(:checked)~main #menu:target #underlay_menu {
     pointer-events: auto;
     opacity: 1;
     transition: opacity var(--animate-in-segment) linear;
