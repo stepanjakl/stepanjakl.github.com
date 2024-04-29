@@ -473,6 +473,8 @@ body {
     display: grid;
     grid-template-columns: auto;
     row-gap: var(--segment);
+    max-width: var(--breakpoint-xl);
+    margin: auto;
 }
 
 @media (min-width: 45rem) {
