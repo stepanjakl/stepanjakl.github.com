@@ -407,24 +407,24 @@ button,
 
 /* Root */
 
-html {
+:root {
     font-size: 12px;
 }
 
 @media (min-width: 45rem) {
-    html {
+    :root {
         font-size: 14px;
     }
 }
 
 @media (min-width: 75rem) {
-    html {
+    :root {
         font-size: 16px;
     }
 }
 
 @media (min-width: 160rem) {
-    html {
+    :root {
         font-size: 18px;
     }
 }
@@ -432,12 +432,19 @@ html {
 
 /* Page */
 
+body,
+html {
+    overscroll-behavior: none;
+}
+
 body {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: auto;
-    overscroll-behavior: none;
+}
+
+main {
+    min-height: 100dvh;
 }
 
 @media (min-width: 45rem) {
@@ -907,12 +914,29 @@ body {
 
 .modal {
     position: fixed;
-    z-index: 2;
+    z-index: -1;
     inset: 0;
-    pointer-events: none;
     overflow: hidden;
-    padding: var(--segment);
+    padding: calc(var(--segment) / 5);
     scroll-behavior: smooth;
+}
+
+@media (min-width: 45rem) {
+    .modal {
+        padding: var(--segment-quarter);
+    }
+}
+
+@media (min-width: 60rem) {
+    .modal {
+        padding: var(--segment-half) var(--segment-third) var(--segment-third) var(--segment-third);
+    }
+}
+
+@media (min-width: 75rem) {
+    .modal {
+        padding: var(--segment) var(--segment-half) var(--segment-half) var(--segment-half);
+    }
 }
 
 .modal .modal_content {
@@ -926,7 +950,7 @@ body {
     border-radius: var(--segment-eighth) calc((var(--modal-button-close-border-radius) + var(--modal-button-close-inset)) + 0.0625rem) var(--segment-eighth) var(--segment-eighth);
     box-shadow: inset 0 0 0 0.0625rem var(--modal-border-inner);
     opacity: 0;
-    pointer-events: none;
+    /* pointer-events: none; */
     padding-top: var(--segment);
 }
 
@@ -944,38 +968,6 @@ body {
     border-radius: calc(var(--segment-eighth) - 0.125rem) calc((var(--modal-button-close-border-radius) + var(--modal-button-close-inset)) - 0.0625rem) calc(var(--segment-eighth) - 0.125rem) calc(var(--segment-eighth) - 0.125rem);
 }
 
-@media (min-width: 45rem) {
-    .modal {
-        padding: var(--segment-quarter);
-    }
-
-    /* .modal .modal_content {
-
-    } */
-
-    /* .modal .modal_content::before {
-        content: '';
-        position: absolute;
-        inset: 0.0625rem;
-        background: linear-gradient(to top right, var(--modal-bg-blur));
-        backdrop-filter: blur(3rem);
-        -webkit-backdrop-filter: blur(3rem);
-        border-radius: calc(var(--segment-eighth) - 0.125rem) calc((var(--modal-button-close-border-radius) + var(--modal-button-close-inset)) - 0.0625rem) calc(var(--segment-eighth) - 0.125rem) calc(var(--segment-eighth) - 0.125rem);
-    } */
-}
-
-@media (min-width: 60rem) {
-    .modal {
-        padding: var(--segment-half) var(--segment-third) 0 var(--segment-third);
-    }
-}
-
-@media (min-width: 75rem) {
-    .modal {
-        padding: var(--segment) var(--segment-half) var(--segment-half) var(--segment-half);
-    }
-}
-
 
 /* Modal - Close button */
 
@@ -989,7 +981,7 @@ body {
     align-self: end;
     position: sticky;
     z-index: 1;
-    top: var(--modal-button-close-inset);
+    top: var(--modal-button-close-inset); /* calc(env(safe-area-inset-bottom) + var(--modal-button-close-inset)) */
     margin-top: var(--modal-button-close-inset);
     margin-right: var(--modal-button-close-inset);
     width: var(--modal-button-close-size);
@@ -1015,9 +1007,9 @@ body {
 }
 
 #modal_profile .information dl {
-    padding-top: calc(var(--segment) * (3/4));
-    padding-left: calc(var(--segment) * (3/4));
-    padding-right: calc(var(--segment) * (3/4));
+    padding-top: calc(var(--segment-half));
+    padding-left: calc(var(--segment-half));
+    padding-right: calc(var(--segment-half));
     display: grid;
     grid-template-columns: 1fr;
     grid-column-gap: calc(var(--segment) * (3/4));
@@ -1025,6 +1017,8 @@ body {
 
 @media (min-width: 60rem) {
     #modal_profile .information dl {
+        padding-top: calc(var(--segment) * (3/4));
+        padding-left: calc(var(--segment) * (3/4));
         padding-right: calc(var(--segment-double) * (3/4));
     }
 }
@@ -1326,7 +1320,6 @@ body {
     backdrop-filter: blur(0.75rem);
     -webkit-backdrop-filter: blur(0.75rem);
     pointer-events: none;
-    user-select: none;
     white-space: nowrap;
     font-weight: 500;
     letter-spacing: 0.0234375rem;
@@ -1336,6 +1329,11 @@ body {
     transition-property: opacity;
     transition-duration: 0.075s;
     transition-timing-function: var(--ease-in-quad);
+}
+
+.tooltip_wrapper .tooltip span {
+    user-select: none;
+    -webkit-user-select: none;
 }
 
 .tooltip_wrapper:hover .tooltip, .tooltip_wrapper:focus-within .tooltip {

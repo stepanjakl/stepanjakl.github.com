@@ -259,7 +259,7 @@ svg.animate-face-icon path {
 
 #availability_button a:hover #availability_button_dot::before {
     transition: opacity calc(2 * var(--animate-in-segment)) var(--ease-in-quad), transform calc(2 * var(--animate-in-segment)) var(--ease-in-quad);
-    transform: scale(115);
+    transform: scale(135);
 }
 
 #availability_button_dot {
@@ -681,6 +681,11 @@ svg.animate-face-icon path {
 
 /* Modals */
 
+#profile:target~main #modal_profile,
+#archive:target~main #modal_archive {
+    z-index: 2;
+}
+
 .modal .modal_content {
     visibility: hidden;
 }
@@ -736,6 +741,8 @@ svg.animate-face-icon path {
 
 #underlay_menu,
 #underlay_modal {
+    z-index: -1;
+    pointer-events: none;
     opacity: 0;
     transition: opacity var(--animate-out-segment) linear;
 }
@@ -751,6 +758,7 @@ svg.animate-face-icon path {
 }
 
 #debug:not(:checked)~main #menu:target #underlay_menu {
+    z-index: 1;
     pointer-events: auto;
     opacity: 1;
     transition: opacity var(--animate-in-segment) linear;
@@ -758,6 +766,7 @@ svg.animate-face-icon path {
 
 #debug:not(:checked)~#profile:target~main #underlay_modal,
 #debug:not(:checked)~#archive:target~main #underlay_modal {
+    z-index: 1;
     pointer-events: auto;
     opacity: 1;
     transition: opacity var(--animate-in-segment) linear;
