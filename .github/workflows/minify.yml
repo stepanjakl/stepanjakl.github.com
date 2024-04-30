@@ -4,8 +4,8 @@
 
 # Inspired by: https://stackoverflow.com/a/73882805/11035513
 
-name: minify
-run-name: Minify HTML/CSS/JS/SVG [gh-pages branch]
+name: minify-assets
+run-name: minify assets
 
 # Run on pushes to `release` branch
 on:
@@ -30,15 +30,15 @@ jobs:
 
       # Perform minification, overwriting original files
       # - run: terser ./js/file.js --compress --mangle -o ./js/file.js
-      - run: csso ./reset.css -o ./reset.css
-      - run: csso ./style.css -o ./style.css
+      - run: csso ./styles/reset.css -o ./styles/reset.css
+      - run: csso ./styles/style.css -o ./styles/style.css
       # Get a list of CSS files starting with "font-"
-      - run: css_font_files=$(find . -name 'font-*.css')
+      - run: css_font_files=$(find ./styles -name 'font-*.css')
       # Loop through the files and run csso for each file
       - run: |
           for file in $css_font_files; do
           echo "Minifying $file"
-          csso ./$file -o ./$file
+          csso ./styles/$file -o ./styles/$file
           done
       - run: html-minifier --collapse-boolean-attributes --collapse-whitespace --minify-css --minify-js --minify-urls --remove-attribute-quotes --remove-comments --remove-empty-attributes --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --remove-style-link-type-attributes --remove-tag-whitespace --use-short-doctype -o index.html index.html
       - run: svgo -f ./ -o ./
