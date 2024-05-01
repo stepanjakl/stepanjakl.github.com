@@ -573,49 +573,49 @@ main {
 }
 
 @media (min-width: 45rem) {
-    #intro_left-column h2>div>span[style*="--i: 7;"] {
+    #intro_left-column h2>div>span[style*="--i: 7"] {
         display: block;
         width: 0;
         height: 0;
     }
 
-    #intro_left-column h2>div>span[style*="--i: 8;"] {
+    #intro_left-column h2>div>span[style*="--i: 8"] {
         padding-top: var(--segment-third);
     }
 
-    #intro_left-column h2>div>span[style*="--i: 9;"] {
+    #intro_left-column h2>div>span[style*="--i: 9"] {
         transform: translateX(-0.15rem);
     }
 
-    #intro_left-column h2>div>span[style*="--i: 10;"] {
+    #intro_left-column h2>div>span[style*="--i: 10"] {
         transform: translateX(-0.225rem);
     }
 
-    #intro_left-column h2>div>span[style*="--i: 11;"] {
+    #intro_left-column h2>div>span[style*="--i: 11"] {
         transform: translateX(-0.3rem);
     }
 }
 
 @media (min-width: 67.5rem) {
-    #intro_left-column h2>div>span[style*="--i: 7;"] {
+    #intro_left-column h2>div>span[style*="--i: 7"] {
         display: inline-block;
         width: unset;
         height: unset;
     }
 
-    #intro_left-column h2>div>span[style*="--i: 8;"] {
+    #intro_left-column h2>div>span[style*="--i: 8"] {
         padding-top: unset;
     }
 
-    #intro_left-column h2>div>span[style*="--i: 9;"] {
+    #intro_left-column h2>div>span[style*="--i: 9"] {
         transform: unset;
     }
 
-    #intro_left-column h2>div>span[style*="--i: 10;"] {
+    #intro_left-column h2>div>span[style*="--i: 10"] {
         transform: unset;
     }
 
-    #intro_left-column h2>div>span[style*="--i: 11;"] {
+    #intro_left-column h2>div>span[style*="--i: 11"] {
         transform: unset;
     }
 }
@@ -950,12 +950,11 @@ body {
     border-radius: var(--segment-eighth) calc((var(--modal-button-close-border-radius) + var(--modal-button-close-inset)) + 0.0625rem) var(--segment-eighth) var(--segment-eighth);
     box-shadow: inset 0 0 0 0.0625rem var(--modal-border-inner);
     opacity: 0;
-    /* pointer-events: none; */
-    padding-top: var(--segment);
+    padding-top: calc(var(--segment) / 5);
 }
 
 .modal .modal_content>* {
-    transform: translateY(calc(var(--segment) * -1));
+    transform: translateY(calc(calc(var(--segment) / 5) * -1));
 }
 
 .modal .modal_content::before {
@@ -966,6 +965,36 @@ body {
     backdrop-filter: blur(3rem);
     -webkit-backdrop-filter: blur(3rem);
     border-radius: calc(var(--segment-eighth) - 0.125rem) calc((var(--modal-button-close-border-radius) + var(--modal-button-close-inset)) - 0.0625rem) calc(var(--segment-eighth) - 0.125rem) calc(var(--segment-eighth) - 0.125rem);
+}
+
+@media (min-width: 45rem) {
+    .modal .modal_content {
+        padding-top: var(--segment-quarter);
+    }
+
+    .modal .modal_content>* {
+        transform: translateY(calc(var(--segment-quarter) * -1));
+    }
+}
+
+@media (min-width: 60rem) {
+    .modal .modal_content {
+        padding-top: var(--segment-half);
+    }
+
+    .modal .modal_content>* {
+        transform: translateY(calc(var(--segment-half) * -1));
+    }
+}
+
+@media (min-width: 75rem) {
+    .modal .modal_content {
+        padding-top: var(--segment);
+    }
+
+    .modal .modal_content>* {
+        transform: translateY(calc(var(--segment) * -1));
+    }
 }
 
 
@@ -1001,25 +1030,23 @@ body {
 }
 
 #modal_profile  .information dl {
-    padding: 0;
+    padding: var(--segment-half);
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-column-gap: calc(var(--segment) * (3/4));
     list-style: none;
     color: var(--text-1);
 }
 
-#modal_profile .information dl {
-    padding-top: calc(var(--segment-half));
-    padding-left: calc(var(--segment-half));
-    padding-right: calc(var(--segment-half));
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-column-gap: calc(var(--segment) * (3/4));
-}
-
 @media (min-width: 60rem) {
     #modal_profile .information dl {
-        padding-top: calc(var(--segment) * (3/4));
-        padding-left: calc(var(--segment) * (3/4));
-        padding-right: calc(var(--segment-double) * (3/4));
+        padding: calc(var(--segment) * (3/4)) calc(var(--segment) * (3/4)) var(--segment-half) calc(var(--segment) * (3/4));
+    }
+}
+
+@media (min-width: 75rem) {
+    #modal_profile .information dl {
+        padding: var(--segment) var(--segment) var(--segment-quarter) var(--segment);
     }
 }
 

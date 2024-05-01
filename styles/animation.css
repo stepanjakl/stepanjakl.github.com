@@ -758,7 +758,7 @@ svg.animate-face-icon path {
 }
 
 #debug:not(:checked)~main #menu:target #underlay_menu {
-    z-index: 1;
+    z-index: 0;
     pointer-events: auto;
     opacity: 1;
     transition: opacity var(--animate-in-segment) linear;
