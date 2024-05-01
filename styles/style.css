@@ -573,49 +573,49 @@ main {
 }
 
 @media (min-width: 45rem) {
-    #intro_left-column h2>div>span[style*="--i: 7"] {
+    #intro_left-column h2>div>span[style*="--i:7"] {
         display: block;
         width: 0;
         height: 0;
     }
 
-    #intro_left-column h2>div>span[style*="--i: 8"] {
+    #intro_left-column h2>div>span[style*="--i:8"] {
         padding-top: var(--segment-third);
     }
 
-    #intro_left-column h2>div>span[style*="--i: 9"] {
+    #intro_left-column h2>div>span[style*="--i:9"] {
         transform: translateX(-0.15rem);
     }
 
-    #intro_left-column h2>div>span[style*="--i: 10"] {
+    #intro_left-column h2>div>span[style*="--i:10"] {
         transform: translateX(-0.225rem);
     }
 
-    #intro_left-column h2>div>span[style*="--i: 11"] {
+    #intro_left-column h2>div>span[style*="--i:11"] {
         transform: translateX(-0.3rem);
     }
 }
 
 @media (min-width: 67.5rem) {
-    #intro_left-column h2>div>span[style*="--i: 7"] {
+    #intro_left-column h2>div>span[style*="--i:7"] {
         display: inline-block;
         width: unset;
         height: unset;
     }
 
-    #intro_left-column h2>div>span[style*="--i: 8"] {
+    #intro_left-column h2>div>span[style*="--i:8"] {
         padding-top: unset;
     }
 
-    #intro_left-column h2>div>span[style*="--i: 9"] {
+    #intro_left-column h2>div>span[style*="--i:9"] {
         transform: unset;
     }
 
-    #intro_left-column h2>div>span[style*="--i: 10"] {
+    #intro_left-column h2>div>span[style*="--i:10"] {
         transform: unset;
     }
 
-    #intro_left-column h2>div>span[style*="--i: 11"] {
+    #intro_left-column h2>div>span[style*="--i:11"] {
         transform: unset;
     }
 }

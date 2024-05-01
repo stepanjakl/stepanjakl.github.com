@@ -40,7 +40,7 @@ jobs:
           echo "Minifying $file"
           csso ./styles/$file -o ./styles/$file
           done
-      - run: html-minifier --case-sensitive --collapse-boolean-attributes --collapse-whitespace --minify-css --minify-js --minify-urls --remove-attribute-quotes --remove-comments --remove-empty-attributes --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --remove-style-link-type-attributes --use-short-doctype -o index.html index.html
+      - run: html-minifier --case-sensitive --collapse-boolean-attributes --collapse-whitespace --minify-css --minify-js --minify-urls --remove-attribute-quotes --remove-comments --remove-empty-attributes --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --remove-style-link-type-attributes --remove-tag-whitespace --use-short-doctype -o index.html index.html
       - run: svgo -f ./images -o ./images
 
       # (Force) push changes to `gh-pages` branch
