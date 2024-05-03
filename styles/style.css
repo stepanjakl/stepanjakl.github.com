@@ -919,6 +919,7 @@ body {
     overflow: hidden;
     padding: calc(var(--segment) / 5);
     scroll-behavior: smooth;
+    overscroll-behavior: none;
 }
 
 @media (min-width: 45rem) {

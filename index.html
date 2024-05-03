@@ -16,6 +16,11 @@
         <meta name="viewport"
               content="width=device-width, initial-scale=1, viewport-fit=contain">
 
+        <!-- Cache -->
+        <meta http-equiv="cache-control" content="no-cache">
+        <meta http-equiv="expires" content="0">
+        <meta http-equiv="pragma" content="no-cache">
+
         <!-- iPhone Safari Notch Background Color -->
         <meta name="theme-color" content="#001417">
         <meta name="apple-mobile-web-app-status-bar-style"
@@ -161,6 +166,65 @@
                             } else if (horizontalScrollDirection === 'left' && scrollPositionY === 0) {
                                 if (window.location.hash === '#menu') {
                                     window.location.hash = '#'
+                                }
+                            }
+                        }
+                    }
+                }
+            })
+
+            let touchStartX, touchStartY
+            window.addEventListener('touchstart', (event) => {
+                touchStartX = event.touches[0].clientX
+                touchStartY = event.touches[0].clientY
+            })
+            window.addEventListener('touchmove', (event) => {
+                let verticalScrollDirection, horizontalScrollDirection
+                let touchEndX = event.touches[0].clientX
+                let touchEndY = event.touches[0].clientY
+                let deltaX = Math.abs(touchEndX - touchStartX)
+                let deltaY = Math.abs(touchEndY - touchStartY)
+
+                if (window.location.hash === '#profile') {
+                    const modalProfileElement = document.querySelector('#modal_profile')
+                    const scrollPositionTop = modalProfileElement.scrollTop
+                    if (deltaY > deltaX && deltaY > 5) {
+                        verticalScrollDirection = touchEndY < touchStartY ? 'down' : 'up'
+                        if (verticalScrollDirection === 'up' && scrollPositionTop === 0) {
+                            window.location.hash = '#'
+                        }
+                    }
+                } else if (window.location.hash === '#archive') {
+                    const modalArchiveElement = document.querySelector('#modal_archive')
+                    const scrollPositionTop = modalArchiveElement.scrollTop
+                    if (deltaY > deltaX && deltaY > 5) {
+                        verticalScrollDirection = touchEndY < touchStartY ? 'down' : 'up'
+                        if (verticalScrollDirection === 'up' && scrollPositionTop === 0) {
+                            window.location.hash = '#'
+                        }
+                    }
+                } else {
+                    const scrollPositionX = window.scrollX || window.pageXOffset
+                    const scrollPositionY = window.scrollY || window.pageYOffset
+                    const totalHeight = document.documentElement.scrollHeight
+                    const totalWidth = document.documentElement.scrollWidth
+                    if (deltaY > deltaX && deltaY > 5) {
+                        verticalScrollDirection = touchEndY < touchStartY ? 'down' : 'up'
+                        if (verticalScrollDirection === 'down' && scrollPositionY + window.innerHeight >= totalHeight) {
+                            if (window.location.hash === '') {
+                                window.location.hash = '#profile'
+                            }
+                        }
+                    } else if (deltaX > deltaY && deltaX > 5) {
+                        if (document.querySelector('.animate-fade-in-cta-2').getAnimations().length === 0 || document.querySelector('.animate-fade-in-cta-2').getAnimations()[0].playState === 'finished') {
+                            horizontalScrollDirection = touchEndX > touchStartX ? 'right' : 'left'
+                            if (horizontalScrollDirection === 'right' && scrollPositionX + window.innerWidth >= totalWidth) {
+                                if (window.location.hash === '#menu') {
+                                    window.location.hash = '#'
+                                }
+                            } else if (horizontalScrollDirection === 'left' && scrollPositionX === 0) {
+                                if (window.location.hash === '') {
+                                    window.location.hash = '#menu'
                                 }
                             }
                         }

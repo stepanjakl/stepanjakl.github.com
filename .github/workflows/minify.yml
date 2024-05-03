@@ -23,29 +23,25 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      # - run: npm install -g terser
+      - run: npm install -g terser
       - run: npm install -g csso-cli
       - run: npm install -g html-minifier
       - run: npm install -g svgo
 
       # Perform minification, overwriting original files
-      # - run: terser ./js/file.js --compress --mangle -o ./js/file.js
-      - run: csso ./styles/reset.css -o ./styles/reset.css
-      - run: csso ./styles/style.css -o ./styles/style.css
-      # Get a list of CSS files starting with "font-"
-      - run: css_font_files=$(find ./styles -name 'font-*.css')
-      # Loop through the files and run csso for each file
+      - run: terser ./scripts/timeline.js --compress --mangle --output ./scripts/timeline.js
       - run: |
-          for file in $css_font_files; do
+          css_font_files=$(ls ./styles/*.css)
+          echo "$css_font_files" | while IFS= read -r file; do
           echo "Minifying $file"
-          csso ./styles/$file -o ./styles/$file
+          csso --force-media-merge $file --output $file
           done
-      - run: html-minifier --case-sensitive --collapse-boolean-attributes --collapse-whitespace --minify-css --minify-js --minify-urls --remove-attribute-quotes --remove-comments --remove-empty-attributes --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --remove-style-link-type-attributes --remove-tag-whitespace --use-short-doctype -o index.html index.html
+      - run: html-minifier --case-sensitive --collapse-inline-tag-whitespace --collapse-whitespace --minify-css --minify-js --minify-urls --quote-character='"' --remove-comments index.html --output index.html
       - run: svgo -f ./images -o ./images
 
       # (Force) push changes to `gh-pages` branch
       - run: |
           git config user.name stepanjakl
           git config user.email stepanjakl@outlook.com
-          git commit -am 'Automated minify of ${{ github.sha }}'
+          git commit -am "Automated minify of ${{ github.sha }}"
           git push --force -u origin release:gh-pages
