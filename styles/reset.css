@@ -1,7 +1,7 @@
 *,
 *::before,
 *::after {
-    box-sizing: border-box
+    box-sizing: border-box;
 }
 
 body,
@@ -14,7 +14,7 @@ figure,
 blockquote,
 dl,
 dd {
-    margin: 0
+    margin: 0;
 }
 
 ul[role="list"],
@@ -23,22 +23,23 @@ ol[role="list"] {
 }
 
 html:focus-within {
-    scroll-behavior: smooth
+    scroll-behavior: smooth;
 }
 
 body {
     min-height: 100vh;
     text-rendering: optimizeSpeed;
-    line-height: 1
+    line-height: 1;
 }
 
 html,
 body {
     height: 100%;
+    -webkit-tap-highlight-color: transparent;
 }
 
 a:not([class]) {
-    text-decoration-skip-ink: auto
+    text-decoration-skip-ink: auto;
 }
 
 label {
@@ -48,19 +49,19 @@ label {
 img,
 picture {
     max-width: 100%;
-    display: block
+    display: block;
 }
 
 input,
 button,
 textarea,
 select {
-    font: inherit
+    font: inherit;
 }
 
 @media(prefers-reduced-motion:reduce) {
     html:focus-within {
-        scroll-behavior: auto
+        scroll-behavior: auto;
     }
 
     *,
@@ -69,7 +70,7 @@ select {
         animation-duration: .01ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: .01ms !important;
-        scroll-behavior: auto !important
+        scroll-behavior: auto !important;
     }
 }
 
@@ -122,7 +123,6 @@ dialog {
 
 /* https://bubblin.io/blog/notch */
 @supports(padding:max(0px)) {
-
     body,
     header,
     footer {
