@@ -259,13 +259,13 @@
                 <header id="intro">
                     <div id="intro_left-column"
                          class="z-1 flex flex-col-reverse align-items-start">
-                        <h2 class="animate-fade-in-name cursor-pointer select-none highlight tooltip_wrapper"
+                        <h2 class="inline-flex animate-fade-in-name select-none highlight tooltip_wrapper"
                             onmousedown="if ((event.which && event.which == 3) || (event.button && event.button == 2)) { if ('speechSynthesis' in window) { let msg = new SpeechSynthesisUtterance(); msg.lang = 'cs-CZ'; msg.voice = speechSynthesis.getVoices().filter(voice => voice.name === 'Zuzana')[0]; msg.text = 'Štěpán Jákl'; speechSynthesis.speak(msg) } } else { navigator.clipboard.writeText('Štěpán Jákl'); activateHighlight(this.querySelector('.tooltip-bottom'), this, 'Copied to the clipboard') }"
                             tabindex="0"
                             role="button"
                             aria-label="Click to copy name to clipboard">
-                            <div class="pointer-events-none" aria-hidden="true">
-                                <span style="--i:1">Š</span><span style="--i:2">t</span><span style="--i:3">ě</span><span style="--i:4">p</span><span style="--i:5">á</span><span style="--i:6">n</span><span style="--i:7" data-text-wrap>&nbsp;</span><span style="--i:8">J</span><span style="--i:9">á</span><span style="--i:10">k</span><span style="--i:11">l</span>
+                            <div class="inline-flex flex-wrap select-none" aria-hidden="true">
+                                <span style="--i:1">Š</span><span style="--i:2">t</span><span style="--i:3">ě</span><span style="--i:4">p</span><span style="--i:5">á</span><span style="--i:6">n</span><span style="--i:7">&nbsp;</span><span style="--i:8">J</span><span style="--i:9">á</span><span style="--i:10">k</span><span style="--i:11">l</span>
                             </div>
                             <abbr class="tooltip-top tooltip">
                                 <span aria-hidden="true">Pronounced: shteh-PAHN YAH-kl</span>
@@ -645,7 +645,7 @@
                                                 Excited to explore cutting-edge frameworks and tools while prioritizing foundational web development elements like good semantics, cross-compatibility, and accessibility.
                                             </p>
                                             <p>
-                                                In recent years, my efforts have been devoted to building and overseeing a significant number of websites using the <a href="https://apostrophecms.com/" target="_blank"><u>ApostropheCMS</u></a> framework.
+                                                In recent years, my efforts have been devoted to building and overseeing a significant number of websites using the&nbsp;<a href="https://apostrophecms.com/" target="_blank"><u>ApostropheCMS</u></a>&nbsp;framework.
                                             </p>
                                             <p style="padding-bottom: var(--segment-third)">
                                                 I have been equally dedicated to code and design as a profesional since 2014.

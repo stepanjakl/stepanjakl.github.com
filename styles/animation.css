@@ -251,6 +251,42 @@ svg.animate-face-icon path {
 
 /* Availability */
 
+@keyframes availability-dot-fade-animation {
+    0% {
+        opacity: 100%;
+        animation-timing-function: linear;
+    }
+    25% {
+        opacity: 100%;
+        animation-timing-function: linear;
+    }
+    50% {
+        opacity: 50%;
+        animation-timing-function: var(--ease-out-quad);
+    }
+    75% {
+        opacity: 100%;
+        animation-timing-function: var(--ease-in-quad);
+    }
+    100% {
+        opacity: 100%;
+        animation-timing-function: linear;
+    }
+}
+
+#availability_button_dot {
+    will-change: opacity;
+    animation-name: availability-dot-fade-animation;
+    animation-fill-mode: both;
+    animation-duration: calc(var(--animate-in-segment) * 32);
+    animation-iteration-count: infinite;
+    animation-delay: calc((var(--delay-segment) * 5) + 0.1s);
+}
+
+#availability_button a:hover #availability_button_dot {
+    animation: none;
+}
+
 #availability_button_dot::before {
     transition: opacity calc(2 * var(--animate-out-segment)) var(--ease-out-quad), transform calc(2 * var(--animate-out-segment)) var(--ease-out-quad);
     transform-origin: center;
@@ -324,31 +360,6 @@ svg.animate-face-icon path {
     transition: text-decoration var(--animate-in-segment-2\/3) linear;
     text-decoration-color: var(--text-2) !important;
 }
-
-/* #menu_links>a::before, #menu_button::before {
-    transition: opacity var(--animate-out-segment-2\/3) linear, transform var(--animate-out-segment-2\/3) var(--ease-in-quad);
-    content: '';
-    opacity: 0;
-    transform: scale(0.9);
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    background-color: var(--context-bg);
-    border-radius: 999rem;
-    backdrop-filter: blur(0.125rem);
-}
-
-#menu_links>a:hover::before, #menu>a:hover~#menu_button::before {
-    transition: opacity var(--animate-in-segment-2\/3) linear, transform var(--animate-in-segment-2\/3) var(--ease-out-quad);
-    opacity: 1 !important;
-    transform: scale(1.2) !important;
-}
-
-#menu_links>a:focus::before, #menu_links #menu>a:focus~#menu_button::before {
-    transition: opacity var(--animate-in-segment-2\/3) linear, transform var(--animate-in-segment-2\/3) var(--ease-out-quad);
-    opacity: 0.75;
-    transform: scale(1.1);
-} */
 
 
 /* Menu Button */
@@ -537,46 +548,6 @@ svg.animate-face-icon path {
     }
 }
 
-
-/* #menu_icon--close,
-#menu_icon--open {
-    color: var(--icon);
-}
-
-#menu>a:hover~#menu_button #menu_icon--close,
-#menu>a:hover~#menu_button #menu_icon--open {
-    color: var(--text-1);
-}
-
-#menu_icon--close {
-    transition: opacity var(--animate-out-segment-2\/3) linear, transform var(--animate-out-segment-2\/3) var(--ease-in-quad), color var(--animate-out-segment-2\/3) linear, visibility 0s var(--animate-out-segment-2\/3);
-    visibility: hidden;
-    opacity: 0;
-    transform: scale(0.75);
-}
-
-#menu:target #menu_icon--close {
-    transition: opacity var(--animate-in-segment-2\/3) linear, transform var(--animate-in-segment-2\/3) var(--ease-out-quad), color var(--animate-in-segment-2\/3) linear;
-    visibility: visible;
-    opacity: 1;
-    transform: scale(1);
-}
-
-#menu_icon--open {
-    transition: opacity var(--animate-in-segment-2\/3) linear, transform var(--animate-in-segment-2\/3) var(--ease-out-quad), color var(--animate-in-segment-2\/3) linear;
-    visibility: visible;
-    opacity: 1;
-    transform: scale(1);
-}
-
-#menu:target #menu_icon--open {
-    transition: opacity var(--animate-out-segment-2\/3) linear, transform var(--animate-out-segment-2\/3) var(--ease-in-quad), color var(--animate-out-segment-2\/3) linear, visibility 0s var(--animate-out-segment-2\/3);
-    visibility: hidden;
-    opacity: 0;
-    transform: scale(0.75);
-} */
-
-
 /* Menu Dropdown */
 
 #menu_dropdown {
@@ -586,7 +557,7 @@ svg.animate-face-icon path {
     transition: opacity calc(1.25 * var(--animate-out-segment)) var(--ease-in-quad), transform calc(1.25 * var(--animate-out-segment)) var(--ease-in-quad), visibility 0s calc(1.25 * var(--animate-out-segment));
 }
 
-@media (min-width: 45rem) {
+@media ((min-width: 45rem) and (min-aspect-ratio: 3/4)) {
     #menu_dropdown {
         transform: translateX(-0.25rem);
     }
@@ -613,14 +584,11 @@ svg.animate-face-icon path {
     transition: opacity var(--animate-out-segment-2\/3) linear, inset var(--animate-out-segment-2\/3) var(--ease-in-quad);
     content: '';
     opacity: 0;
-    /* transform: scale(0.9); */
     position: absolute;
     inset: 0.5625rem 0.625rem 0.625rem 0.625rem;
-    /* inset: 0.1875rem 0.25rem 0.25rem 0.25rem; */
     z-index: 0;
     background-color: var(--highlight-secondary);
     border-radius: 0.09375rem;
-    /* backdrop-filter: blur(0.125rem); */
 }
 
 #menu_dropdown a:hover::before,
@@ -632,14 +600,7 @@ svg.animate-face-icon path {
     transition: opacity var(--animate-in-segment-2\/3) linear, inset var(--animate-in-segment-2\/3) var(--ease-out-quad);
     opacity: 1;
     inset: 0.1875rem 0.25rem 0.25rem 0.25rem;
-    /* transform: scale(1); */
 }
-
-/* {
-    transition: opacity var(--animate-in-segment-2\/3) linear, inset var(--animate-in-segment-2\/3) var(--ease-out-quad);
-    opacity: 0.75;
-    inset: 0.375rem 0.4375rem 0.4375rem 0.4375rem;
-} */
 
 #menu_dropdown a span,
 #menu_dropdown label span {
@@ -707,7 +668,13 @@ svg.animate-face-icon path {
 
 #intro_left-column, #intro_right-column {
     transition: transform var(--animate-out-segment) var(--ease-in-quad);
-    transform-origin: top;
+    transform-origin: center;
+}
+
+@media ((min-width: 45rem) and (min-aspect-ratio: 3/4)) {
+    #intro_left-column, #intro_right-column {
+        transform-origin: top;
+    }
 }
 
 #profile:target~main #intro_left-column,
@@ -729,7 +696,6 @@ svg.animate-face-icon path {
     transition: color var(--animate-in-segment-2\/3) linear, background-color var(--animate-in-segment-2\/3) linear, border var(--animate-in-segment-2\/3) linear;
     color: var(--modal-icon-hover);
     background-color: var(--highlight-secondary);
-    /* border-color: var(--modal-icon-hover); */
 }
 
 #modal_button-close:hover svg {
