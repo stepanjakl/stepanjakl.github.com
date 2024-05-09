@@ -254,11 +254,9 @@ svg.animate-face-icon path {
 @keyframes availability-dot-fade-animation {
     0% {
         opacity: 100%;
-        animation-timing-function: linear;
     }
     25% {
         opacity: 100%;
-        animation-timing-function: linear;
     }
     50% {
         opacity: 50%;
@@ -270,7 +268,6 @@ svg.animate-face-icon path {
     }
     100% {
         opacity: 100%;
-        animation-timing-function: linear;
     }
 }
 
@@ -278,6 +275,7 @@ svg.animate-face-icon path {
     will-change: opacity;
     animation-name: availability-dot-fade-animation;
     animation-fill-mode: both;
+    animation-timing-function: linear;
     animation-duration: calc(var(--animate-in-segment) * 32);
     animation-iteration-count: infinite;
     animation-delay: calc((var(--delay-segment) * 5) + 0.1s);
