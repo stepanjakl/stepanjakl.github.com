@@ -36,13 +36,19 @@ body {
 .animate-fade-in-title>span,
 .animate-fade-in-cta-1,
 .animate-fade-in-cta-2,
-.animate-fade-in-logo,
-.animate-fade-in-triangle::after {
-    animation-name: fade-in-opacity, fade-in-blur;
+.animate-fade-in-logo {
+    animation-name: fade-in-opacity, fade-in-blur-2;
     animation-fill-mode: backwards;
-    animation-duration: 2.5s, 0.75s;
+    animation-duration: 2.25s, 0.625s;
     animation-timing-function: var(--ease-out-quad);
     -webkit-font-smoothing: subpixel-antialiased;
+    transform-origin: left;
+}
+
+.animate-fade-in-name>div>span,
+.animate-fade-in-title>span {
+    animation-name: fade-in-opacity, fade-in-blur;
+    animation-duration: 2.5s, 0.75s;
 }
 
 .animate-fade-in-name>div>span {
@@ -54,18 +60,15 @@ body {
 }
 
 .animate-fade-in-cta-1 {
-    animation-duration: 1s;
-    animation-delay: calc((var(--delay-segment) * 6) + 0.1s);
+    animation-delay: calc((var(--delay-segment) * 5) + 0.15s);
 }
 
 .animate-fade-in-cta-2 {
-    animation-duration: 1s;
-    animation-delay: calc((var(--delay-segment) * 8) + 0.1s);
+    animation-delay: calc((var(--delay-segment) * 7) + 0.15s);
 }
 
 .animate-fade-in-logo {
-    animation-duration: 1s;
-    animation-delay: calc((var(--delay-segment) * 10) + 0.1s);
+    animation-delay: calc((var(--delay-segment) * 9) + 0.15s);
 }
 
 @keyframes fade-in-opacity {
@@ -88,6 +91,18 @@ body {
     0% {
         transform: scale(0.95);
         filter: blur(0.5rem);
+    }
+
+    100% {
+        transform: scale(1);
+        filter: blur(0);
+    }
+}
+
+@keyframes fade-in-blur-2 {
+    0% {
+        transform: scale(0.9875);
+        filter: blur(0.25rem);
     }
 
     100% {
@@ -569,7 +584,7 @@ svg.animate-face-icon path {
     transition: opacity calc(1.25 * var(--animate-out-segment)) var(--ease-in-quad), transform calc(1.25 * var(--animate-out-segment)) var(--ease-in-quad), visibility 0s calc(1.25 * var(--animate-out-segment));
 }
 
-@media ((min-width: 45rem) and (min-aspect-ratio: 3/4)) {
+@media (min-width: 45rem) and (min-aspect-ratio: 3/4) {
     #menu_dropdown {
         transform: translateX(-0.25rem);
     }
@@ -683,7 +698,7 @@ svg.animate-face-icon path {
     transform-origin: center;
 }
 
-@media ((min-width: 45rem) and (min-aspect-ratio: 3/4)) {
+@media (min-width: 45rem) and (min-aspect-ratio: 3/4) {
     #intro_left-column, #intro_right-column {
         transform-origin: top;
     }
