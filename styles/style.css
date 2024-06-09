@@ -634,6 +634,10 @@ main {
 
 /* Intro - Right Column */
 
+#intro_right-column>h3 {
+    color: var(--text-1);
+}
+
 #intro_right-column_title--primary span {
     display: inline-block;
     padding-top: calc(var(--segment-quarter) + 0.0624375rem);

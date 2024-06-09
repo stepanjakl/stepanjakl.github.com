@@ -598,24 +598,56 @@ svg.animate-face-icon path {
     transition: opacity calc(1.25 * var(--animate-in-segment)) var(--ease-out-quad), transform calc(1.25 * var(--animate-in-segment)) var(--ease-out-quad);
 }
 
-#menu_dropdown a:first-child:before {
-    border-radius: 0.1875rem 0.1875rem 0.09375rem 0.09375rem;
+#menu_dropdown a:first-child:before,
+#menu_dropdown a:first-child:after {
+    inset: -0.0625rem 0 0 0;
+    border-radius: 0.3125rem 0.3125rem 0 0;
+    /* border-radius: 0.1875rem 0.1875rem 0.09375rem 0.09375rem; */
 }
 
-#menu_dropdown label:last-child:before {
-    border-radius: 0.09375rem 0.09375rem 0.1875rem 0.1875rem;
+#menu_dropdown label:last-child:before,
+#menu_dropdown label:last-child:after {
+    border-radius: 0 0 0.3125rem 0.3125rem;
+    /* border-radius: 0.09375rem 0.09375rem 0.1875rem 0.1875rem; */
 }
 
 #menu_dropdown a::before,
 #menu_dropdown label::before {
-    transition: opacity var(--animate-out-segment-2\/3) linear, inset var(--animate-out-segment-2\/3) var(--ease-in-quad);
+    transition: opacity var(--animate-out-segment) linear, inset var(--animate-out-segment) var(--ease-in-quad);
+    content: '';
+    opacity: 0;
+    position: absolute;
+    inset: 0; /* 0 0 -0.0625rem 0; */
+    z-index: 1;
+    background-image: linear-gradient(to right, rgba(0, 118, 132, 0.75), rgba(0, 118, 132, 0.15)); /* 210, 100, 45 */
+
+    /* transition: opacity var(--animate-out-segment-2\/3) linear, inset var(--animate-out-segment-2\/3) var(--ease-in-quad);
     content: '';
     opacity: 0;
     position: absolute;
     inset: 0.5625rem 0.625rem 0.625rem 0.625rem;
     z-index: 0;
     background-color: var(--highlight-secondary);
-    border-radius: 0.09375rem;
+    border-radius: 0.09375rem; */
+}
+
+#menu_dropdown a::after,
+#menu_dropdown label::after {
+    transition: opacity var(--animate-out-segment) linear, inset var(--animate-out-segment) var(--ease-in-quad);
+    content: '';
+    opacity: 0;
+    position: absolute;
+    inset: 0; /*  -0.0625rem; */
+    z-index: 1;
+
+    border: 0.0625rem solid transparent;
+    background-image: linear-gradient(to right, rgba(0, 118, 132, 1), rgba(0, 118, 132, 0)); /* 210, 100, 45 */
+    background-origin: border-box;
+    background-clip: border-box;
+    -webkit-mask: linear-gradient(#000 0 0) padding-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: destination-out;
+    -webkit-mask-repeat: no-repeat;
+    mask-composite: exclude;
 }
 
 #menu_dropdown a:hover::before,
@@ -623,33 +655,41 @@ svg.animate-face-icon path {
 #menu_dropdown a:focus::before,
 #menu_dropdown label:focus::before,
 #menu_dropdown a:focus-within::before,
-#menu_dropdown label:focus-within::before {
-    transition: opacity var(--animate-in-segment-2\/3) linear, inset var(--animate-in-segment-2\/3) var(--ease-out-quad);
+#menu_dropdown label:focus-within::before,
+#menu_dropdown a:hover::after,
+#menu_dropdown label:hover::after,
+#menu_dropdown a:focus::after,
+#menu_dropdown label:focus::after,
+#menu_dropdown a:focus-within::after,
+#menu_dropdown label:focus-within::after  {
+    transition: opacity var(--animate-in-segment) linear, inset var(--animate-in-segment) var(--ease-out-quad);
     opacity: 1;
-    inset: 0.1875rem 0.25rem 0.25rem 0.25rem;
+    /* transition: opacity var(--animate-in-segment-2\/3) linear, inset var(--animate-in-segment-2\/3) var(--ease-out-quad);
+    opacity: 1;
+    inset: 0.1875rem 0.25rem 0.25rem 0.25rem; */
 }
 
 #menu_dropdown a span,
 #menu_dropdown label span {
-    transition: color var(--animate-out-segment-2\/3) linear;
+    transition: color var(--animate-out-segment) linear;
     z-index: 1;
 }
 
 #menu_dropdown a:hover span,
 #menu_dropdown label:hover span {
-    transition: color var(--animate-in-segment-2\/3) linear;
+    transition: color var(--animate-in-segment) linear;
 }
 
 #menu_dropdown a svg,
 #menu_dropdown label svg {
-    transition: color var(--animate-out-segment-2\/3) linear;
+    transition: color var(--animate-out-segment) linear;
     color: var(--icon);
     z-index: 1;
 }
 
 #menu_dropdown a:hover svg,
 #menu_dropdown label:hover svg {
-    transition: color var(--animate-out-segment-2\/3) linear, background-color var(--animate-out-segment-2\/3) linear;
+    transition: color var(--animate-out-segment) linear, background-color var(--animate-out-segment) linear;
     color: var(--icon-hover);
 }
 
@@ -659,11 +699,21 @@ svg.animate-face-icon path {
 }
 
 #menu_dropdown label#menu_dropdown_light-mode::before {
-    background-color: var(--yellow);
+    background-image: linear-gradient(to right, rgba(238, 213, 0, 0.75), rgba(238, 213, 0, 0)); /* 75, 100, 85  */
+    /* background-color: var(--yellow); */
+}
+
+#menu_dropdown label#menu_dropdown_light-mode::after {
+    background-image: linear-gradient(to right, rgba(238, 213, 0, 1), rgba(238, 213, 0, 0)); /* 75, 100, 85  */
 }
 
 #menu_dropdown label#menu_dropdown_debug::before {
-    background-color: var(--highlight-primary);
+    background-image: linear-gradient(to right, rgba(0, 95, 241, 0.75), rgba(0, 95, 241, 0)); /* 260, 100, 45 */
+    /* background-color: var(--highlight-primary); */
+}
+
+#menu_dropdown label#menu_dropdown_debug::after {
+    background-image: linear-gradient(to right, rgba(0, 95, 241, 1), rgba(0, 95, 241, 0)); /* 260, 100, 45 */
 }
 
 
