@@ -149,9 +149,10 @@
                     scrollPositionY = window.scrollY || window.pageYOffset
                     totalHeight = document.documentElement.scrollHeight
                     totalWidth = document.documentElement.scrollWidth
+                    console.log(scrollPositionX, scrollPositionY, window.innerHeight, totalHeight, scrollPositionX + window.innerHeight >= totalHeight);
                     if (deltaY > deltaX && deltaY > 5) {
                         verticalScrollDirection = event.deltaY > 0 ? 'down' : 'up'
-                        if (verticalScrollDirection === 'down' && scrollPositionX + window.innerHeight >= totalHeight) {
+                        if (verticalScrollDirection === 'down' && scrollPositionY + window.innerHeight >= totalHeight) {
                             if (window.location.hash === '') {
                                 window.location.hash = '#profile'
                             }
@@ -163,7 +164,7 @@
                                 if (window.location.hash === '') {
                                     window.location.hash = '#menu'
                                 }
-                            } else if (horizontalScrollDirection === 'left' && scrollPositionY === 0) {
+                            } else if (horizontalScrollDirection === 'left' && scrollPositionX === 0) {
                                 if (window.location.hash === '#menu') {
                                     window.location.hash = '#'
                                 }
