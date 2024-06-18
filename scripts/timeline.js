@@ -25,19 +25,19 @@ class timeline extends HTMLElement {
                 #timeline_wrapper {
                     transition: border-radius var(--animate-out-segment) var(--ease-in-quad), margin var(--animate-out-segment) var(--ease-in-quad), transform var(--animate-out-segment) var(--ease-in-quad);
                     position: relative;
-                    margin: 0 8rem;
-                    border-radius: 0.75rem;
+                    margin: 0 128px;
+                    border-radius: 12px;
                     background-color: rgba(255, 255, 255, 0.15);
-                    backdrop-filter: blur(0.375rem);
-                    -webkit-backdrop-filter: blur(0.375rem);
+                    backdrop-filter: blur(6px);
+                    -webkit-backdrop-filter: blur(6px);
                     overflow: clip;
                 }
 
                 #timeline_wrapper:hover {
                     transition: border-radius var(--animate-in-segment) var(--ease-out-quad), margin var(--animate-in-segment) var(--ease-out-quad), transform var(--animate-in-segment) var(--ease-out-quad);
-                    border-radius: 1.125rem;
-                    margin: 0 4rem;
-                    transform: translateY(calc(1.125rem / 4))
+                    border-radius: 18px;
+                    margin: 0 64px;
+                    transform: translateY(calc(18px / 4))
                 }
 
                 #timeline_content {
@@ -49,7 +49,7 @@ class timeline extends HTMLElement {
                     scrollbar-width: none;
                     -webkit-overflow-scrolling: touch;
                     -ms-overflow-style: none;
-                    padding: 0.5rem 1.5rem 0.25rem 1.5rem;
+                    padding: 8px 24px 4px 24px;
                     mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) var(--segment), rgba(0, 0, 0, 1) calc(100% - var(--segment)), rgba(0, 0, 0, 0) 100%);
                 }
 
@@ -59,30 +59,30 @@ class timeline extends HTMLElement {
 
                 #timeline_wrapper:hover #timeline_content {
                     transition: padding var(--animate-in-segment) var(--ease-out-quad);
-                    padding: calc(0.5rem + 0.375rem) calc(1.5rem + 4rem) calc(0.25rem + 0.375rem) calc(1.5rem + 4rem);
+                    padding: calc(8px + 6px) calc(24px + 64px) calc(4px + 6px) calc(24px + 64px);
                 }
 
                 #timeline_content > div {
                     transition: row-gap var(--animate-out-segment) var(--ease-in-quad);
-                    row-gap: 0.5rem;
+                    row-gap: 8px;
                 }
 
                 #timeline_wrapper:hover #timeline_content > div {
                     transition: row-gap var(--animate-in-segment) var(--ease-out-quad);
-                    row-gap: calc(0.5rem + 0.375rem);
+                    row-gap: calc(8px + 6px);
                 }
 
                 #timeline {
-                    height: 1.125rem;
-                    column-gap: 1rem;
+                    height: 18px;
+                    column-gap: 16px;
                 }
 
                 #timeline span {
                     transition: background var(--animate-out-segment-2\\/3) linear, height var(--animate-out-segment-2\\/3) var(--ease-in-quad);
                     background-color: rgba(255, 255, 255, 0.45);
-                    width: 0.09375rem;
+                    width: 1.5px;
                     height: calc((6/18)*100%);
-                    border-radius: 0.03125rem;
+                    border-radius: 0.5px;
                 }
 
                 #timeline span:nth-child(6n + 4) {
@@ -159,12 +159,12 @@ class timeline extends HTMLElement {
                     transition: color var(--animate-out-segment-2\\/3) linear;
                     text-align: center;
                     color: var(--text-2);
-                    padding: 0.25rem 0.3125rem 0.25rem 0.4375rem;
+                    padding: 4px 5px 4px 7px;
                     font-family: 'Chakra Petch', monospace;
                     font-weight: 600;
-                    font-size: 0.80356875rem;
-                    line-height: 0.875rem;
-                    letter-spacing: 0.125rem;
+                    font-size: 12.8571px;
+                    line-height: 14px;
+                    letter-spacing: 2px;
                 }
 
                 #timeline_labels button span::before {
@@ -188,10 +188,10 @@ class timeline extends HTMLElement {
                     transition: opacity var(--animate-out-segment-2\\/3) linear, inset var(--animate-out-segment-2\\/3) var(--ease-in-quad);
                     content: '';
                     position: absolute;
-                    inset: 0.09375rem 0.1875rem;
+                    inset: 1.5px 3px;
                     opacity: 0;
                     background-color: rgba(255, 255, 255, 0.15);
-                    border-radius: 999rem;
+                    border-radius: 15984px;
                 }
 
                 #timeline_labels button.active::before {
@@ -209,7 +209,7 @@ class timeline extends HTMLElement {
                 #timeline_labels button::after {
                     content: '';
                     position: absolute;
-                    inset: -1.875rem -0.3125rem -0.3125rem -0.3125rem;
+                    inset: -30px -5px -5px -5px;
                 }
             </style>
 
@@ -268,11 +268,11 @@ class timeline extends HTMLElement {
                     targetLabelEl.focus()
                     scrollParentToChildCenterHorizontal(timelineContentEl, targetLabelEl)
 
-                    labelEls.forEach((labelEl) => labelEl.classList.remove('active'))
+                    labelEls.forEach((labelEl) => labelEl.classListNaNpxove('active'))
                     targetLabelEl.classList.add('active')
 
                     const index = labelEls.findIndex((labelEl) => labelEl.getAttribute('data-label-for') === targetSection)
-                    timelineEls.forEach((timelineEl) => timelineEl.classList.remove('active'))
+                    timelineEls.forEach((timelineEl) => timelineEl.classListNaNpxove('active'))
                     timelineEls[3 + (index === 0 ? 0 : index * 6)].classList.add('active')
                 }
             })
