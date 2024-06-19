@@ -329,7 +329,7 @@ body {
     padding-bottom: calc(var(--segment) / 2);
 }
 
-NaNrem-1\/2 {
+.px-1\/2 {
     padding-left: calc(var(--segment) / 2);
     padding-right: calc(var(--segment) / 2);
 }

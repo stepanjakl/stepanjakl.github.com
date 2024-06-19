@@ -59,17 +59,17 @@
                     const origInnerText = elementToSwapText.innerText
                     const activateHandler = () => {
                         clearTimeout(timeout)
-                        elementToHighlight.classListNaNpxove('active')
-                        elementToHighlightNaNpxoveEventListener('transitionend', activateHandler)
+                        elementToHighlight.classList.remove('active')
+                        elementToHighlight.removeEventListener('transitionend', activateHandler)
                         elementToHighlight.addEventListener('transitionend', deactivateHandler)
                     }
                     const deactivateHandler = () => {
                         document.activeElement.blur()
                         if (tempInnerText) {
-                            targetNaNpxoveAttribute('data-copying')
+                            target.removeAttribute('data-copying')
                             elementToSwapText.innerText = origInnerText
                         }
-                        elementToHighlightNaNpxoveEventListener('transitionend', deactivateHandler)
+                        elementToHighlight.removeEventListener('transitionend', deactivateHandler)
                     }
                     if (tempInnerText) {
                         elementToSwapText.innerText = tempInnerText
@@ -313,7 +313,7 @@
                                     </div>
                                 </a>
                                 <div class="tooltip-bottom tooltip">
-                                    <span>Book a virtual meeting via Calendly</span>
+                                    <span>Book a virtual meeting</span>
                                 </div>
                             </div>
                         </div>
@@ -450,7 +450,7 @@
                                         <div>
                                             <a href="https://cal.com/stepanjakl"
                                                target="_blank"
-                                               aria-label="Schedule a call via Calendly"
+                                               aria-label="Schedule a call"
                                                rel="noreferrer">
                                                 <!-- 'opsz' 24, 'wght' 400, 'FILL' 1, 'GRAD' 0 -->
                                                 <svg xmlns="http://www.w3.org/2000/svg"
@@ -463,17 +463,18 @@
                                                     <path d="M12 23v-2h7v-1h-4v-8h4v-1q0-2.9-2.05-4.95Q14.9 4 12 4 9.1 4 7.05 6.05 5 8.1 5 11v1h4v8H3v-9q0-1.85.712-3.488.713-1.637 1.938-2.862t2.862-1.938Q10.15 2 12 2t3.488.712q1.637.713 2.862 1.938t1.938 2.862Q21 9.15 21 11v12Z">
                                                 </svg>
                                                 <span class="text-sm whitespace-nowrap">Virtual meeting</span>
-                                                <!-- 'opsz' 20, 'wght' 200, 'FILL' 1, 'GRAD' 200 -->
-                                                <svg class="box-content ml-auto"
-                                                     style="padding-left: 0.75rem"
+                                                <!-- 'opsz' 20, 'wght' 400, 'FILL' 1, 'GRAD' 200 -->
+                                                <svg class="box-content"
+                                                     style="padding-left: 0.1875rem;
+                                                            width: 1rem;
+                                                            height: 1rem;
+                                                            align-self: start"
                                                      xmlns="http://www.w3.org/2000/svg"
                                                      height="20"
                                                      width="20"
                                                      viewBox="0 0 20 20"
-                                                     fill="currentColor"
-                                                     style="width: 1.25rem;
-                                                            height: 1.25rem">
-                                                    <path d="M2.667 17.333V2.667h7.166v1.458H4.125v11.75h11.75v-5.708h1.458v7.166Zm5.416-4.375-1.041-1.041 7.812-7.792h-2.625V2.667h5.104v5.104h-1.458V5.146Z">
+                                                     fill="currentColor">
+                                                    <path d="M2.333 17.667V2.333h8.063v2.042H4.375v11.25h11.25v-6.02h2.042v8.062H2.333ZM8 13.437 6.563 12l7.625-7.625h-1.792V2.333h5.27v5.271h-2.041V5.812L8 13.437Z">
                                                 </svg>
                                             </a>
                                             <a href="https://www.linkedin.com/in/stepanjakl"
@@ -489,16 +490,17 @@
                                                     <path d="M14 13.5h4V12h-4Zm0 3h4V15h-4ZM15 7h7v15H2V7h7V2h6Zm-4 2h2V4h-2Zm-2 6q.625 0 1.062-.438.438-.437.438-1.062t-.438-1.062Q9.625 12 9 12t-1.062.438Q7.5 12.875 7.5 13.5t.438 1.062Q8.375 15 9 15Zm-3 3h6v-.45q0-.425-.238-.788-.237-.362-.662-.562-.5-.225-1.012-.337Q9.575 15.75 9 15.75q-.575 0-1.087.113-.513.112-1.013.337-.425.2-.662.562Q6 17.125 6 17.55Z">
                                                 </svg>
                                                 <span class="text-sm whitespace-nowrap">LinkedIn profile</span>
-                                                <svg class="box-content ml-auto"
-                                                     style="padding-left: 0.75rem"
+                                                <svg class="box-content"
+                                                     style="padding-left: 0.1875rem;
+                                                            width: 1rem;
+                                                            height: 1rem;
+                                                            align-self: start"
                                                      xmlns="http://www.w3.org/2000/svg"
                                                      height="20"
                                                      width="20"
                                                      viewBox="0 0 20 20"
-                                                     fill="currentColor"
-                                                     style="width: 1.25rem;
-                                                            height: 1.25rem">
-                                                    <path d="M2.667 17.333V2.667h7.166v1.458H4.125v11.75h11.75v-5.708h1.458v7.166Zm5.416-4.375-1.041-1.041 7.812-7.792h-2.625V2.667h5.104v5.104h-1.458V5.146Z">
+                                                     fill="currentColor">
+                                                    <path d="M2.333 17.667V2.333h8.063v2.042H4.375v11.25h11.25v-6.02h2.042v8.062H2.333ZM8 13.437 6.563 12l7.625-7.625h-1.792V2.333h5.27v5.271h-2.041V5.812L8 13.437Z">
                                                 </svg>
                                             </a>
                                             <a href="https://github.com/stepanjakl"
@@ -515,16 +517,17 @@
                                                     <path d="M2 20V4h20v16Zm2-2h16V8H4Zm8-1v-2h6v2Zm-4.5 0-1.4-1.4L8.675 13l-2.6-2.6L7.5 9l4 4Z">
                                                 </svg>
                                                 <span class="text-sm whitespace-nowrap">GitHub profile</span>
-                                                <svg class="box-content ml-auto"
-                                                     style="padding-left: 0.75rem"
+                                                <svg class="box-content"
+                                                     style="padding-left: 0.1875rem;
+                                                            width: 1rem;
+                                                            height: 1rem;
+                                                            align-self: start"
                                                      xmlns="http://www.w3.org/2000/svg"
                                                      height="20"
                                                      width="20"
                                                      viewBox="0 0 20 20"
-                                                     fill="currentColor"
-                                                     style="width: 1.25rem;
-                                                            height: 1.25rem">
-                                                    <path d="M2.667 17.333V2.667h7.166v1.458H4.125v11.75h11.75v-5.708h1.458v7.166Zm5.416-4.375-1.041-1.041 7.812-7.792h-2.625V2.667h5.104v5.104h-1.458V5.146Z">
+                                                     fill="currentColor">
+                                                    <path d="M2.333 17.667V2.333h8.063v2.042H4.375v11.25h11.25v-6.02h2.042v8.062H2.333ZM8 13.437 6.563 12l7.625-7.625h-1.792V2.333h5.27v5.271h-2.041V5.812L8 13.437Z">
                                                 </svg>
                                             </a>
                                             <hr style="width: 100%;
@@ -532,8 +535,8 @@
                                                        margin: 0rem max(1px, 0.0625rem) 0rem max(1px, 0.0625rem);
                                                        border: 0;
                                                        background-color: rgba(0, 0, 0, 0.15);
-                                                       /* background-color: rgba(23, 28, 30, 0.375); */
-                                                       box-shadow: 0 min(-1px, -0.0625rem) 0 0 var(--context-border-inner);
+                                                       /* background-color: rgba(23, 28, 30, 0.375);
+                                                       */ box-shadow: 0 min(-1px, -0.0625rem) 0 0 var(--context-border-inner);
                                                        border-top: solid max(1px, 0.0625rem) var(--context-border-outer);
                                                        box-sizing: content-box;
                                                        transform: translateX(min(-1px, -0.0625rem));

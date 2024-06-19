@@ -824,7 +824,6 @@ svg.animate-face-icon path {
 
 #modal_button-close, #modal_button-close svg {
     transition: color var(--animate-out-segment-2\/3) linear, background-color var(--animate-out-segment-2\/3) linear, border var(--animate-out-segment-2\/3) linear;
-    transform: translate3d(0,0,0);
 }
 
 #modal_button-close:hover {
