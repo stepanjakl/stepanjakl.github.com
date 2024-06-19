@@ -625,7 +625,6 @@ svg.animate-face-icon path {
     opacity: 0;
     transform: translateY(-0.25rem);
     transition: opacity calc(1.25 * var(--animate-out-segment)) var(--ease-in-quad), transform calc(1.25 * var(--animate-out-segment)) var(--ease-in-quad), visibility 0s calc(1.25 * var(--animate-out-segment));
-    transform: translate3d(0,0,0);
 }
 
 @media (min-width: 45rem) and (min-aspect-ratio: 3/4) {
@@ -640,7 +639,6 @@ svg.animate-face-icon path {
     opacity: 1;
     transform: translate(0);
     transition: opacity calc(1.25 * var(--animate-in-segment)) var(--ease-out-quad), transform calc(1.25 * var(--animate-in-segment)) var(--ease-out-quad);
-    transform: translate3d(0,0,0);
 }
 
 #menu_dropdown a:first-child:before,
@@ -775,6 +773,7 @@ svg.animate-face-icon path {
 
 #profile:target~main #modal_profile,
 #archive:target~main #modal_archive {
+    pointer-events: auto;
     z-index: 2;
 }
 
@@ -828,7 +827,6 @@ svg.animate-face-icon path {
 
 #modal_button-close:hover {
     transition: color var(--animate-in-segment-2\/3) linear, background-color var(--animate-in-segment-2\/3) linear, border var(--animate-in-segment-2\/3) linear;
-    transform: translate3d(0,0,0);
     color: var(--modal-icon-hover);
     background-color: var(--highlight-secondary);
 }
