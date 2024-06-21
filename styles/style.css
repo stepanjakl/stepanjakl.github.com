@@ -877,17 +877,17 @@ main {
     }
 }
 
-#menu:target #menu_button_wrapper>a:first-of-type {
+/* #menu:target #menu_button_wrapper>a:first-of-type {
     z-index: -1;
-}
+} */
 
 #menu_button_wrapper>a:nth-of-type(2) {
     z-index: -1;
 }
 
-#menu:target #menu_button_wrapper>a:nth-of-type(2) {
+/* #menu:target #menu_button_wrapper>a:nth-of-type(2) {
     z-index: 2;
-}
+} */
 
 
 /* Intro - Right Column - Menu Dropdown */

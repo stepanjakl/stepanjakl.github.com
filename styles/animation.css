@@ -85,7 +85,7 @@ body {
         pointer-events: none;
     }
 
-    99.9% {
+    25% {
         pointer-events: none;
     }
 
@@ -427,6 +427,14 @@ svg.animate-face-icon path {
     transition: color var(--animate-out-segment-2\/3) linear, background-color var(--animate-out-segment-2\/3) linear;
     transform: translate3d(0,0,0);
     color: var(--icon);
+}
+
+#menu:target #menu_button {
+    z-index: 6;
+}
+
+#menu:target #menu_button-close {
+    z-index: 7;
 }
 
 #menu_button_wrapper:hover #menu_button, #menu:target #menu_button {
@@ -858,7 +866,7 @@ svg.animate-face-icon path {
 }
 
 #debug:not(:checked)~main #menu:target #underlay_menu {
-    z-index: 0;
+    z-index: 5;
     pointer-events: auto;
     opacity: 1;
     transition: opacity var(--animate-in-segment) linear;
