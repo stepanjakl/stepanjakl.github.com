@@ -255,13 +255,13 @@ body {
     --icon-bg: var(--cyan-quarter-45);
     --icon-fg: var(--cyan-quarter-85);
 
-    --context-border-inner: var(--cyan-quarter-15);
-    --context-border-outer: var(--cyan-quarter-30);
+    --context-border-inner: rgba(255, 255, 255, 0.15); /* var(--cyan-quarter-30); */
+    --context-border-outer: rgba(0, 0, 0, 0.15); /* var(--cyan-quarter-15); */
     /* 210, 25, 25 */
     --context-bg: rgba(51, 61, 63, 0.5);
 
-    --modal-border-inner: var(--cyan-quarter-10);
-    --modal-border-outer: var(--cyan-full-25);
+    --modal-border-inner: rgba(255, 255, 255, 0.15); /* var(--cyan-quarter-10); */
+    --modal-border-outer: rgba(0, 0, 0, 0.15); /* var(--cyan-full-25); */
     --modal-bg: var(--cyan-half-10);
     /* 210, 100, 25 */
     --modal-bg-blur: rgba(0, 66, 75, 0.65), rgba(0, 66, 75, 0.35);
@@ -841,7 +841,7 @@ main {
 }
 
 #menu_link_text_wrapper {
-    padding: 0rem 0.75rem 0rem 1rem;
+    padding: 0 0.75rem 0 1rem;
     margin-top: -0.078125rem;
     letter-spacing: 0.125rem;
 }
@@ -869,7 +869,7 @@ main {
     }
 
     #menu_link_text_wrapper {
-        padding: 0rem 0.75rem 0rem 0.5rem;
+        padding: 0 0.75rem 0 0.5rem;
     }
 
     #menu_button_wrapper {
@@ -994,7 +994,8 @@ body {
     text-align: left;
     flex-direction: row;
     align-items: center;
-    width: 100%;
+    width: auto;
+    margin: 0 max(1px, 0.0625rem);
     padding: 0.75rem 1.125rem 0.625rem 1rem;
     box-shadow: 0 min(-1px, -0.0625rem) 0 0 var(--context-border-inner);
     border-top: solid max(1px, 0.0625rem) var(--context-border-outer);
