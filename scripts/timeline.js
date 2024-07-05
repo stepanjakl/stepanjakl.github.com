@@ -19,29 +19,36 @@ class timeline extends HTMLElement {
             <style>
                 horizontal-timeline {
                     display: flex;
+                    transition: margin var(--animate-out-segment) var(--ease-in-quad) var(--animate-in-segment-2\\/3);
+                    margin: 0 8rem;
+
                     --var-name: 1;
                 }
 
+                horizontal-timeline:hover {
+                    transition: margin var(--animate-in-segment) var(--ease-out-quad);
+                    margin: 0 4rem;
+                }
+
                 #timeline_wrapper {
-                    transition: border-radius var(--animate-out-segment) var(--ease-in-quad), margin var(--animate-out-segment) var(--ease-in-quad), transform var(--animate-out-segment) var(--ease-in-quad);
+                    transition: border-radius var(--animate-out-segment) var(--ease-in-quad) var(--animate-in-segment-2\\/3), transform var(--animate-out-segment) var(--ease-in-quad) var(--animate-in-segment-2\\/3);
                     position: relative;
-                    margin: 0 8rem;
                     border-radius: 0.75rem;
                     background-color: rgba(255, 255, 255, 0.15);
                     backdrop-filter: blur(0.375rem);
                     -webkit-backdrop-filter: blur(0.375rem);
                     overflow: clip;
+                    width: 100%;
                 }
 
-                #timeline_wrapper:hover {
-                    transition: border-radius var(--animate-in-segment) var(--ease-out-quad), margin var(--animate-in-segment) var(--ease-out-quad), transform var(--animate-in-segment) var(--ease-out-quad);
+                horizontal-timeline:hover #timeline_wrapper {
+                    transition: border-radius var(--animate-in-segment) var(--ease-out-quad), transform var(--animate-in-segment) var(--ease-out-quad);
                     border-radius: 1.125rem;
-                    margin: 0 4rem;
                     transform: translateY(calc(1.125rem / 4))
                 }
 
                 #timeline_content {
-                    transition: padding var(--animate-out-segment) var(--ease-in-quad);
+                    transition: padding var(--animate-out-segment) var(--ease-in-quad) var(--animate-in-segment-2\\/3);
                     overflow-x: scroll;
                     overflow-y: hidden;
                     scroll-behavior: smooth;
@@ -57,40 +64,64 @@ class timeline extends HTMLElement {
                     display: none;
                 }
 
-                #timeline_wrapper:hover #timeline_content {
+                horizontal-timeline:hover #timeline_content {
                     transition: padding var(--animate-in-segment) var(--ease-out-quad);
                     padding: calc(0.5rem + 0.375rem) calc(1.5rem + 4rem) calc(0.25rem + 0.375rem) calc(1.5rem + 4rem);
                 }
 
                 #timeline_content > div {
-                    transition: row-gap var(--animate-out-segment) var(--ease-in-quad);
+                    transition: row-gap var(--animate-out-segment) var(--ease-in-quad) var(--animate-in-segment-2\\/3);
                     row-gap: 0.5rem;
                 }
 
-                #timeline_wrapper:hover #timeline_content > div {
+                horizontal-timeline:hover #timeline_content > div {
                     transition: row-gap var(--animate-in-segment) var(--ease-out-quad);
                     row-gap: calc(0.5rem + 0.375rem);
                 }
 
                 #timeline {
                     height: 1.125rem;
-                    column-gap: 1rem;
                 }
 
-                #timeline span {
+                #timeline div {
+                    display: flex;
+                    align-items: end;
+                    padding: 0 0.5rem;
+                }
+
+                #timeline div[data-value] {
+                    cursor: pointer;
+                }
+
+                #timeline div span {
                     transition: background var(--animate-out-segment-2\\/3) linear, height var(--animate-out-segment-2\\/3) var(--ease-in-quad);
                     background-color: rgba(255, 255, 255, 0.45);
-                    width: 0.09375rem;
-                    height: calc((6/18)*100%);
-                    border-radius: 0.03125rem;
+                    width: max(1.5px, 0.09375rem);
+                    height: calc((6/18) * 100%);
+                    border-radius: max(0.5px, 0.09375rem);
                 }
 
-                #timeline span:nth-child(6n + 4) {
-                    height: calc((12/18)*100%);
+                #timeline div:hover span {
+                    transition: background var(--animate-in-segment-2\\/3) linear, height var(--animate-in-segment-2\\/3) var(--ease-out-quad);
+                    height: 100% !important;
+                }
+
+                #timeline div:has(+ div:hover) span,
+                #timeline div:hover + div span {
+                    height: calc((14/18) * 100%) !important;
+                }
+
+                #timeline div:has(+ div + div:hover) span,
+                #timeline div:hover + div + div span {
+                    height: calc((10/18) * 100%) !important;
+                }
+
+                #timeline div:nth-child(6n + 4) span {
+                    height: calc((12/18) * 100%);
                 }
 
                 #timeline span:nth-child(6n + 3), #timeline span:nth-child(6n + 5) {
-                    height: calc((8/18)*100%);
+                    height: calc((8/18) * 100%);
                 }
 
                 #timeline span:nth-child(2), #timeline span:nth-last-child(2) {
@@ -101,43 +132,43 @@ class timeline extends HTMLElement {
                     background-color: rgba(255, 255, 255, 0.25);
                 }
 
-                #timeline span.active,
-                #timeline span.active + span,
-                #timeline span.active + span + span,
-                #timeline span.active + span + span + span,
-                #timeline span.active + span + span + span + span,
-                #timeline span.active + span + span + span + span + span {
+                /* #timeline div.active,
+                #timeline div.active + div span,
+                #timeline div.active + div + div span,
+                #timeline div.active + div + div + div span,
+                #timeline div.active + div + div + div + div span,
+                #timeline div.active + div + div + div + div + div span {
                     transition: background var(--animate-in-segment-2\\/3) linear, height var(--animate-in-segment-2\\/3) var(--ease-out-quad);
-                }
+                } */
 
-                #timeline span.active {
+                #timeline div.active span {
                     background-color: rgba(255, 255, 255, 0.75);
                     height: 100%;
                 }
 
-                #timeline span.active + span {
+                #timeline div.active + div span {
                     transition: background var(--animate-in-segment-2\\/3) linear calc(var(--delay-segment-1\\/3)), height var(--animate-in-segment-2\\/3) var(--ease-out-quad) calc(var(--delay-segment-1\\/3));
                     background-color: rgba(255, 255, 255, 0.7);
-                    height: calc((14/18)*100%);
+                    height: calc((14/18) * 100%);
                 }
 
-                #timeline span.active + span + span {
+                #timeline div.active + div + div span {
                     transition: background var(--animate-in-segment-2\\/3) linear calc(2 * var(--delay-segment-1\\/3)), height var(--animate-in-segment-2\\/3) var(--ease-out-quad) calc(2 * var(--delay-segment-1\\/3));
                     background-color: rgba(255, 255, 255, 0.65);
-                    height: calc((10/18)*100%);
+                    height: calc((10/18) * 100%);
                 }
 
-                #timeline span.active + span + span + span {
+                #timeline div.active + div + div + div span {
                     transition: background var(--animate-in-segment-2\\/3) linear calc(3 * var(--delay-segment-1\\/3));
                     background-color: rgba(255, 255, 255, 0.6);
                 }
 
-                #timeline span.active + span + span + span + span {
+                #timeline div.active + div + div + div + div span {
                     transition: background var(--animate-in-segment-2\\/3) linear calc(4 * var(--delay-segment-1\\/3));
                     background-color: rgba(255, 255, 255, 0.55);
                 }
 
-                #timeline span.active + span + span + span + span + span {
+                #timeline div.active + div + div + div + div + div span {
                     transition: background var(--animate-in-segment-2\\/3) linear calc(5 * var(--delay-segment-1\\/3));
                     background-color: rgba(255, 255, 255, 0.5);
                 }
@@ -146,6 +177,7 @@ class timeline extends HTMLElement {
                     display: grid;
                     grid-auto-flow: column;
                     grid-auto-columns: 1fr;
+                    padding: 0 0.5rem;
                 }
 
                 #timeline_labels button {
@@ -200,31 +232,36 @@ class timeline extends HTMLElement {
                     inset: 0;
                 }
 
+                #timeline_labels button.highlight::before,
                 #timeline_labels button:hover::before, #timeline_labels button:focus::before {
                     transition: opacity var(--animate-in-segment-2\\/3) linear, inset var(--animate-in-segment-2\\/3) var(--ease-out-quad);
                     opacity: 1;
                     inset: 0;
                 }
-
-                #timeline_labels button::after {
-                    content: '';
-                    position: absolute;
-                    inset: -1.875rem -0.3125rem -0.3125rem -0.3125rem;
-                }
             </style>
+
+            <noscript>
+                <style>
+                    #timeline_labels button::after {
+                        content: '';
+                        position: absolute;
+                        inset: -1.875rem -0.3125rem -0.3125rem -0.3125rem;
+                    }
+                </style>
+            </noscript>
 
             <div id="timeline_wrapper">
                 <div id="timeline_content">
                     <div class="inline-flex flex-col">
-                        <div id="timeline" class="flex align-items-end">
+                        <div id="timeline" class="flex">
                             ${this.labels.map((label, index) => `
-                                ${index === 0 ? `<span></span>` : ''}
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
+                                ${index === 0 ? `<div><span></span></div>` : ''}
+                                <div><span></span></div>
+                                <div data-value="${label}"><span></span></div>
+                                <div data-value="${label}"><span></span></div>
+                                <div data-value="${label}"><span></span></div>
+                                <div data-value="${label}"><span></span></div>
+                                <div data-value="${label}"><span></span></div>
                             `).join('')}
                         </div>
                         <div id="timeline_labels">
@@ -262,7 +299,7 @@ class timeline extends HTMLElement {
             entries.forEach((entry) => {
                 const targetSection = entry.target.getAttribute('data-timeline-section')
                 const targetLabelEl = document.querySelector(`[data-label-for="${targetSection}"]`)
-                const timelineEls = Array.from(document.querySelectorAll('#timeline span'))
+                const timelineEls = Array.from(document.querySelectorAll('#timeline div'))
 
                 if (entry.isIntersecting) {
                     targetLabelEl.focus()
@@ -297,6 +334,28 @@ class timeline extends HTMLElement {
 
         initializeTimeline()
 
+        const highlightLabelEls = (() => {
+            const timelineEls = document.querySelectorAll('[data-value]')
+
+            timelineEls.forEach(timelineEl => {
+                const value = timelineEl.getAttribute('data-value')
+                const labelEl = document.querySelector(`[data-label-for="${value}"]`)
+
+                if (labelEl) {
+                    timelineEl.addEventListener('mouseenter', () => {
+                        labelEl.classList.add('highlight')
+                    })
+
+                    timelineEl.addEventListener('mouseleave', () => {
+                        labelEl.classList.remove('highlight')
+                    })
+
+                    timelineEl.addEventListener('click', () => {
+                        labelEl.click()
+                    })
+                }
+            })
+        })()
     }
 }
 

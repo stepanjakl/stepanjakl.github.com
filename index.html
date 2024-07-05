@@ -149,7 +149,6 @@
                     scrollPositionY = window.scrollY || window.pageYOffset
                     totalHeight = document.documentElement.scrollHeight
                     totalWidth = document.documentElement.scrollWidth
-                    console.log(scrollPositionX, scrollPositionY, window.innerHeight, totalHeight, scrollPositionX + window.innerHeight >= totalHeight);
                     if (deltaY > deltaX && deltaY > 5) {
                         verticalScrollDirection = event.deltaY > 0 ? 'down' : 'up'
                         if (verticalScrollDirection === 'down' && scrollPositionY + window.innerHeight >= totalHeight) {
@@ -535,9 +534,8 @@
                                                        margin: 0 max(1px, 0.0625rem);
                                                        border: 0;
                                                        background-color: rgba(0, 0, 0, 0.15);
-                                                       /* background-color: rgba(23, 28, 30, 0.375);
-                                                       */ box-shadow: 0 min(-1px, -0.0625rem) 0 0 var(--context-border-inner);
-                                                       border-top: solid max(1px, 0.0625rem) var(--context-border-outer);
+                                                       box-shadow: 0 min(-1px, -0.0625rem) 0 0 var(--context-border-light);
+                                                       /* border-top: solid max(1px, 0.0625rem) var(--context-border-dark); */
                                                        box-sizing: content-box;
                                                        /* transform: translateX(min(-1px, -0.0625rem)); */
                                                        overflow: visible">
@@ -653,7 +651,7 @@
                                                     style="padding-left: 0.1em;
                                                     margin-top: -0.65em;
                                                     width: 0.85rem;
-                                                    height: 0.85rem;"
+                                                    height: 0.85rem"
                                                     xmlns="http://www.w3.org/2000/svg"
                                                     height="20"
                                                     width="20"
@@ -976,7 +974,7 @@
                                         <path d="M6 15.708 4.333 14l3.979-4-3.979-4.021L6 4.271l4 4.021 4-4.021 1.667 1.708L11.688 10l3.979 4L14 15.708l-4-4.02Z">
                                     </svg>
                                 </a>
-                                <div style="position: relative; height: 100%">
+                                <div style="position: relative; height: 100%; padding-bottom: 3rem">
                                     <!-- overflow-y: scroll; -->
                                     <div style="height: 200vh;
                                                 padding-top: 3rem;
@@ -1085,11 +1083,11 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="sticky" style="bottom: calc(-1 * var(--segment))">
+                                    <div class="sticky" style="bottom: calc(-1 * var(--segment-third)) /* padding-bottom: var(--segment-half) */">
                                         <div class="absolute"
                                              style="bottom: 0;
-                                                    margin-left: calc(3rem + 3rem + 15rem );
-                                                    width: 50rem;
+                                                    left: calc(3rem + 3rem + 15rem );
+                                                    right: calc(3rem + 3rem);
                                                     /* outline: max(1px, 0.0625rem) solid red */">
                                             <horizontal-timeline labels="[2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014]"></horizontal-timeline>
                                             <!-- <div style="margin: 0 4rem; border: white max(1px, 0.0625rem) solid; border-radius: 999rem">
