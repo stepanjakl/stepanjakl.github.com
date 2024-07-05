@@ -255,7 +255,7 @@ body {
     --icon-bg: var(--cyan-quarter-45);
     --icon-fg: var(--cyan-quarter-85);
 
-    --context-border-inner: rgba(255, 255, 255, 0.15); /* var(--cyan-quarter-30); */
+    --context-border-inner: rgba(255, 255, 255, 0.1); /* var(--cyan-quarter-30); */
     --context-border-outer: rgba(0, 0, 0, 0.15); /* var(--cyan-quarter-15); */
     /* 210, 25, 25 */
     --context-bg: rgba(51, 61, 63, 0.5);
@@ -1449,7 +1449,7 @@ body {
     left: 50%;
     transform: translateX(-50%);
     padding: 0.625rem 0.75rem;
-    border-radius: 0.1875rem;
+    border-radius: 0.25rem;
     background: var(--context-bg);
     color: var(--text-2);
     text-align: center;
