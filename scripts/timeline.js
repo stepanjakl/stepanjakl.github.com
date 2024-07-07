@@ -44,14 +44,14 @@ class timeline extends HTMLElement {
                 horizontal-timeline:hover #timeline_wrapper {
                     transition: border-radius var(--animate-in-segment) var(--ease-out-quad), transform var(--animate-in-segment) var(--ease-out-quad);
                     border-radius: 1.125rem;
-                    transform: translateY(calc(1.125rem / 4))
+                    transform: translateY(calc((0.375rem + 0.375rem + 0.375rem) / 2)); // derived from #timeline_content padding values
                 }
 
                 #timeline_content {
                     transition: padding var(--animate-out-segment) var(--ease-in-quad) var(--animate-in-segment-2\\/3);
                     overflow-x: scroll;
                     overflow-y: hidden;
-                    scroll-behavior: smooth;
+                    scroll-behavior: auto;
                     white-space: nowrap;
                     scrollbar-width: none;
                     -webkit-overflow-scrolling: touch;
@@ -101,18 +101,23 @@ class timeline extends HTMLElement {
                     border-radius: max(0.5px, 0.09375rem);
                 }
 
-                #timeline div:hover span {
-                    transition: background var(--animate-in-segment-2\\/3) linear, height var(--animate-in-segment-2\\/3) var(--ease-out-quad);
+                #timeline div:hover span,
+                #timeline div.highlight span {
+                    transition: background var(--animate-in-segment-2\\/3) linear, height var(--animate-in-segment-2\\/3) var(--ease-out-quad) !important;
                     height: 100% !important;
                 }
 
                 #timeline div:has(+ div:hover) span,
-                #timeline div:hover + div span {
+                #timeline div:hover + div span,
+                #timeline div:has(+ div.highlight) span,
+                #timeline div.highlight + div span {
                     height: calc((14/18) * 100%) !important;
                 }
 
                 #timeline div:has(+ div + div:hover) span,
-                #timeline div:hover + div + div span {
+                #timeline div:hover + div + div span,
+                #timeline div:has(+ div + div.highlight) span,
+                #timeline div.highlight + div + div span {
                     height: calc((10/18) * 100%) !important;
                 }
 
@@ -120,15 +125,15 @@ class timeline extends HTMLElement {
                     height: calc((12/18) * 100%);
                 }
 
-                #timeline span:nth-child(6n + 3), #timeline span:nth-child(6n + 5) {
+                #timeline div:nth-child(6n + 3) span, #timeline div:nth-child(6n + 5) span {
                     height: calc((8/18) * 100%);
                 }
 
-                #timeline span:nth-child(2), #timeline span:nth-last-child(2) {
+                #timeline div:nth-child(2) span, #timeline div:nth-last-child(2) span {
                     background-color: rgba(255, 255, 255, 0.35);
                 }
 
-                #timeline span:first-child, #timeline span:last-child {
+                #timeline div:first-child span, #timeline div:last-child span {
                     background-color: rgba(255, 255, 255, 0.25);
                 }
 
@@ -147,29 +152,29 @@ class timeline extends HTMLElement {
                 }
 
                 #timeline div.active + div span {
-                    transition: background var(--animate-in-segment-2\\/3) linear calc(var(--delay-segment-1\\/3)), height var(--animate-in-segment-2\\/3) var(--ease-out-quad) calc(var(--delay-segment-1\\/3));
+                    transition: background var(--animate-in-segment-2\\/3) linear calc(var(--delay-segment-1\\/3)), height var(--animate-in-segment-2\\/3) var(--ease-out-quad));
                     background-color: rgba(255, 255, 255, 0.7);
                     height: calc((14/18) * 100%);
                 }
 
                 #timeline div.active + div + div span {
-                    transition: background var(--animate-in-segment-2\\/3) linear calc(2 * var(--delay-segment-1\\/3)), height var(--animate-in-segment-2\\/3) var(--ease-out-quad) calc(2 * var(--delay-segment-1\\/3));
+                    transition: background var(--animate-in-segment-2\\/3) linear calc(2 * var(--delay-segment-1\\/3)), height var(--animate-in-segment-2\\/3) var(--ease-out-quad);
                     background-color: rgba(255, 255, 255, 0.65);
                     height: calc((10/18) * 100%);
                 }
 
                 #timeline div.active + div + div + div span {
-                    transition: background var(--animate-in-segment-2\\/3) linear calc(3 * var(--delay-segment-1\\/3));
+                    transition: background var(--animate-in-segment-2\\/3) linear calc(3 * var(--delay-segment-1\\/3)), height var(--animate-in-segment-2\\/3) var(--ease-out-quad);
                     background-color: rgba(255, 255, 255, 0.6);
                 }
 
                 #timeline div.active + div + div + div + div span {
-                    transition: background var(--animate-in-segment-2\\/3) linear calc(4 * var(--delay-segment-1\\/3));
+                    transition: background var(--animate-in-segment-2\\/3) linear calc(4 * var(--delay-segment-1\\/3)), height var(--animate-in-segment-2\\/3) var(--ease-out-quad);
                     background-color: rgba(255, 255, 255, 0.55);
                 }
 
                 #timeline div.active + div + div + div + div + div span {
-                    transition: background var(--animate-in-segment-2\\/3) linear calc(5 * var(--delay-segment-1\\/3));
+                    transition: background var(--animate-in-segment-2\\/3) linear calc(5 * var(--delay-segment-1\\/3)), height var(--animate-in-segment-2\\/3) var(--ease-out-quad);
                     background-color: rgba(255, 255, 255, 0.5);
                 }
 
@@ -272,12 +277,34 @@ class timeline extends HTMLElement {
             </div>
         `
 
+        let firstLoad = true
 
         const scrollParentToChildCenterHorizontal = (parent, child) => {
-            var parentRect = parent.getBoundingClientRect()
-            var childRect = child.getBoundingClientRect()
-            var scrollAmount = childRect.left - parentRect.left - (parentRect.width - childRect.width) / 2
-            parent.scrollLeft += scrollAmount
+            return new Promise((resolve) => {
+                var parentRect = parent.getBoundingClientRect()
+                var childRect = child.getBoundingClientRect()
+                var scrollAmount = childRect.left - parentRect.left - (parentRect.width - childRect.width) / 2
+                var initialScrollLeft = parent.scrollLeft
+
+                const isScrollEndSupported = 'onscrollend' in window
+
+                if (isScrollEndSupported) {
+                    const handleScrollEnd = (event) => {
+                        parent.removeEventListener('scrollend', handleScrollEnd)
+                        resolve()
+                    }
+                    parent.addEventListener('scrollend', handleScrollEnd)
+                }
+
+                parent.scroll({
+                    left: initialScrollLeft + scrollAmount,
+                    behavior: 'smooth'
+                })
+
+                if (!isScrollEndSupported) {
+                    resolve()
+                }
+            })
         }
 
         const scrollParentToChildVertical = (parent, child) => {
@@ -296,14 +323,20 @@ class timeline extends HTMLElement {
         }
 
         const handleIntersection = (timelineContentEl, labelEls) => (entries) => {
-            entries.forEach((entry) => {
+            entries.forEach(async (entry) => {
                 const targetSection = entry.target.getAttribute('data-timeline-section')
                 const targetLabelEl = document.querySelector(`[data-label-for="${targetSection}"]`)
                 const timelineEls = Array.from(document.querySelectorAll('#timeline div'))
 
                 if (entry.isIntersecting) {
                     targetLabelEl.focus()
-                    scrollParentToChildCenterHorizontal(timelineContentEl, targetLabelEl)
+
+                    if(!firstLoad) {
+                        await scrollParentToChildCenterHorizontal(timelineContentEl, targetLabelEl)
+                    }
+                    else {
+                        firstLoad = false
+                    }
 
                     labelEls.forEach((labelEl) => labelEl.classList.remove('active'))
                     targetLabelEl.classList.add('active')
@@ -317,7 +350,7 @@ class timeline extends HTMLElement {
 
         const setupIntersectionObserver = (timelineContentEl, labelEls) => {
             const intersectionObserver = new IntersectionObserver(handleIntersection(timelineContentEl, labelEls), { threshold: 0.75 })
-            document.querySelectorAll('[data-timeline-section]').forEach((element) => intersectionObserver.observe(element))
+            document.querySelectorAll('[data-timeline-section]').forEach(async (element) => await intersectionObserver.observe(element))
         }
 
         const initializeTimeline = () => {
@@ -334,12 +367,122 @@ class timeline extends HTMLElement {
 
         initializeTimeline()
 
+
+        /* function handleMouseMove(event) {
+            const rect = timelineContent.getBoundingClientRect();
+            const edgeWidth = 3 * parseFloat(getComputedStyle(document.documentElement).fontSize)
+
+            if (event.clientX < rect.left + edgeWidth) {
+                startScroll('left', calculateSpeed(event.clientX - rect.left, edgeWidth))
+            } else if (event.clientX > rect.right - edgeWidth) {
+                startScroll('right', calculateSpeed(rect.right - event.clientX, edgeWidth))
+            } else {
+                stopScroll()
+            }
+        }
+
+        function startScroll(direction, speed) {
+            if (scrollInterval) clearInterval(scrollInterval)
+            scrollInterval = setInterval(() => {
+                timelineContent.scrollBy({
+                    left: direction === 'left' ? -speed : speed,
+                    behavior: 'smooth'
+                })
+            }, 50)
+        }
+
+        function stopScroll() {
+            if (scrollInterval) clearInterval(scrollInterval)
+        }
+
+        function calculateSpeed(distance, edgeWidth) {
+            const maxSpeed = 20
+            return Math.min(maxSpeed, (maxSpeed * (edgeWidth - distance)) / edgeWidth)
+        }
+
+        const timelineContent = document.getElementById('timeline_content')
+        let scrollInterval
+
+        timelineContent.addEventListener('mousemove', handleMouseMove)
+        timelineContent.addEventListener('mouseleave', stopScroll) */
+
+
+        const timelineContent = document.getElementById('timeline_content')
+        let lastTimestamp = null
+        let scrollSpeed = 0
+        const maxSpeed = 0.5
+        let isScrolling = false
+
+        timelineContent.addEventListener('mousemove', handleMouseMove)
+        timelineContent.addEventListener('mouseleave', stopScroll)
+
+        function handleMouseMove(event) {
+            const rect = timelineContent.getBoundingClientRect()
+            const edgeWidth = 3 * parseFloat(getComputedStyle(document.documentElement).fontSize)
+
+            if (event.clientX < rect.left + edgeWidth) {
+                scrollSpeed = calculateSpeed(event.clientX - rect.left, edgeWidth, 'left')
+                startScroll()
+            } else if (event.clientX > rect.right - edgeWidth) {
+                scrollSpeed = calculateSpeed(rect.right - event.clientX, edgeWidth, 'right')
+                startScroll()
+            } else {
+                stopScroll()
+            }
+        }
+
+        function startScroll() {
+            if (!isScrolling) {
+                isScrolling = true
+                requestAnimationFrame(scrollStep)
+            }
+        }
+
+        function scrollStep(timestamp) {
+            if (lastTimestamp === null) {
+                lastTimestamp = timestamp
+            }
+            const elapsed = timestamp - lastTimestamp
+            lastTimestamp = timestamp
+
+            const maxScrollLeft = timelineContent.scrollWidth - timelineContent.clientWidth
+            const minScrollLeft = 0
+
+            timelineContent.scrollLeft += scrollSpeed * elapsed
+
+            if (scrollSpeed > 0 && timelineContent.scrollLeft >= maxScrollLeft) {
+                timelineContent.scrollLeft = maxScrollLeft
+                stopScroll()
+            } else if (scrollSpeed < 0 && timelineContent.scrollLeft <= minScrollLeft) {
+                timelineContent.scrollLeft = minScrollLeft
+                stopScroll()
+            }
+
+            if (scrollSpeed !== 0) {
+                requestAnimationFrame(scrollStep)
+            } else {
+                isScrolling = false
+                lastTimestamp = null
+            }
+        }
+
+
+        function stopScroll() {
+            scrollSpeed = 0
+        }
+
+        function calculateSpeed(distance, edgeWidth, direction) {
+            const speed = (maxSpeed * (edgeWidth - distance)) / edgeWidth
+            return direction === 'left' ? -speed : speed
+        }
+
+
         const highlightLabelEls = (() => {
-            const timelineEls = document.querySelectorAll('[data-value]')
+            const timelineEls = document.querySelectorAll('#timeline [data-value]')
 
             timelineEls.forEach(timelineEl => {
                 const value = timelineEl.getAttribute('data-value')
-                const labelEl = document.querySelector(`[data-label-for="${value}"]`)
+                const labelEl = document.querySelector(`#timeline_labels [data-label-for="${value}"]`)
 
                 if (labelEl) {
                     timelineEl.addEventListener('mouseenter', () => {
@@ -352,6 +495,25 @@ class timeline extends HTMLElement {
 
                     timelineEl.addEventListener('click', () => {
                         labelEl.click()
+                    })
+                }
+            })
+        })()
+
+        const highlightTimelineEls = (() => {
+            const labelEls = document.querySelectorAll('#timeline_labels button')
+
+            labelEls.forEach(labelEl => {
+                const value = labelEl.getAttribute('data-label-for')
+                const timelineEl = document.querySelector(`#timeline div:nth-child(6n + 4)[data-value="${value}"]`)
+
+                if (labelEl) {
+                    labelEl.addEventListener('mouseenter', () => {
+                        timelineEl.classList.add('highlight')
+                    })
+
+                    labelEl.addEventListener('mouseleave', () => {
+                        timelineEl.classList.remove('highlight')
                     })
                 }
             })
