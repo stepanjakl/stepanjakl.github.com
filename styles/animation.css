@@ -375,13 +375,13 @@ svg.animate-face-icon path {
     transform: translate3d(0,0,0);
 }
 
-#menu_links>a:hover {
+#menu_links>a:hover, #menu_links>a.active {
     transition: background-color var(--animate-in-segment-2\/3) linear;
     transform: translate3d(0,0,0);
     background-color: var(--highlight-secondary);
 }
 
-#menu_links>a[href="#profile"]:hover {
+#menu_links>a[href="#profile"]:hover, #menu_links>a[href="#profile"].active {
     background-color: var(--highlight-primary);
 }
 
@@ -437,7 +437,7 @@ svg.animate-face-icon path {
     z-index: 7;
 }
 
-#menu_button_wrapper:hover #menu_button, #menu:target #menu_button {
+#menu_button_wrapper:hover #menu_button, #menu_button_wrapper.active #menu_button, #menu:target #menu_button {
     transition: color var(--animate-in-segment-2\/3) linear,  background-color var(--animate-in-segment-2\/3) linear;
     transform: translate3d(0,0,0);
     color: var(--icon-hover);
@@ -666,7 +666,7 @@ svg.animate-face-icon path {
 #menu_dropdown label::before {
     transition: opacity var(--animate-out-segment) linear, inset var(--animate-out-segment) var(--ease-in-quad);
     transform: translate3d(0,0,0);
-    content: '';
+    content: "";
     opacity: 0;
     position: absolute;
     inset: min(-1px, -0.0625rem) min(-1px, -0.0625rem) 0 min(-1px, -0.0625rem);
@@ -675,7 +675,7 @@ svg.animate-face-icon path {
 
     /* transition: opacity var(--animate-out-segment-2\/3) linear, inset var(--animate-out-segment-2\/3) var(--ease-in-quad);
     transform: translate3d(0,0,0);
-    content: '';
+    content: "";
     opacity: 0;
     position: absolute;
     inset: 0.5625rem 0.625rem 0.625rem 0.625rem;
@@ -688,7 +688,7 @@ svg.animate-face-icon path {
 #menu_dropdown label::after {
     transition: opacity var(--animate-out-segment) linear, inset var(--animate-out-segment) var(--ease-in-quad);
     transform: translate3d(0,0,0);
-    content: '';
+    content: "";
     opacity: 0;
     position: absolute;
     inset: min(-1px, -0.0625rem) min(-1px, -0.0625rem) 0 min(-1px, -0.0625rem);

@@ -34,7 +34,7 @@ class timeline extends HTMLElement {
                     transition: border-radius var(--animate-out-segment) var(--ease-in-quad) var(--animate-in-segment-2\\/3), transform var(--animate-out-segment) var(--ease-in-quad) var(--animate-in-segment-2\\/3);
                     position: relative;
                     border-radius: 0.75rem;
-                    background-color: rgba(255, 255, 255, 0.15);
+                    background-color: rgba(0, 91, 102, 0.75); /* 210, 100, 35 */
                     backdrop-filter: blur(0.375rem);
                     -webkit-backdrop-filter: blur(0.375rem);
                     overflow: clip;
@@ -223,7 +223,7 @@ class timeline extends HTMLElement {
 
                 #timeline_labels button::before {
                     transition: opacity var(--animate-out-segment-2\\/3) linear, inset var(--animate-out-segment-2\\/3) var(--ease-in-quad);
-                    content: '';
+                    content: "";
                     position: absolute;
                     inset: 0.09375rem 0.1875rem;
                     opacity: 0;
@@ -248,7 +248,7 @@ class timeline extends HTMLElement {
             <noscript>
                 <style>
                     #timeline_labels button::after {
-                        content: '';
+                        content: "";
                         position: absolute;
                         inset: -1.875rem -0.3125rem -0.3125rem -0.3125rem;
                     }
@@ -329,7 +329,7 @@ class timeline extends HTMLElement {
                 const timelineEls = Array.from(document.querySelectorAll('#timeline div'))
 
                 if (entry.isIntersecting) {
-                    targetLabelEl.focus()
+                    targetLabelEl.focus({ preventScroll: true })
 
                     if(!firstLoad) {
                         await scrollParentToChildCenterHorizontal(timelineContentEl, targetLabelEl)
@@ -366,55 +366,6 @@ class timeline extends HTMLElement {
         }
 
         initializeTimeline()
-
-
-        /* function handleMouseMove(event) {
-            const rect = timelineContent.getBoundingClientRect();
-            const edgeWidth = 3 * parseFloat(getComputedStyle(document.documentElement).fontSize)
-
-            if (event.clientX < rect.left + edgeWidth) {
-                startScroll('left', calculateSpeed(event.clientX - rect.left, edgeWidth))
-            } else if (event.clientX > rect.right - edgeWidth) {
-                startScroll('right', calculateSpeed(rect.right - event.clientX, edgeWidth))
-            } else {
-                stopScroll()
-            }
-        }
-
-        function startScroll(direction, speed) {
-            if (scrollInterval) clearInterval(scrollInterval)
-            scrollInterval = setInterval(() => {
-                timelineContent.scrollBy({
-                    left: direction === 'left' ? -speed : speed,
-                    behavior: 'smooth'
-                })
-            }, 50)
-        }
-
-        function stopScroll() {
-            if (scrollInterval) clearInterval(scrollInterval)
-        }
-
-        function calculateSpeed(distance, edgeWidth) {
-            const maxSpeed = 20
-            return Math.min(maxSpeed, (maxSpeed * (edgeWidth - distance)) / edgeWidth)
-        }
-
-        const timelineContent = document.getElementById('timeline_content')
-        let scrollInterval
-
-        timelineContent.addEventListener('mousemove', handleMouseMove)
-        timelineContent.addEventListener('mouseleave', stopScroll) */
-
-
-        const timelineContent = document.getElementById('timeline_content')
-        let lastTimestamp = null
-        let scrollSpeed = 0
-        const maxSpeed = 0.5
-        let isScrolling = false
-
-        timelineContent.addEventListener('mousemove', handleMouseMove)
-        timelineContent.addEventListener('mouseleave', stopScroll)
 
         function handleMouseMove(event) {
             const rect = timelineContent.getBoundingClientRect()
@@ -475,6 +426,15 @@ class timeline extends HTMLElement {
             const speed = (maxSpeed * (edgeWidth - distance)) / edgeWidth
             return direction === 'left' ? -speed : speed
         }
+
+        const timelineContent = document.getElementById('timeline_content')
+        let lastTimestamp = null
+        let scrollSpeed = 0
+        const maxSpeed = 0.5
+        let isScrolling = false
+
+        timelineContent.addEventListener('mousemove', handleMouseMove)
+        timelineContent.addEventListener('mouseleave', stopScroll)
 
 
         const highlightLabelEls = (() => {

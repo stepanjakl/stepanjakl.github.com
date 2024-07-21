@@ -816,7 +816,7 @@ main {
 }
 
 #menu::before {
-    content: '';
+    content: "";
     position: absolute;
     inset: 0;
     z-index: -1;
@@ -877,16 +877,17 @@ main {
     }
 }
 
-/* #menu:target #menu_button_wrapper>a:first-of-type {
-    z-index: -1;
-} */
-
 #menu_button_wrapper>a:nth-of-type(2) {
     z-index: -1;
 }
 
-/* #menu:target #menu_button_wrapper>a:nth-of-type(2) {
-    z-index: 2;
+/* #shortcut-profile::before, #shortcut-archive::before {
+    content: '';
+    position: absolute;
+    inset: -0.5px -0.5px -1.5px -2px;
+    background-color: var(--highlight-primary);
+    border-radius: 0.25rem;
+    z-index: -1;
 } */
 
 
@@ -953,7 +954,7 @@ body {
 }
 
 #menu_button span {
-    content: '';
+    content: "";
     display: inline-flex;
     width: var(--menu-icon-bit-size);
     height: var(--menu-icon-bit-size);
@@ -1069,7 +1070,7 @@ body {
 }
 
 .modal .modal_content::before {
-    content: '';
+    content: "";
     position: absolute;
     inset: max(1px, 0.0625rem);
     background: linear-gradient(to top right, var(--modal-bg-blur));
@@ -1230,7 +1231,7 @@ body {
     font-weight: 600;
     letter-spacing: 0.125rem;
     font-size: 0.80356875rem;
-    line-height: 0.5625rem;
+    line-height: 0.875rem;
 }
 
 #modal_profile .information dl dd #live-timezone-time::before {
@@ -1320,6 +1321,80 @@ body {
 }
 
 
+/* Modal - Archive */
+
+#modal_archive [data-carousel] {
+    --slide-offset: 2.5rem;
+}
+
+/* #modal_archive [data-carousel]::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 1;
+    width: var(--slide-offset);
+    -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1));
+    -webkit-backdrop-filter: blur(0.75rem);
+    pointer-events: none;
+} */
+
+#modal_archive [data-carousel-slides] {
+    position: relative;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    column-gap: var(--slide-offset);
+    /* mask-image: linear-gradient(90deg, rgba(0, 0, 0, 1) calc(100% - calc(var(--slide-offset) * 2)), rgba(0, 0, 0, 0) 100%); */
+}
+
+#modal_archive [data-carousel-slides]::-webkit-scrollbar {
+    display: none;
+}
+
+#modal_archive [data-carousel-slides] figure {
+    display: block;
+    width: 100%;
+    justify-content: center;
+    flex: 1 0 calc(50% - calc(var(--slide-offset) * 2));
+    scroll-snap-align: start;
+}
+
+/* #modal_archive [data-carousel-slides] figure:last-child {
+    margin-right: var(--slide-offset);
+} */
+
+#modal_archive [data-carousel-slides] figure a {
+    display: block;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border-radius: 0.5rem;
+}
+
+#modal_archive [data-carousel-slides] figure a img {
+    object-fit: cover;
+    object-position: center;
+    width: 100%;
+    height: 100%;
+}
+
+#modal_archive [data-carousel-nav] {
+    column-gap: 0.5rem;
+}
+
+#modal_archive [data-carousel-nav] a {
+    width: 0.65rem;
+    height: 0.65rem;
+    border-radius: 999rem;
+    background-color: rgba(255, 255, 255, 0.25);
+}
+
+#modal_archive [data-carousel-nav] a[aria-current] {
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+
 /* Logo animation */
 
 #logo {
@@ -1375,7 +1450,7 @@ body {
 }
 
 #triangle-left::before {
-    content: '';
+    content: "";
     position: absolute;
     left: 50vh;
     top: 0;
@@ -1387,7 +1462,7 @@ body {
 }
 
 #triangle-left::after {
-    content: '';
+    content: "";
     position: absolute;
     left: 0;
     top: 0;
@@ -1400,7 +1475,7 @@ body {
 }
 
 #triangle-right::before {
-    content: '';
+    content: "";
     position: absolute;
     right: 0;
     top: 0;
@@ -1412,7 +1487,7 @@ body {
 }
 
 #triangle-right::after {
-    content: '';
+    content: "";
     position: absolute;
     top: 14.6446609406725vh;
     right: 0;
@@ -1424,7 +1499,7 @@ body {
 }
 
 #triangle-right-alt::after {
-    content: '';
+    content: "";
     position: absolute;
     top: 14.6446609406725vh;
     right: 0;
@@ -1458,23 +1533,39 @@ body {
     backdrop-filter: blur(0.75rem);
     -webkit-backdrop-filter: blur(0.75rem);
     pointer-events: none;
+    line-height: 0;
     white-space: nowrap;
-    font-weight: 500;
-    letter-spacing: 0.0234375rem;
-    font-size: 0.98214375rem;
-    line-height: 0.6875rem;
     opacity: 0;
     transition-property: opacity;
     transition-duration: 0.075s;
     transition-timing-function: var(--ease-in-quad);
 }
 
-.tooltip_wrapper .tooltip span {
+.tooltip span {
+    display: inline-block;
+    font-family: 'Bai Jamjuree', sans-serif;
+    font-weight: 500;
+    letter-spacing: 0.0234375rem;
+    font-size: 0.98214375rem;
+    line-height: 0.6875rem;
     user-select: none;
     -webkit-user-select: none;
 }
 
-.tooltip_wrapper:hover .tooltip, .tooltip_wrapper:focus-within .tooltip {
+.tooltip span::before {
+    content: "";
+    margin-bottom: -0.025em;
+    display: table;
+}
+
+.tooltip span::after {
+    content: "";
+    margin-top: 0.025em;
+    display: table;
+}
+
+.tooltip_wrapper:hover:not(.active) .tooltip:not(.tooltip-active), .tooltip_wrapper:focus-within:not(.active) :not(.tooltip-active),
+.tooltip_wrapper.active .tooltip.tooltip-active, .tooltip_wrapper:focus-within.active .tooltip.tooltip-active {
     opacity: 1;
     transition-duration: 0.15s;
     transition-timing-function: var(--ease-out-quad);
@@ -1505,13 +1596,56 @@ body {
     margin-top: 0.625rem;
 }
 
-.tooltip::before {
+@media (max-width: 45rem) {
+    #menu_button_wrapper .tooltip.tooltip-active {
+        left: unset;
+        right: 0;
+        bottom: 50%;
+        margin-right: -0.625rem;
+        margin-bottom: 0;
+        transform: translateX(100%) translateY(50%);
+    }
+
+    #menu_links>a[href="#profile"] .tooltip.tooltip-active, #menu_links>a[href="#archive"] .tooltip.tooltip-active {
+        left: unset;
+        right: 0;
+        top: 50%;
+        margin-right: -0.625rem;
+        margin-top: 0;
+        transform: translateX(100%) translateY(-50%);
+    }
+}
+
+
+/* Tooltip - Active */
+
+.tooltip_wrapper .tooltip.tooltip-active {
+    padding: 0.375rem 0.5rem;
+}
+
+.tooltip kbd {
+    display: inline-block;
+    padding: 0.375rem;
+    background-color: rgba(255, 255, 255, 0.15);
+    border-radius: 0.25rem;
+}
+
+.tooltip kbd>span {
+    font-family: 'Chakra Petch', monospace;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0;
+    font-size: 0.89285625rem;
+    line-height: 0.625rem;
+}
+
+.tooltip kbd>span::before {
     content: "";
     margin-bottom: -0.025em;
     display: table;
 }
 
-.tooltip::after {
+.tooltip kbd>span::after {
     content: "";
     margin-top: 0.025em;
     display: table;
