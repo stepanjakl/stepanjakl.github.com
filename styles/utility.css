@@ -13,6 +13,13 @@
 /* Typography */
 
 body {
+    --text-xxs-font-weight: 600;
+    --text-xxs-font-size: 0.80356875rem;
+    --text-xxs-line-height: 0.875rem;
+    --text-xxs-letter-spacing: 0.1875rem;
+    --text-xxs_before-margin-bottom: -0.2194em;
+    --text-xxs_after-margin-top: -0.1694em;
+
     --text-xs-font-weight: 500;
     --text-xs-font-size: 0.89285625rem;
     --text-xs-line-height: 1rem;
@@ -47,11 +54,32 @@ body {
     --text-xl_after-margin-top: -0.325em;
 }
 
+.text-xxs {
+    font-weight: var(--text-xxs-font-weight);
+    font-size: var(--text-xxs-font-size);
+    line-height: var(--text-xxs-line-height);
+    letter-spacing: var(--text-xxs-letter-spacing);
+    text-transform: uppercase;
+}
+
+.text-xxs::before {
+    content: "";
+    margin-bottom: var(--text-xxs_before-margin-bottom);
+    display: table;
+}
+
+.text-xxs::after {
+    content: "";
+    margin-top: var(--text-xxs_after-margin-top);
+    display: table;
+}
+
 .text-xs {
     font-weight: var(--text-xs-font-weight);
     font-size: var(--text-xs-font-size);
     line-height: var(--text-xs-line-height);
     letter-spacing: var(--text-xs-letter-spacing);
+    text-transform: uppercase;
 }
 
 .text-xs::before {

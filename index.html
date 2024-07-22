@@ -43,7 +43,7 @@
         <link rel="stylesheet" href="styles/animation.css">
         <script src="scripts/timeline.js"></script>
         <script>
-            console.log('%cŠtěpán Jákl | Full-stack developer & interface designer', `border: max(1px, 0.0625rem) solid #4e7bff; border-radius: 0.125rem; color: #4e7bff; font-size: 0.78125rem; padding: 1.40625rem 2.1875rem 1.25rem 2.1875rem; margin: 1.25rem 1.25rem; /* padding: 1.859375rem 1.875rem 1.859375rem 5.25rem; background-image: url("data:image/svg+xml,%3Csvg width='100%' height='100%' viewBox='0 0 40 40' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M0 40V10.033L10.033 0H40V30L30 40H0ZM10 30V25H22.5L25 22.5H10V17.5H30V25L25 30H10ZM15 10H30V15H10L15 10Z' fill='%234e7bff'/%3E%3C/svg%3E%0A"); background-repeat: no-repeat; background-position: 1.25rem 50%; background-size: 2.5rem 2.5rem */`)
+            console.log('%cŠtěpán Jákl | Full-stack developer & interface designer', `border: max(1px, 0.0625rem) solid #4e7bff; border-radius: 0.125rem; color: #4e7bff; font-size: 0.78125rem; padding: 1.40625rem 2.1875rem 1.25rem 2.1875rem; margin: 1.25rem 1.25rem; /* padding: 1.859375rem 1.875rem 1.859375rem 5.25rem; background-image: url('data:image/svg+xml,%3Csvg width='100%' height='100%' viewBox='0 0 40 40' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M0 40V10.033L10.033 0H40V30L30 40H0ZM10 30V25H22.5L25 22.5H10V17.5H30V25L25 30H10ZM15 10H30V15H10L15 10Z' fill='%234e7bff'/%3E%3C/svg%3E%0A'); background-repeat: no-repeat; background-position: 1.25rem 50%; background-size: 2.5rem 2.5rem */`)
             console.log('%cThis website was created with HTML, CSS and sprinkled with a bit of vanilla JavaScript.', 'color: #4e7bff; margin: 0.9375rem 0 0.9375rem 1.25rem;')
             console.log('%cThe ambition has been to create a performant, pixel-perfect and responsive site.', 'color: #4e7bff; margin: 0.9375rem 0 0.9375rem 1.25rem;')
             console.log('%cNo framework, no compiler, no site generator - only pure joy.', 'color: #4e7bff; margin: 0.9375rem 0 0.9375rem 1.25rem;')
@@ -259,18 +259,20 @@
             })
         </script>
         <script>
-            function openPopupCenter(pageURL, title) {
-                var popupWidth = screen.availWidth * 0.8
-                var popupHeight = screen.availHeight * 0.8
+            function openPopupCenter(element, event) {
+                event.preventDefault()
+                console.log(element, element.href, event);
+                let popupWidth = screen.availWidth * 0.8
+                let popupHeight = screen.availHeight * 0.8
+                let popupLeft = (screen.availWidth - popupWidth) / 2
+                let popupTop = (screen.availHeight - popupHeight) / 2
 
-                var popupLeft = (screen.availWidth - popupWidth) / 2
-                var popupTop = (screen.availHeight - popupHeight) / 2
+                let popup = window.open(element.href, '_blank', 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=no, copyhistory=no, width=' + popupWidth + ', height=' + popupHeight + ', top=' + popupTop + ', left=' + popupLeft)
 
-                var popupWindow = window.open(
-                    pageURL,
-                    title,
-                    'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=no, copyhistory=no, width=' + popupWidth + ', height=' + popupHeight + ', top=' + popupTop + ', left=' + popupLeft
-                )
+                if (popup == null) {
+                    return true;
+                }
+                return false;
             }
         </script>
         <!-- <noscript>
@@ -666,6 +668,7 @@
                                              height="480"
                                              width="480"
                                              class="rounded-full"
+                                             loading="lazy"
                                              style="width: calc(4 * var(--segment));
                                                     height: auto;
                                                     aspect-ratio: 1/1;
@@ -1005,94 +1008,53 @@
                 </div>
                 <div id="modal_archive" class="modal" role="dialog" aria-modal="true">
                     <script>
-                        const carousels = document.querySelectorAll("[data-carousel]")
+                        document.addEventListener('DOMContentLoaded', () => {
+                            document.querySelectorAll('[data-carousel]').forEach(carouselEl => {
+                                const slidesWrapperEl = carouselEl.querySelector('[data-carousel-slides]')
+                                const slideEls = Array.from(carouselEl.querySelectorAll('[data-carousel-slides] figure'))
+                                const navEl = carouselEl.querySelector('[data-carousel-nav]')
 
-                        carousels.forEach(function(carousel) {
-                            const items = Array.from(carousel.querySelectorAll("[data-carousel-item]"))
-                            const dots = Array.from(carousel.querySelectorAll(".dot"))
+                                navEl.innerHTML = slideEls.map((_, index) => `
+                                    <button data-label-for="${slideEls[index].getAttribute('data-value')}">
+                                        <span class="sr-only">Slide ${index + 1}</span>
+                                    </button>
+                                `).join('')
 
-                            const observer = new IntersectionObserver(onIntersectionObserved, {
-                                root: carousel,
-                                rootMargin: "0px",
-                                threshold: 0.9
+                                const dotEls = Array.from(navEl.querySelectorAll('button'))
+
+                                const observer = new IntersectionObserver(entries => {
+                                    entries.forEach(entry => {
+                                        if (entry.isIntersecting) {
+                                            dotEls.forEach((dotEl, i) => dotEl.toggleAttribute('aria-current', i === slideEls.indexOf(entry.target)))
+                                        }
+                                    })
+                                }, {
+                                    root: carouselEl,
+                                    rootMargin: `0% -50% 0% -${window.getComputedStyle(slidesWrapperEl).getPropertyValue('column-gap')}`,
+                                    threshold: 0.5
+                                })
+
+                                slideEls.forEach(itemEl => observer.observe(itemEl))
+
+                                dotEls.forEach(dotEl => {
+                                    dotEl.addEventListener('click', event => {
+                                        event.preventDefault()
+                                        carouselEl.querySelector(`figure[data-value="${event.target.getAttribute('data-label-for')}"]`).scrollIntoView({
+                                            behavior: 'smooth',
+                                            block: 'nearest',
+                                            inline: 'start'
+                                        })
+                                    })
+                                })
                             })
 
-                            items.forEach((item) => {
-                                observer.observe(item)
-                            })
-
-                            function onIntersectionObserved(entries) {
-                                entries.forEach((entry) => {
-                                    if (entry.isIntersecting) {
-                                        const intersectingIndex = items.indexOf(entry.target)
-                                        activateIndicator(intersectingIndex)
-                                    }
-                                })
-                            }
-
-                            function activateIndicator(index) {
-                                dots.forEach((dot, i) => {
-                                    dot.toggleAttribute("aria-current", i === index)
-                                })
-                            }
-
-                            const prev = carousel.querySelector("[data-carousel-prev]")
-                            const next = carousel.querySelector("[data-carousel-next]")
-
-                            if (prev) {
-                                prev.addEventListener("click", () => {
-                                    if (
-                                        !carousel.querySelector("[data-carousel-nav] > [aria-current]")
-                                        .previousElementSibling
-                                    ) {
-                                        [
-                                            ...carousel.querySelectorAll("[data-carousel-item]:last-child")
-                                        ][0].scrollIntoView({
-                                            behavior: "smooth",
-                                            block: "nearest",
-                                            inline: "nearest"
-                                        })
-                                    } else {
-                                        carousel
-                                            .querySelector("[data-carousel-nav] > [aria-current]")
-                                            .previousElementSibling.click()
-                                    }
-                                })
-                            }
-
-                            if (next) {
-                                next.addEventListener("click", () => {
-                                    if (
-                                        !carousel.querySelector("[data-carousel-nav] > [aria-current]")
-                                        .nextElementSibling
-                                    ) {
-                                        carousel.querySelector("[data-carousel-item]").scrollIntoView({
-                                            behavior: "smooth",
-                                            block: "nearest",
-                                            inline: "nearest"
-                                        })
-                                    } else {
-                                        carousel
-                                            .querySelector("[data-carousel-nav] > [aria-current]")
-                                            .nextElementSibling.click()
-                                    }
-                                })
-                            }
-
-                            dots.forEach(function(dot) {
-                                dot.addEventListener("click", function(e) {
-                                    e.preventDefault()
-                                    carousel
-                                        .querySelector('[id="' + e.target.hash.replace("#", "") + '"]')
-                                        .scrollIntoView({
-                                            behavior: "smooth",
-                                            block: "nearest",
-                                            inline: "nearest"
-                                        })
+                            document.querySelectorAll('button[data-carousel-open-all]').forEach(button => {
+                                button.addEventListener('click', () => {
+                                    button.parentElement.querySelectorAll('figure a').forEach(link => link.click())
                                 })
                             })
                         })
-                    </script>
+                        </script>
                     <div class="overflow-clip modal_content">
                         <a href="#"
                            id="modal_button-close"
@@ -1167,52 +1129,62 @@
                                                 </h1>
 
                                                 <div class="relative" data-carousel>
+                                                    <!-- <button data-carousel-open-all>
+                                                        <span class="text-xxs">Open all</span>
+                                                    </button> -->
                                                     <div class="flex flex-nowrap w-full overflow-auto" data-carousel-slides>
-                                                        <figure id="slide-1">
-                                                            <a href="javascript:openPopupCenter('https://images.unsplash.com/photo-1566847438217-76e82d383f84?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1600&q=80g')">
-                                                                <img src="https://images.unsplash.com/photo-1566847438217-76e82d383f84?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1600&q=80g">
+                                                        <figure data-value="slide-1">
+                                                            <a href="https://images.unsplash.com/photo-1566847438217-76e82d383f84?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1600&q=80g"
+                                                               onclick="return openPopupCenter(this, event)"
+                                                               target="_blank">
+                                                                <img src="https://images.unsplash.com/photo-1566847438217-76e82d383f84?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=200&q=80g"
+                                                                     loading="lazy">
                                                             </a>
                                                         </figure>
-                                                        <figure id="slide-2">
-                                                            <a href="#">
-                                                                <img src="https://images.unsplash.com/photo-1591017320663-dc3334ff1dcc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1600&q=80">
+                                                        <figure data-value="slide-2">
+                                                            <a href="https://images.unsplash.com/photo-1591017320663-dc3334ff1dcc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1600&q=80g"
+                                                               onclick="return openPopupCenter(this, event)"
+                                                               target="_blank">
+                                                                <img src="https://images.unsplash.com/photo-1591017320663-dc3334ff1dcc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=200&q=80"
+                                                                     loading="lazy">
                                                             </a>
                                                         </figure>
-                                                        <figure id="slide-3">
-                                                            <a href="#">
-                                                                <img src="https://images.unsplash.com/photo-1595361498858-25993ca8fcb4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1600&q=80">
+                                                        <figure data-value="slide-3">
+                                                            <a href="https://images.unsplash.com/photo-1566847438217-76e82d383f84?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1600&q=80g"
+                                                               onclick="return openPopupCenter(this, event)"
+                                                               target="_blank">
+                                                                <img src="https://images.unsplash.com/photo-1595361498858-25993ca8fcb4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=200&q=80"
+                                                                     loading="lazy">
                                                             </a>
                                                         </figure>
-                                                        <figure id="slide-1">
-                                                            <a href="#">
-                                                                <img src="https://images.unsplash.com/photo-1566847438217-76e82d383f84?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1600&q=80g">
+                                                        <figure data-value="slide-4">
+                                                            <a href="https://images.unsplash.com/photo-1566847438217-76e82d383f84?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1600&q=80g"
+                                                               onclick="return openPopupCenter(this, event)"
+                                                               target="_blank">
+                                                                <img src="https://images.unsplash.com/photo-1566847438217-76e82d383f84?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=200&q=80g"
+                                                                     loading="lazy">
                                                             </a>
                                                         </figure>
-                                                        <figure id="slide-2">
-                                                            <a href="#">
-                                                                <img src="https://images.unsplash.com/photo-1591017320663-dc3334ff1dcc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1600&q=80">
+                                                        <figure data-value="slide-5">
+                                                            <a href="https://images.unsplash.com/photo-1566847438217-76e82d383f84?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1600&q=80g"
+                                                               onclick="return openPopupCenter(this, event)"
+                                                               target="_blank">
+                                                                <img src="https://images.unsplash.com/photo-1591017320663-dc3334ff1dcc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=200&q=80"
+                                                                     loading="lazy">
                                                             </a>
                                                         </figure>
-                                                        <figure id="slide-3">
-                                                            <a href="#">
-                                                                <img src="https://images.unsplash.com/photo-1595361498858-25993ca8fcb4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1600&q=80">
+                                                        <figure data-value="slide-6">
+                                                            <a href="https://images.unsplash.com/photo-1566847438217-76e82d383f84?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1600&q=80g"
+                                                               onclick="return openPopupCenter(this, event)"
+                                                               target="_blank">
+                                                                <img src="https://images.unsplash.com/photo-1595361498858-25993ca8fcb4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=200&q=80"
+                                                                     loading="lazy">
                                                             </a>
                                                         </figure>
                                                     </div>
-                                                    <div data-carousel-controls>
-                                                        <button data-carousel-prev>
-                                                            <span>Prev</span>
-                                                        </button>
-
-                                                        <button data-carousel-next>
-                                                            <span>Next</span>
-                                                        </button>
-                                                    </div>
-                                                    <nav class="flex justify-center" data-carousel-nav>
-                                                        <a href="#slide-1" class="dot" aria-current><span class="sr-only">Slide 1</span></a>
-                                                        <a href="#slide-2" class="dot"><span class="sr-only">Slide 2</span></a>
-                                                        <a href="#slide-3" class="dot"><span class="sr-only">Slide 3</span></a>
-                                                    </nav>
+                                                    <div data-carousel-nav-wrapper>
+                                                    <nav data-carousel-nav></nav>
+                                                </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -1279,20 +1251,9 @@
                                             left: calc(3rem + 3rem + 15rem );
                                             right: calc(3rem + 3rem);
                                             /* outline: max(1px, 0.0625rem) solid red */">
-                                    <horizontal-timeline labels="[2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014]"></horizontal-timeline>
-                                    <!-- <div style="margin: 0 4rem; border: white max(1px, 0.0625rem) solid; border-radius: 999rem">
-                                            <div style="display: grid; grid-auto-flow: column; grid-auto-columns: max-content; column-gap: 0.625rem; padding: 0.625rem 1rem; font-size: 0.9375rem">
-                                                <button>
-                                                    2022
-                                                </button>
-                                                <button>
-                                                    2021
-                                                </button>
-                                                <button>
-                                                    2020
-                                                </button>
-                                            </div>
-                                            </div> -->
+                                    <div id="horizontal-timeline_wrapper">
+                                        <horizontal-timeline labels="[2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014]"></horizontal-timeline>
+                                    </div>
                                 </div>
                             </div>
                         </div>

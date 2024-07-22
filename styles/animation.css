@@ -827,6 +827,66 @@ svg.animate-face-icon path {
 }
 
 
+/* Modals - Horizontal Timeline */
+
+#horizontal-timeline_wrapper {
+    transition: opacity var(--animate-out-segment) linear, transform var(--animate-out-segment) var(--ease-in-quad), visibility 0s var(--animate-out-segment);
+    visibility: hidden;
+    transform: scale(0.95);
+    transform-origin: bottom;
+    opacity: 0;
+}
+
+#archive:target~main #modal_archive #horizontal-timeline_wrapper {
+    visibility: visible;
+    transition: opacity var(--animate-in-segment) linear var(--delay-segment), transform var(--animate-in-segment) var(--ease-out-quad) var(--delay-segment);
+    transform: scale(1);
+    opacity: 1;
+}
+
+
+/* Modals - Carousel */
+
+[data-carousel-nav] {
+    transition: border-radius var(--animate-out-segment) var(--ease-in-quad) var(--animate-in-segment-2\/3), column-gap var(--animate-out-segment) var(--ease-in-quad) var(--animate-in-segment-2\/3), padding var(--animate-out-segment) var(--ease-in-quad) var(--animate-in-segment-2\/3), margin var(--animate-out-segment) var(--ease-in-quad) var(--animate-in-segment-2\/3);
+}
+
+[data-carousel-nav]:hover {
+    transition: border-radius var(--animate-in-segment) var(--ease-out-quad), column-gap var(--animate-in-segment) var(--ease-out-quad), padding var(--animate-in-segment) var(--ease-out-quad), margin var(--animate-in-segment) var(--ease-out-quad);
+    border-radius: 1.25rem;
+    column-gap: 1rem;
+    padding: 0.875rem 1.25rem;
+    margin: 0;
+}
+
+[data-carousel-nav] button {
+    transition: width var(--animate-out-segment) var(--ease-in-quad) var(--animate-in-segment-2\/3), height var(--animate-out-segment) var(--ease-in-quad) var(--animate-in-segment-2\/3);
+}
+
+[data-carousel-nav]:hover button {
+    transition: width var(--animate-in-segment) var(--ease-out-quad), height var(--animate-in-segment) var(--ease-out-quad);
+    width: 0.75rem;
+    height: 0.75rem;
+}
+
+[data-carousel-nav]:hover button[aria-current] {
+    width: 2.75rem;
+}
+
+/* [data-carousel-nav] {
+    transition: transform var(--animate-out-segment) var(--ease-in-quad);
+}
+
+[data-carousel-nav]:hover {
+    transition: transform var(--animate-in-segment) var(--ease-out-quad);
+    transform: scale(1.2);
+}
+
+[data-carousel-nav] button {
+    transition: width 0.2s var(--ease-in-out-quad), background-color 0.15s var(--ease-in-out-quad);
+} */
+
+
 /* Modals - Close Button */
 
 #modal_button-close, #modal_button-close svg {

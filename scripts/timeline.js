@@ -80,7 +80,13 @@ class timeline extends HTMLElement {
                 }
 
                 #timeline {
+                    transition: height var(--animate-out-segment) var(--ease-in-quad) var(--animate-in-segment-2\\/3);
                     height: 1.125rem;
+                }
+
+                horizontal-timeline:hover #timeline {
+                    transition: height var(--animate-in-segment) var(--ease-out-quad);
+                    height: 1.75rem;
                 }
 
                 #timeline div {
