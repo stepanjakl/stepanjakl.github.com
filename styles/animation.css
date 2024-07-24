@@ -848,29 +848,61 @@ svg.animate-face-icon path {
 /* Modals - Carousel */
 
 [data-carousel-nav] {
-    transition: border-radius var(--animate-out-segment) var(--ease-in-quad) var(--animate-in-segment-2\/3), column-gap var(--animate-out-segment) var(--ease-in-quad) var(--animate-in-segment-2\/3), padding var(--animate-out-segment) var(--ease-in-quad) var(--animate-in-segment-2\/3), margin var(--animate-out-segment) var(--ease-in-quad) var(--animate-in-segment-2\/3);
+    transition: border-radius var(--animate-out-segment) var(--ease-in-quad), column-gap var(--animate-out-segment) var(--ease-in-quad), padding var(--animate-out-segment) var(--ease-in-quad), margin var(--animate-out-segment) var(--ease-in-quad);
+    column-gap: 0.625rem;
+    padding: 0.625rem 0.9375rem;
+    margin: 0.375rem 0;
+    border-radius: 0.5rem;
 }
 
 [data-carousel-nav]:hover {
     transition: border-radius var(--animate-in-segment) var(--ease-out-quad), column-gap var(--animate-in-segment) var(--ease-out-quad), padding var(--animate-in-segment) var(--ease-out-quad), margin var(--animate-in-segment) var(--ease-out-quad);
-    border-radius: 1.25rem;
     column-gap: 1rem;
     padding: 0.875rem 1.25rem;
     margin: 0;
-}
-
-[data-carousel-nav] button {
-    transition: width var(--animate-out-segment) var(--ease-in-quad) var(--animate-in-segment-2\/3), height var(--animate-out-segment) var(--ease-in-quad) var(--animate-in-segment-2\/3);
+    border-radius: 1.25rem;
 }
 
 [data-carousel-nav]:hover button {
-    transition: width var(--animate-in-segment) var(--ease-out-quad), height var(--animate-in-segment) var(--ease-out-quad);
+    transition: width var(--animate-in-segment) var(--ease-out-quad), height var(--animate-in-segment) var(--ease-out-quad), background-color var(--animate-in-segment) linear;
     width: 0.75rem;
     height: 0.75rem;
 }
 
+[data-carousel-nav] button {
+    transition: width var(--animate-out-segment) var(--ease-in-quad), height var(--animate-out-segment) var(--ease-in-quad), background-color var(--animate-out-segment) linear;
+    width: 0.5rem;
+    height: 0.5rem;
+    background-color: var(--inner-bg-light-4);
+}
+
+[data-carousel-nav] button:hover {
+    transition: background-color var(--animate-out-segment-2\/3) linear;
+    background-color: var(--inner-bg-light-6);
+}
+
 [data-carousel-nav]:hover button[aria-current] {
     width: 2.75rem;
+}
+
+[data-carousel-arrows] li button {
+    transition: background-color var(--animate-out-segment-2\/3) linear;
+    background-color: var(--inner-bg-light-3);
+}
+
+[data-carousel-arrows] li button:hover {
+    transition: background-color var(--animate-out-segment-2\/3) linear;
+    background-color: var(--inner-bg-light-4);
+}
+
+[data-carousel-arrows] li button::before {
+    transition: background-color var(--animate-out-segment-2\/3) linear;
+    background-color: var(--inner-bg-light-5);
+}
+
+[data-carousel-arrows] li button:hover::before {
+    transition: background-color var(--animate-in-segment-2\/3) linear;
+    background-color: var(--inner-bg-light-6);
 }
 
 /* [data-carousel-nav] {

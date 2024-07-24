@@ -152,6 +152,10 @@
 
     --inner-bg-light-1: rgba(255, 255, 255, 0.1);
     --inner-bg-light-2: rgba(255, 255, 255, 0.15);
+    --inner-bg-light-3: rgba(255, 255, 255, 0.25);
+    --inner-bg-light-4: rgba(255, 255, 255, 0.35);
+    --inner-bg-light-5: rgba(255, 255, 255, 0.5);
+    --inner-bg-light-6: rgba(255, 255, 255, 0.75);
 
     --inner-bg-dark-1: rgba(0, 0, 0, 0.25);
 }
@@ -1324,6 +1328,7 @@ body {
 /* Modal - Archive */
 
 [data-carousel] {
+    position: relative;
     display: flex;
     flex-direction: column;
     --slide-offset: 2.5rem;
@@ -1345,39 +1350,86 @@ body {
 [data-carousel-slides] {
     position: relative;
     scroll-snap-type: x mandatory;
+    overflow-x: auto;
+    overflow-y: hidden;
     scroll-behavior: smooth;
     scrollbar-width: none;
     column-gap: var(--slide-offset);
     border-radius: 0.5rem;
+    cursor: grab;
     /* mask-image: linear-gradient(90deg, rgba(0, 0, 0, 1) calc(100% - calc(var(--slide-offset) * 2)), rgba(0, 0, 0, 0) 100%); */
+}
+
+[data-carousel-slides].pointer-down {
+    cursor: grabbing;
+}
+
+[data-carousel-slides].dragging {
+    scroll-behavior: unset;
+    scroll-snap-type: none;
+}
+
+/* CSS styles for visual guidelines */
+[data-carousel-slides] figure {
+    position: relative;
+    border: 2px solid rgba(255, 0, 0, 0.5); /* Red border for observed elements */
+    background-color: rgba(0, 255, 0, 0.1); /* Light green background for observed elements */
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+/* Additional styles for active elements */
+[data-carousel-slides] figure.active {
+    border-color: rgba(0, 0, 255, 0.7); /* Blue border for active element */
+    background-color: rgba(0, 0, 255, 0.2); /* Light blue background for active element */
+}
+
+[data-carousel-slides] figure::after {
+    content: '';
+    position: absolute;
+    border: 1px dashed rgba(255, 0, 0, 0.5); /* Dashed border to visualize intersection */
+    pointer-events: none;
+    z-index: 10; /* Ensure it is above other content */
+}
+
+[data-carousel-slides] figure.active::after {
+    border-color: rgba(0, 0, 255, 0.7); /* Change dashed border color for active elements */
+}
+
+[data-carousel-slides] figure::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 255, 0.5); /* Blue overlay to visualize the threshold */
+    clip-path: inset(0 50% 0 0); /* Overlay is clipped to the size of the element */
+    z-index: 10; /* Ensure it is above other content */
+    pointer-events: none;
+    transition: clip-path 0.3s ease;
+}
+
+
+[data-carousel]::before {
+    content: '';
+    position: absolute;
+    top: 0; /* Adjust based on rootMargin top value */
+    right: 50%; /* Adjust based on rootMargin right value */
+    bottom: 0; /* Adjust based on rootMargin bottom value */
+    left: 2.5rem; /* Adjust based on rootMargin left value */
+    border: 2px dashed rgba(255, 0, 0, 0.75); /* Red dashed border to visualize margin */
+    pointer-events: none;
+    z-index: 15; /* Ensure it is above other content */
+    /* transform: translateX(100%); */
+}
+
+
+[data-carousel-slides].dragging a {
+    pointer-events: none;
 }
 
 [data-carousel-slides]::-webkit-scrollbar {
     display: none;
-}
-
-[data-carousel-open-all] {
-    display: inline-flex;
-    align-self: flex-end;
-    align-items: center;
-    justify-content: center;
-    column-gap: 0.375rem;
-    border-radius: 0.375rem;
-    background-color: var(--modal-tag-bg);
-    padding: 0.4375rem 0.625rem 0.375rem 0.625rem;
-    margin-bottom: var(--segment-third);
-    color: var(--text-1);
-    cursor: pointer;
-}
-
-[data-carousel-open-all]::after {
-    content: "";
-    display: inline-block;
-    width: 14px;
-    height: 14px;
-    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjBweCIgdmlld0JveD0iMCAtOTYwIDk2MCA5NjAiIHdpZHRoPSIyMHB4IiBmaWxsPSIjZThlYWVkIj48cGF0aCBkPSJNOTYtOTZ2LTQ4MGgxNDR2LTI4OGg2MjR2NDgwSDcyMHYyODhIOTZabTcyLTcyaDQ4MHYtMjY0SDE2OHYyNjRabTU1Mi0yODhoNzJ2LTI2NEgzMTJ2MTQ0aDQwOHYxMjBaIi8+PC9zdmc+");
-    background-size: contain;
-    background-repeat: no-repeat;
 }
 
 [data-carousel-slides] figure {
@@ -1397,6 +1449,7 @@ body {
     aspect-ratio: 4 / 3;
     overflow: hidden;
     border-radius: 0.5rem;
+    cursor: zoom-in;
 }
 
 [data-carousel-slides] figure a img {
@@ -1407,36 +1460,91 @@ body {
 }
 
 [data-carousel-nav-wrapper] {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     margin-top: var(--segment-third);
 }
 
 [data-carousel-nav] {
+    position: relative;
     display: inline-flex;
-    align-self: flex-start;
-    column-gap: 0.625rem;
-    padding: 0.625rem 0.9375rem;
-    /* transform-origin: left; */
-    margin: 0.375rem 0;
-    border-radius: 0.5rem;
-    /* background-color: rgba(255, 255, 255, 0.25); */
-    background-color: var(--modal-tag-bg);
+    background-color: var(--inner-bg-light-3);
+}
+
+[data-carousel-nav]::before {
+    content: '';
+    position: absolute;
+    inset: -0.5rem;
 }
 
 [data-carousel-nav] button {
-    width: 0.5rem;
-    height: 0.5rem;
+    position: relative;
     border-radius: 999rem;
-    background-color: rgba(255, 255, 255, 0.35);
     cursor: pointer;
 }
 
+[data-carousel-nav] button::before {
+    content: '';
+    position: absolute;
+    inset: -0.25rem;
+    border-radius: 999rem;
+}
+
 [data-carousel-nav] button[aria-current] {
+    background-color: var(--inner-bg-light-6);
     width: 1.75rem;
-    background-color: rgba(255, 255, 255, 0.75);
+}
+
+[data-carousel-nav] button[aria-current] span {
+    background-color: var(--inner-bg-light-6);
 }
 
 [data-carousel-nav] button:last-child {
     display: none;
+}
+
+[data-carousel-arrows] {
+    display: flex;
+    column-gap: 0.625rem;
+}
+
+[data-carousel-arrows] li {
+    list-style: none;
+}
+
+[data-carousel-arrows] button {
+    display: inline-flex;
+    align-self: flex-end;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+    padding: 0.25rem 0.375rem;
+}
+
+[data-carousel-arrows] li:first-child button {
+    cursor: w-resize;
+}
+
+[data-carousel-arrows] li:last-child button {
+    cursor: e-resize;
+}
+
+[data-carousel-arrows] li button::before {
+    content: "";
+    display: inline-block;
+    width: 1.25rem;
+    height: 1.25rem;
+    mask-size: contain;
+    mask-repeat: no-repeat;
+}
+
+[data-carousel-arrows] li:first-child button::before {
+    mask-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjBweCIgdmlld0JveD0iMCAtOTYwIDk2MCA5NjAiIHdpZHRoPSIyMHB4IiBmaWxsPSIjZThlYWVkIj48cGF0aCBkPSJNNTk5LTIzMyAzNTItNDgwbDI0Ny0yNDd2NDk0WiIvPjwvc3ZnPg==");
+}
+
+[data-carousel-arrows] li:last-child button::before {
+    mask-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjBweCIgdmlld0JveD0iMCAtOTYwIDk2MCA5NjAiIHdpZHRoPSIyMHB4IiBmaWxsPSIjZThlYWVkIj48cGF0aCBkPSJNMzYxLTIzM3YtNDk0bDI0NyAyNDctMjQ3IDI0N1oiLz48L3N2Zz4=");
 }
 
 

@@ -19,7 +19,7 @@ class timeline extends HTMLElement {
             <style>
                 horizontal-timeline {
                     display: flex;
-                    transition: margin var(--animate-out-segment) var(--ease-in-quad) var(--animate-in-segment-2\\/3);
+                    transition: margin var(--animate-out-segment) var(--ease-in-quad);
                     margin: 0 8rem;
 
                     --var-name: 1;
@@ -30,8 +30,14 @@ class timeline extends HTMLElement {
                     margin: 0 4rem;
                 }
 
+                horizontal-timeline::before {
+                    content: '';
+                    position: absolute;
+                    inset: -0.5rem;
+                }
+
                 #timeline_wrapper {
-                    transition: border-radius var(--animate-out-segment) var(--ease-in-quad) var(--animate-in-segment-2\\/3), transform var(--animate-out-segment) var(--ease-in-quad) var(--animate-in-segment-2\\/3);
+                    transition: border-radius var(--animate-out-segment) var(--ease-in-quad), transform var(--animate-out-segment) var(--ease-in-quad);
                     position: relative;
                     border-radius: 0.75rem;
                     background-color: rgba(0, 91, 102, 0.75); /* 210, 100, 35 */
@@ -48,7 +54,7 @@ class timeline extends HTMLElement {
                 }
 
                 #timeline_content {
-                    transition: padding var(--animate-out-segment) var(--ease-in-quad) var(--animate-in-segment-2\\/3);
+                    transition: padding var(--animate-out-segment) var(--ease-in-quad);
                     overflow-x: scroll;
                     overflow-y: hidden;
                     scroll-behavior: auto;
@@ -70,7 +76,7 @@ class timeline extends HTMLElement {
                 }
 
                 #timeline_content > div {
-                    transition: row-gap var(--animate-out-segment) var(--ease-in-quad) var(--animate-in-segment-2\\/3);
+                    transition: row-gap var(--animate-out-segment) var(--ease-in-quad);
                     row-gap: 0.5rem;
                 }
 
@@ -80,7 +86,7 @@ class timeline extends HTMLElement {
                 }
 
                 #timeline {
-                    transition: height var(--animate-out-segment) var(--ease-in-quad) var(--animate-in-segment-2\\/3);
+                    transition: height var(--animate-out-segment) var(--ease-in-quad);
                     height: 1.125rem;
                 }
 
