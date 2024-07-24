@@ -41,6 +41,7 @@
     <link rel="stylesheet" href="styles/style.css">
     <link rel="stylesheet" href="styles/state.css">
     <link rel="stylesheet" href="styles/animation.css">
+    <script src="scripts/script.js"></script>
     <script src="scripts/timeline.js"></script>
     <script>
 		console.log('%cŠtěpán Jákl | Full-stack developer & interface designer', `border: max(1px, 0.0625rem) solid #4e7bff; border-radius: 0.125rem; color: #4e7bff; font-size: 0.78125rem; padding: 1.40625rem 2.1875rem 1.25rem 2.1875rem; margin: 1.25rem 1.25rem; /* padding: 1.859375rem 1.875rem 1.859375rem 5.25rem; background-image: url('data:image/svg+xml,%3Csvg width='100%' height='100%' viewBox='0 0 40 40' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M0 40V10.033L10.033 0H40V30L30 40H0ZM10 30V25H22.5L25 22.5H10V17.5H30V25L25 30H10ZM15 10H30V15H10L15 10Z' fill='%234e7bff'/%3E%3C/svg%3E%0A'); background-repeat: no-repeat; background-position: 1.25rem 50%; background-size: 2.5rem 2.5rem */`)
@@ -49,304 +50,6 @@
 		console.log('%cNo framework, no compiler, no site generator - only pure joy.', 'color: #4e7bff; margin: 0.9375rem 0 0.9375rem 1.25rem;')
 		/* console.log('%cMade with tears, stress and anxiety. Just joking, of course it was crafted with love ;-)', 'color: #4e7bff; margin: 0.9375rem 0 0.9375rem 1.25rem;') */
 		console.log('%cInterested in working together? Reach out to me via email at %cstepanjakl@outlook.com', 'color: #4e7bff; margin: 0.9375rem 0 0.9375rem 1.25rem;', 'color: #4e7bff; text-decoration: underline;')
-    </script>
-    <script>
-		const activateHighlight = (elementToSwapText, elementToHighlight, tempInnerText) => {
-			const target = event.target
-			let timeout
-			if (target.getAttribute('data-copying') !== '') {
-				target.setAttribute('data-copying', '')
-				const origInnerText = elementToSwapText.innerText
-				const activateHandler = () => {
-					clearTimeout(timeout)
-					elementToHighlight.classList.remove('active')
-					elementToHighlight.removeEventListener('transitionend', activateHandler)
-					elementToHighlight.addEventListener('transitionend', deactivateHandler)
-				}
-				const deactivateHandler = () => {
-					document.activeElement.blur()
-					if (tempInnerText) {
-						target.removeAttribute('data-copying')
-						elementToSwapText.innerText = origInnerText
-					}
-					elementToHighlight.removeEventListener('transitionend', deactivateHandler)
-				}
-				if (tempInnerText) {
-					elementToSwapText.innerText = tempInnerText
-				}
-				elementToHighlight.classList.toggle('active')
-				timeout = setTimeout(activateHandler, 1000)
-				elementToHighlight.addEventListener('transitionend', activateHandler)
-			}
-		}
-    </script>
-    <script>
-		const toggleActiveClass = (event, action) => {
-			document.querySelectorAll('#menu_links>a[href="#profile"], #menu_links>a[href="#archive"], #menu_button_wrapper').forEach(element => {
-				element.classList[action]('active')
-			})
-		}
-
-		document.addEventListener('keyup', (event) => {
-			toggleActiveClass(event, 'remove')
-		})
-
-		document.addEventListener('keydown', (event) => {
-			if (event.keyCode === 27) { // Escape key
-				document.location.hash = ''
-			} else if (event.keyCode === 80) { // P key
-				event.preventDefault()
-				if (document.location.hash === '#profile') {
-					document.location.hash = ''
-				} else {
-					document.location.hash = '#profile'
-				}
-
-			} else if (event.keyCode === 65) { // A key
-				event.preventDefault()
-				if (document.location.hash === '#archive') {
-					document.location.hash = ''
-				} else {
-					document.location.hash = '#archive'
-				}
-
-			} else if (event.keyCode === 77) { // M key
-				event.preventDefault()
-				const menuElement = document.querySelector('.animate-fade-in-cta-2')
-				if (menuElement.getAnimations().length === 0 || menuElement.getAnimations()[0].playState === 'finished') {
-					if (document.location.hash === '#menu') {
-						document.location.hash = ''
-						document.querySelector('#menu_dropdown').close()
-						document.querySelector('#menu_button-open').focus()
-					} else {
-						document.location.hash = '#menu'
-						document.querySelector('#menu_dropdown').show()
-						document.querySelector('#menu_button-close').focus()
-					}
-				}
-			}
-
-			if (document.location.hash !== '') {
-				toggleActiveClass(event, 'remove')
-			} else if (event.ctrlKey || event.metaKey) {
-				if (document.location.hash === '') {
-					toggleActiveClass(event, 'add')
-				}
-			}
-		})
-    </script>
-    <script>
-		/* TODO name function */
-		document.addEventListener('DOMContentLoaded', () => {
-			if (window.location.hash) {
-				document.querySelectorAll('.animate-fade-in-name span, .animate-fade-in-title span, .animate-fade-in-cta-1, .animate-fade-in-cta-2, .animate-fade-in-logo').forEach(element => {
-					element.classList.add('noanimation')
-					document.querySelector('#menu_dropdown').show()
-				})
-			}
-		})
-    </script>
-    <script>
-		/* TODO name function */
-		window.addEventListener('wheel', () => {
-			let verticalScrollDirection, horizontalScrollDirection
-			let deltaX = Math.abs(event.deltaX)
-			let deltaY = Math.abs(event.deltaY)
-			if (window.location.hash === '#profile') {
-				const modalProfileElement = document.querySelector('#modal_profile')
-				scrollPositionTop = modalProfileElement.scrollTop
-				if (deltaY > deltaX && deltaY > 5) {
-					verticalScrollDirection = event.deltaY > 0 ? 'down' : 'up'
-					if (verticalScrollDirection === 'up' && scrollPositionTop === 0) {
-						window.location.hash = '#'
-					}
-				}
-			} else if (window.location.hash === '#archive') {
-				const modalProfileElement = document.querySelector('#modal_archive')
-				scrollPositionTop = modalProfileElement.scrollTop
-				if (deltaY > deltaX && deltaY > 5) {
-					verticalScrollDirection = event.deltaY > 0 ? 'down' : 'up'
-					if (verticalScrollDirection === 'up' && scrollPositionTop === 0) {
-						window.location.hash = '#'
-					}
-				}
-			} else {
-				scrollPositionX = window.scrollX || window.pageXOffset
-				scrollPositionY = window.scrollY || window.pageYOffset
-				totalHeight = document.documentElement.scrollHeight
-				totalWidth = document.documentElement.scrollWidth
-				if (deltaY > deltaX && deltaY > 5) {
-					verticalScrollDirection = event.deltaY > 0 ? 'down' : 'up'
-					if (verticalScrollDirection === 'down' && scrollPositionY + window.innerHeight >= totalHeight) {
-						if (window.location.hash === '') {
-							window.location.hash = '#profile'
-						}
-					} else if (verticalScrollDirection === 'up' && scrollPositionX === 0) {
-					}
-				} else if (deltaX > deltaY && deltaX > 5) {
-					if (document.querySelector('.animate-fade-in-cta-2').getAnimations().length === 0 || document.querySelector('.animate-fade-in-cta-2').getAnimations()[0].playState === 'finished') {
-						horizontalScrollDirection = event.deltaX > 0 ? 'right' : 'left'
-						if (horizontalScrollDirection === 'right' && scrollPositionY + window.innerWidth >= totalWidth) {
-							if (window.location.hash === '') {
-								window.location.hash = '#menu'
-							}
-						} else if (horizontalScrollDirection === 'left' && scrollPositionX === 0) {
-							if (window.location.hash === '#menu') {
-								window.location.hash = '#'
-							}
-						}
-					}
-				}
-			}
-		})
-
-		/* move and name function */
-		let touchStartX, touchStartY
-		window.addEventListener('touchstart', (event) => {
-			touchStartX = event.touches[0].clientX
-			touchStartY = event.touches[0].clientY
-		})
-		window.addEventListener('touchmove', (event) => {
-			let verticalScrollDirection, horizontalScrollDirection
-			let touchEndX = event.touches[0].clientX
-			let touchEndY = event.touches[0].clientY
-			let deltaX = Math.abs(touchEndX - touchStartX)
-			let deltaY = Math.abs(touchEndY - touchStartY)
-
-			if (window.location.hash === '#profile') {
-				const modalProfileElement = document.querySelector('#modal_profile')
-				const scrollPositionTop = modalProfileElement.scrollTop
-				if (deltaY > deltaX && deltaY > 5) {
-					verticalScrollDirection = touchEndY < touchStartY ? 'down' : 'up'
-					if (verticalScrollDirection === 'up' && scrollPositionTop === 0) {
-						window.location.hash = '#'
-					}
-				}
-			} else if (window.location.hash === '#archive') {
-				const modalArchiveElement = document.querySelector('#modal_archive')
-				const scrollPositionTop = modalArchiveElement.scrollTop
-				if (deltaY > deltaX && deltaY > 5) {
-					verticalScrollDirection = touchEndY < touchStartY ? 'down' : 'up'
-					if (verticalScrollDirection === 'up' && scrollPositionTop === 0) {
-						window.location.hash = '#'
-					}
-				}
-			} else {
-				const scrollPositionX = window.scrollX || window.pageXOffset
-				const scrollPositionY = window.scrollY || window.pageYOffset
-				const totalHeight = document.documentElement.scrollHeight
-				const totalWidth = document.documentElement.scrollWidth
-				if (deltaY > deltaX && deltaY > 5) {
-					verticalScrollDirection = touchEndY < touchStartY ? 'down' : 'up'
-					if (verticalScrollDirection === 'down' && scrollPositionY + window.innerHeight >= totalHeight) {
-						if (window.location.hash === '') {
-							window.location.hash = '#profile'
-						}
-					}
-				} else if (deltaX > deltaY && deltaX > 5) {
-					if (document.querySelector('.animate-fade-in-cta-2').getAnimations().length === 0 || document.querySelector('.animate-fade-in-cta-2').getAnimations()[0].playState === 'finished') {
-						horizontalScrollDirection = touchEndX > touchStartX ? 'right' : 'left'
-						if (horizontalScrollDirection === 'right' && scrollPositionX + window.innerWidth >= totalWidth) {
-							if (window.location.hash === '#menu') {
-								window.location.hash = '#'
-							}
-						} else if (horizontalScrollDirection === 'left' && scrollPositionX === 0) {
-							if (window.location.hash === '') {
-								window.location.hash = '#menu'
-							}
-						}
-					}
-				}
-			}
-		})
-    </script>
-    <script>
-		function enableHorizontalDragScroll(element, options) {
-			let isPointerDown = false
-			let startX
-			let scrollLeft
-
-			element.addEventListener('pointerdown', (event) => {
-				isPointerDown = true
-				startX = event.clientX
-				scrollLeft = element.scrollLeft
-				element.classList.add('pointer-down')
-				// event.target.setPointerCapture(event.pointerId);
-			})
-
-			element.addEventListener('pointermove', (event) => {
-				if (!isPointerDown) {
-					return
-				}
-				event.preventDefault()
-				element.setPointerCapture(event.pointerId)
-				element.classList.add('dragging')
-				const moveX = event.clientX - startX
-				element.scrollLeft = scrollLeft - moveX
-			})
-
-			const completeDrag = (event) => {
-				console.log(options.getActiveEl())
-				isPointerDown = false
-				/* const oldScrollLeft = element.scrollLeft
-            element.classList.remove('dragging')
-            const newScrollLeft = element.scrollLeft
-            element.classList.add('dragging')
-            element.scrollLeft = oldScrollLeft
-            console.log(oldScrollLeft, newScrollLeft); */
-				element.scrollTo({
-					left: options.getActiveEl().offsetLeft, behavior: 'smooth'
-				})
-				activateSnapping = setTimeout(() => {
-					element.classList.remove('dragging', 'pointer-down')
-					element.releasePointerCapture(event.pointerId)
-				}, 250)
-			}
-
-			element.addEventListener('pointerup', (event) => {
-				completeDrag(event)
-			})
-
-			element.addEventListener('pointercancel', (event) => {
-				completeDrag(event)
-			})
-		}
-
-
-		/* Move all DOMContentLoad to one place? */
-    </script>
-    <script>
-		class Popup {
-			constructor() {
-				this.widthRatio = 0.8
-				this.heightRatio = 0.8
-			}
-
-			open(element, event) {
-				event.preventDefault()
-
-				const { href } = element
-
-				const width = screen.availWidth * this.widthRatio
-				const height = screen.availHeight * this.heightRatio
-				const left = (screen.availWidth - width) / 2
-				const top = (screen.availHeight - height) / 2
-
-				const popup = window.open(href, '_blank', `toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=no, copyhistory=no, width=${width}, height=${height}, top=${top}, left=${left}`)
-
-				if (popup === null) {
-					return true
-				}
-				return false
-			}
-		}
-
-		// Attach event listeners to all elements with class 'popup-trigger'
-		document.addEventListener('DOMContentLoaded', () => {
-			document.querySelectorAll('[data-carousel-slides] figure a').forEach(element => {
-				element.addEventListener('click', (event) => new Popup().open(element, event))
-			})
-		})
     </script>
     <!-- <noscript>
     <style>
@@ -375,8 +78,8 @@
         <header id="intro">
             <div id="intro_left-column"
                  class="z-1 flex flex-col-reverse align-items-start">
-                <h2 class="inline-flex animate-fade-in-name select-none highlight tooltip_wrapper"
-                    onmousedown="if ((event.which && event.which == 3) || (event.button && event.button == 2)) { if ('speechSynthesis' in window) { let msg = new SpeechSynthesisUtterance(); msg.volume= 0.25; msg.lang = 'cs-CZ'; msg.voice = speechSynthesis.getVoices().filter(voice => voice.name === 'Zuzana')[0]; msg.text = 'Štěpán Jákl'; speechSynthesis.speak(msg) } } else { navigator.clipboard.writeText('Štěpán Jákl'); activateHighlight(this.querySelector('.tooltip-bottom'), this, 'Copied to the clipboard') }"
+                <h2 class="inline-flex animate-fade-in-name select-none highlight-text tooltip_wrapper"
+                    onmousedown="if ((event.which && event.which == 3) || (event.button && event.button == 2)) { if ('speechSynthesis' in window) { let msg = new SpeechSynthesisUtterance(); msg.volume= 0.25; msg.lang = 'cs-CZ'; msg.voice = speechSynthesis.getVoices().filter(voice => voice.name === 'Zuzana')[0]; msg.text = 'Štěpán Jákl'; speechSynthesis.speak(msg) } } else { navigator.clipboard.writeText('Štěpán Jákl'); textHighlighter.highlightAndCopyText(event, this.querySelector('.tooltip-bottom span'), this, 'Copied to the clipboard') }"
                     tabindex="0"
                     role="button"
                     aria-label="Click to copy name to clipboard">
@@ -407,15 +110,15 @@
                     <span style="--i:1">F</span><span style="--i:2">u</span><span style="--i:3">l</span><span
                             style="--i:4">l</span><span style="--i:5">-</span><span style="--i:6">s</span><span
                             style="--i:7">t</span><span style="--i:8">a</span><span style="--i:9">c</span><span
-                            style="--i:10">k</span><span style="--i:11">&nbsp;</span><span class="highlight"
+                            style="--i:10">k</span><span style="--i:11">&nbsp;</span><span class="highlight-load"
                                                                                            style="--i:12">d</span><span
-                            class="highlight" style="--i:13">e</span><span class="highlight"
+                            class="highlight-load" style="--i:13">e</span><span class="highlight-load"
                                                                            style="--i:14">v</span><span
-                            class="highlight" style="--i:15">e</span><span class="highlight"
+                            class="highlight-load" style="--i:15">e</span><span class="highlight-load"
                                                                            style="--i:16">l</span><span
-                            class="highlight" style="--i:17">o</span><span class="highlight"
+                            class="highlight-load" style="--i:17">o</span><span class="highlight-load"
                                                                            style="--i:18">p</span><span
-                            class="highlight" style="--i:19">e</span><span class="highlight"
+                            class="highlight-load" style="--i:19">e</span><span class="highlight-load"
                                                                            style="--i:20">r</span><span style="--i:21">&nbsp;</span>
                 </h3>
                 <h3 id="intro_right-column_title--secondary"
@@ -425,13 +128,13 @@
                             style="--i:25">n</span><span style="--i:26">t</span><span style="--i:27">e</span><span
                             style="--i:28">r</span><span style="--i:29">f</span><span style="--i:30">a</span><span
                             style="--i:31">c</span><span style="--i:32">e</span><span style="--i:33">&nbsp;</span><span
-                            class="highlight-alt" style="--i:34">d</span><span class="highlight-alt"
+                            class="highlight-load-alt" style="--i:34">d</span><span class="highlight-load-alt"
                                                                                style="--i:35">e</span><span
-                            class="highlight-alt" style="--i:36">s</span><span class="highlight-alt"
+                            class="highlight-load-alt" style="--i:36">s</span><span class="highlight-load-alt"
                                                                                style="--i:37">i</span><span
-                            class="highlight-alt" style="--i:38">g</span><span class="highlight-alt"
+                            class="highlight-load-alt" style="--i:38">g</span><span class="highlight-load-alt"
                                                                                style="--i:39">n</span><span
-                            class="highlight-alt" style="--i:40">e</span><span class="highlight-alt"
+                            class="highlight-load-alt" style="--i:40">e</span><span class="highlight-load-alt"
                                                                                style="--i:41">r</span>
                 </h3>
                 <div id="availability_button"
@@ -453,9 +156,9 @@
                                       class="uppercase whitespace-nowrap select-none">Open to new opportunities</span>
                             </div>
                         </a>
-                        <div class="tooltip-bottom tooltip">
+                        <abbr class="tooltip-bottom tooltip">
                             <span>Book a virtual meeting</span>
-                        </div>
+                        </abbr>
                     </div>
                 </div>
                 <nav id="menu" class="relative grid animate-fade-in-cta-2">
@@ -463,7 +166,7 @@
                          class="inline-flex tooltip_wrapper"
                          style="place-self: self-start">
                         <div class="inline-flex align-items-center"
-                             onmousedown="navigator.clipboard.writeText('stepanjakl@outlook.com'); activateHighlight(this.querySelector('.tooltip span'), this.querySelector('.highlight-hover'), 'Copied to the clipboard')"
+                             onmousedown="navigator.clipboard.writeText('stepanjakl@outlook.com'); textHighlighter.highlightAndCopyText(event, this.querySelector('.tooltip span'), this.querySelector('.highlight-text'), 'Copied to the clipboard')"
                              onkeydown="window.prompt('Copy to the clipboard: `Cmd/Ctrl + C` and then press `Enter`', 'stepanjakl@outlook.com')"
                              tabindex="0"
                              aria-label="Contact me via email">
@@ -481,12 +184,12 @@
                                             <path d="M2.188 16.813v-4.209l7.145-2.646-7.146-2.625V3.125l16.834 6.854-16.834 6.834Z">
                                         </svg>
                                     </span>
-                            <span class="text-sm cursor-text select-none button-label highlight-hover"
+                            <span class="text-sm cursor-text select-none button-label highlight-text"
                                   style="padding: 0 1.5rem 0 1rem;
                                                  letter-spacing: 0.078125rem">stepanjakl@outlook.com</span>
-                            <div class="tooltip-top tooltip">
+                            <abbr class="tooltip-top tooltip">
                                 <span>Click to copy</span>
-                            </div>
+                            </abbr>
                         </div>
                     </div>
                     <div id="menu_links" class="flex flex-col">
@@ -515,14 +218,14 @@
                                             Profile
                                         </span>
                                     </span>
-                            <div class="tooltip-bottom tooltip">
+                            <abbr class="tooltip-bottom tooltip">
                                 <span>Learn more about me</span>
-                            </div>
-                            <div class="tooltip-bottom tooltip-active tooltip">
+                            </abbr>
+                            <abbr class="tooltip-bottom tooltip--active tooltip">
                                 <kbd style="background-color: var(--highlight-primary);"><span>⌘</span></kbd>
                                 <span>+</span>
                                 <kbd><span>P</span></kbd>
-                            </div>
+                            </abbr>
                         </a>
                         <a href="#archive"
                            aria-label="Explore snippets of my past work"
@@ -546,14 +249,14 @@
                                   class="text-xs uppercase select-none button-label">
                                         Archive
                                     </span>
-                            <div class="tooltip-bottom tooltip">
+                            <abbr class="tooltip-bottom tooltip">
                                 <span>Explore snippets of my past work</span>
-                            </div>
-                            <div class="tooltip-bottom tooltip-active tooltip">
+                            </abbr>
+                            <abbr class="tooltip-bottom tooltip--active tooltip">
                                 <kbd style="background-color: var(--highlight-primary);"><span>⌘</span></kbd>
                                 <span>+</span>
                                 <kbd><span>A</span></kbd>
-                            </div>
+                            </abbr>
                         </a>
                     </div>
                     <div id="menu_button_wrapper" class="relative flex tooltip_wrapper">
@@ -583,11 +286,11 @@
                                 <span></span>
                             </div>
                         </button>
-                        <div class="tooltip-top tooltip-active tooltip">
+                        <abbr class="tooltip-top tooltip--active tooltip">
                             <kbd style="background-color: var(--highlight-primary);"><span>⌘</span></kbd>
                             <span>+</span>
                             <kbd><span>M</span></kbd>
-                        </div>
+                        </abbr>
                         <a href="#" id="underlay_menu" class="fixed inset-0 cursor-default"></a>
                         <dialog id="menu_dropdown" class="z-10 absolute pt-1/2">
                             <div>
@@ -1112,78 +815,6 @@
                 </div>
             </div>
             <div id="modal_archive" class="modal" role="dialog" aria-modal="true">
-                <script>
-					class Carousel {
-						constructor(carouselEl) {
-							this.carouselEl = carouselEl
-							this.slidesWrapperEl = carouselEl.querySelector('[data-carousel-slides]')
-							this.slideEls = Array.from(carouselEl.querySelectorAll('[data-carousel-slides] figure'))
-							this.navEl = carouselEl.querySelector('[data-carousel-nav]')
-							this.dotEls = []
-							this.slideState = {
-								activeEl: null,
-								getActiveEl: () => this.slideState.activeEl,
-								setActiveEl: (el) => this.slideState.activeEl = el
-							}
-
-							this.init()
-						}
-
-						init() {
-							this.createNavigationDots()
-							this.setupIntersectionObserver()
-							this.setupDotEventListeners()
-							this.enableHorizontalDragScroll()
-						}
-
-						createNavigationDots() {
-							this.navEl.innerHTML = this.slideEls.map((_, index) => `<button data-label-for="${this.slideEls[index].getAttribute('data-value')}"><span class="sr-only">Slide ${index + 1}</span></button>`).join('')
-							this.dotEls = Array.from(this.navEl.querySelectorAll('button'))
-						}
-
-						setupIntersectionObserver() {
-							const observer = new IntersectionObserver(entries => {
-								entries.forEach(entry => {
-									const target = entry.target
-									if (entry.isIntersecting) {
-										this.slideState.setActiveEl(target)
-										target.classList.add('active')
-										this.dotEls.forEach((dotEl, i) => dotEl.toggleAttribute('aria-current', i === this.slideEls.indexOf(entry.target)))
-									} else {
-										target.classList.remove('active')
-									}
-								})
-							}, {
-								root: this.carouselEl,
-								rootMargin: `0% -50% 0% -${window.getComputedStyle(this.slidesWrapperEl).getPropertyValue('column-gap')}`,
-								threshold: 0.5
-							})
-
-							this.slideEls.forEach(itemEl => observer.observe(itemEl))
-						}
-
-						setupDotEventListeners() {
-							this.dotEls.forEach(dotEl => {
-								dotEl.addEventListener('click', event => {
-									event.preventDefault()
-									const targetValue = event.target.getAttribute('data-label-for')
-									this.carouselEl.querySelector(`figure[data-value="${targetValue}"]`).scrollIntoView({
-										behavior: 'smooth', block: 'nearest', inline: 'start'
-									})
-								})
-							})
-						}
-
-						enableHorizontalDragScroll() {
-							// Assuming this function exists and is defined elsewhere
-							enableHorizontalDragScroll(this.slidesWrapperEl, this.slideState)
-						}
-					}
-
-					document.addEventListener('DOMContentLoaded', () => {
-						document.querySelectorAll('[data-carousel]').forEach(carouselEl => new Carousel(carouselEl))
-					})
-                </script>
                 <div class="overflow-clip modal_content">
                     <a href="#"
                        id="modal_button-close"
@@ -1305,9 +936,11 @@
                                                         </a>
                                                     </figure>
                                                 </div>
+                                                <div data-carousel-controls>
                                                 <div data-carousel-nav-wrapper>
                                                     <nav data-carousel-nav>
                                                     </nav>
+                                                </div>
                                                     <ul data-carousel-arrows>
                                                         <li>
                                                             <button></button>

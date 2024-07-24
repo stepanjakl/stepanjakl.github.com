@@ -171,34 +171,29 @@ body {
 }
 
 
-/* Universal Text Higlight */
+/* Text Higlight */
 
-.highlight:focus {
-    transition: color calc(2 * var(--animate-out-segment)) var(--ease-in-quad) var(--delay-segment);
+.highlight-text:focus {
+    transition: color calc(2 * var(--animate-out-segment)) var(--ease-in-quad);
     transform: translate3d(0,0,0);
 }
 
-.highlight:focus.active, .highlight-hover.active {
+.highlight-text:hover {
+    transition: color calc(2 * var(--animate-out-segment)) var(--ease-in-quad) !important;
+    transform: translate3d(0,0,0);
+}
+
+.highlight-text.highlight-text--active {
+    transition: color calc(2 * var(--animate-in-segment)) var(--ease-out-quad) !important;
     color: var(--highlight-primary) !important;
-    transition: color calc(2 * var(--animate-in-segment)) var(--ease-out-quad) !important;
-    transform: translate3d(0,0,0);
-}
-
-.highlight-hover:hover {
-    transition: color calc(2 * var(--animate-in-segment)) var(--ease-in-quad) var(--delay-segment) !important;
-    transform: translate3d(0,0,0);
-}
-
-.highlight-hover.active:hover {
-    transition: color calc(2 * var(--animate-in-segment)) var(--ease-out-quad) !important;
     transform: translate3d(0,0,0);
 }
 
 
-/* Intro - Title Text Highlight */
+/* Intro - Text Load Highlight */
 
-.animate-fade-in-title span.highlight,
-.animate-fade-in-title span.highlight-alt {
+.animate-fade-in-title span.highlight-load,
+.animate-fade-in-title span.highlight-load-alt {
     animation-fill-mode: both;
     animation-duration: 2.25s, 0.75s, 1s;
     animation-timing-function: var(--ease-out-quad);
@@ -206,12 +201,12 @@ body {
     -webkit-font-smoothing: subpixel-antialiased;
 }
 
-.animate-fade-in-title span.highlight {
-    animation-name: fade-in-opacity, fade-in-blur, de-highlight;
+.animate-fade-in-title span.highlight-load {
+    animation-name: fade-in-opacity, fade-in-blur, de-highlight-load;
     transform: translate3d(0,0,0);
 }
 
-@keyframes de-highlight {
+@keyframes de-highlight-load {
     0% {
         color: var(--highlight-primary);
     }
@@ -221,12 +216,12 @@ body {
     }
 }
 
-.animate-fade-in-title span.highlight-alt {
-    animation-name: fade-in-opacity, fade-in-blur, de-highlight-alt;
+.animate-fade-in-title span.highlight-load-alt {
+    animation-name: fade-in-opacity, fade-in-blur, de-highlight-load-alt;
     transform: translate3d(0,0,0);
 }
 
-@keyframes de-highlight-alt {
+@keyframes de-highlight-load-alt {
     0% {
         color: var(--yellow);
     }
@@ -375,13 +370,13 @@ svg.animate-face-icon path {
     transform: translate3d(0,0,0);
 }
 
-#menu_links>a:hover, #menu_links>a.active {
+#menu_links>a:hover, #menu_links>a.tooltip-key--active {
     transition: background-color var(--animate-in-segment-2\/3) linear;
     transform: translate3d(0,0,0);
     background-color: var(--highlight-secondary);
 }
 
-#menu_links>a[href="#profile"]:hover, #menu_links>a[href="#profile"].active {
+#menu_links>a[href="#profile"]:hover, #menu_links>a[href="#profile"].tooltip-key--active {
     background-color: var(--highlight-primary);
 }
 
@@ -437,7 +432,7 @@ svg.animate-face-icon path {
     z-index: 7;
 }
 
-#menu_button_wrapper:hover #menu_button, #menu_button_wrapper.active #menu_button, #menu:target #menu_button {
+#menu_button_wrapper:hover #menu_button, #menu_button_wrapper.tooltip-key--active #menu_button, #menu:target #menu_button {
     transition: color var(--animate-in-segment-2\/3) linear,  background-color var(--animate-in-segment-2\/3) linear;
     transform: translate3d(0,0,0);
     color: var(--icon-hover);
@@ -851,7 +846,7 @@ svg.animate-face-icon path {
     transition: border-radius var(--animate-out-segment) var(--ease-in-quad), column-gap var(--animate-out-segment) var(--ease-in-quad), padding var(--animate-out-segment) var(--ease-in-quad), margin var(--animate-out-segment) var(--ease-in-quad);
     column-gap: 0.625rem;
     padding: 0.625rem 0.9375rem;
-    margin: 0.375rem 0;
+    /* margin: 0.375rem 0; */
     border-radius: 0.5rem;
 }
 
@@ -863,25 +858,32 @@ svg.animate-face-icon path {
     border-radius: 1.25rem;
 }
 
-[data-carousel-nav]:hover button {
-    transition: width var(--animate-in-segment) var(--ease-out-quad), height var(--animate-in-segment) var(--ease-out-quad), background-color var(--animate-in-segment) linear;
-    width: 0.75rem;
-    height: 0.75rem;
-}
-
 [data-carousel-nav] button {
-    transition: width var(--animate-out-segment) var(--ease-in-quad), height var(--animate-out-segment) var(--ease-in-quad), background-color var(--animate-out-segment) linear;
+    transition: background-color var(--animate-out-segment) linear; /* width var(--animate-out-segment) var(--ease-in-quad), height var(--animate-out-segment) var(--ease-in-quad) */
     width: 0.5rem;
     height: 0.5rem;
     background-color: var(--inner-bg-light-4);
 }
 
-[data-carousel-nav] button:hover {
+[data-carousel-nav]:hover button {
+    transition: background-color var(--animate-in-segment) linear; /*  width var(--animate-in-segment) var(--ease-out-quad), height var(--animate-in-segment) var(--ease-out-quad) */
+    width: 0.75rem;
+    height: 0.75rem;
+}
+
+[data-carousel-nav] button:hover, [data-carousel-nav] button:focus {
     transition: background-color var(--animate-out-segment-2\/3) linear;
     background-color: var(--inner-bg-light-6);
 }
 
+[data-carousel-nav] button[aria-current] {
+    pointer-events: none;
+    background-color: var(--inner-bg-light-6);
+    width: 1.75rem;
+}
+
 [data-carousel-nav]:hover button[aria-current] {
+    /* transition: width 0s, height 0s, background-color var(--animate-in-segment) linear; */
     width: 2.75rem;
 }
 
@@ -972,4 +974,19 @@ svg.animate-face-icon path {
     opacity: 1;
     transition: opacity var(--animate-in-segment) linear;
     transform: translate3d(0,0,0);
+}
+
+
+/* Tooltip */
+
+.tooltip_wrapper .tooltip {
+    transition: var(--animate-out-segment-2\/3) linear;
+    opacity: 0;
+
+}
+
+.tooltip_wrapper:hover:not(.tooltip-key--active) .tooltip:not(.tooltip--active), .tooltip_wrapper:focus-within:not(.tooltip-key--active) .tooltip:not(.tooltip--active),
+.tooltip_wrapper.tooltip-key--active .tooltip.tooltip--active, .tooltip_wrapper:focus-within.tooltip-key--active .tooltip.tooltip--active {
+    transition: var(--animate-in-segment-2\/3) linear var(--delay-segment-1\/3);
+    opacity: 1;
 }
