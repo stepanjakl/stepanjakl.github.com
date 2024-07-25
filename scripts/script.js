@@ -309,8 +309,9 @@ class TouchHandler {
 
 
 class HorizontalDragScroll {
-    constructor(element, options) {
-        this.element = element
+    constructor(options = {}) {
+        console.log(options)
+        this.element = options.element
         this.options = options
         this.isMouseDown = false
         this.startX = 0
@@ -327,38 +328,43 @@ class HorizontalDragScroll {
     }
 
     onMouseDown(event) {
+        // if (this.element.classList.contains('edge-x-scroll--scrolling')) return
+
         this.isMouseDown = true
         this.startX = event.clientX
         this.scrollLeft = this.element.scrollLeft
-        this.element.classList.add('carousel--mouse-down')
+        this.element.classList.add('x-drag-scroll--mouse-down')
     }
 
     onMouseMove(event) {
         if (!this.isMouseDown) return
 
         event.preventDefault()
-        // this.element.setPointerCapture(event.pointerId)
-        this.element.classList.add('carousel--dragging')
+        /* this.element.setPointerCapture(event.pointerId) */
+        this.element.classList.add('x-drag-scroll--dragging')
         const moveX = event.clientX - this.startX
         this.element.scrollLeft = this.scrollLeft - moveX
     }
 
     completeDrag(event) {
         this.isMouseDown = false
-        this.element.scrollTo({
-            left: this.options.activeSlide.get().offsetLeft,
-            behavior: 'smooth'
-        })
+
+        if (this.options.activeSlide) {
+            this.element.scrollTo({
+                left: this.options.activeSlide.get().offsetLeft,
+                behavior: 'smooth'
+            })
+        }
 
         setTimeout(() => {
-            this.element.classList.remove('carousel--dragging', 'carousel--mouse-down')
-            // this.element.releasePointerCapture(event.pointerId)
+            this.element.classList.remove('x-drag-scroll--dragging', 'x-drag-scroll--mouse-down')
+            /* this.element.releasePointerCapture(event.pointerId) */
         }, 300)
     }
 }
 
 
-class EdgeScroller {
+class HorizontalEdgeScroller {
     constructor(options = {}) {
         this.options = options
         this.element = this.options.element
@@ -389,18 +395,28 @@ class EdgeScroller {
     }
 
     setPseudoElementsWidth(selector, width) {
-
-        this.element.setAttribute('data-edge-scroll-id', this.options.id)
+        this.element.setAttribute('data-edge-scroll-id', this.options.id) /* parentElement */
 
         const style = document.createElement('style')
         style.textContent = `
-          [${this.options.id}]::before {
+          [data-edge-scroll-id="${this.options.id}"]::before {
             content: '';
+            position: absolute;
+            z-index: 1;
             display: block;
-            left: 0;
-            height: 100%;
-            width: ${this.edgeWidth};
-            background-color: red; /* Adjust background if needed */
+            inset: 0 auto 0 0;
+            width: ${this.edgeWidth}px;
+            cursor: w-resize;
+          }
+
+          [data-edge-scroll-id="${this.options.id}"]::after {
+            content: '';
+            position: absolute;
+            z-index: 1;
+            display: block;
+            inset: 0 0 0 auto;
+            width: ${this.edgeWidth}px;
+            cursor: e-resize;
           }
         `
         document.head.appendChild(style)
@@ -409,19 +425,23 @@ class EdgeScroller {
     handleMouseOut() {
         this.isSnapped = true
 
-        requestAnimationFrame(() => {
-            this.element.scrollTo({
-                left: this.options.activeSlide.get().offsetLeft,
-                behavior: 'smooth'
+        if (this.options.activeSlide) {
+            requestAnimationFrame(() => {
+                this.element.scrollTo({
+                    left: this.options.activeSlide.get().offsetLeft,
+                    behavior: 'smooth'
+                })
             })
-        })
+        }
 
         setTimeout(() => {
-            this.element.classList.remove('carousel--scrolling')
+            this.element.classList.remove('edge-x-scroll--scrolling')
         }, 300)
     }
 
     handleMouseMove(event) {
+        if (this.element.classList.contains('x-drag-scroll--dragging')) return
+
         const rect = this.element.getBoundingClientRect()
         const { clientX, clientY } = event
 
@@ -448,9 +468,7 @@ class EdgeScroller {
             }
 
             if (!this.isSnapped) {
-                if (this.options.activeSlide) {
-                    this.handleMouseOut()
-                }
+                this.handleMouseOut()
             }
         }
     }
@@ -458,10 +476,10 @@ class EdgeScroller {
     startScroll() {
         if (!this.isScrolling) {
             this.isScrolling = true
-            if (this.options.activeSlide) {
+            // if (this.options.activeSlide) {
                 this.isSnapped = false
-                this.element.classList.add('carousel--scrolling')
-            }
+            // }
+            this.element.classList.add('edge-x-scroll--scrolling')
             requestAnimationFrame(this.scrollStep)
         }
     }
@@ -547,7 +565,7 @@ class Carousel {
         this.createNavigationDots()
         this.setupIntersectionObserver()
         this.enableHorizontalDragScroll()
-        this.enableEdgeScroller()
+        this.enableHorizontalEdgeScroller()
         this.setupDotEventListeners()
         this.setupButtonEventListeners()
     }
@@ -598,11 +616,11 @@ class Carousel {
     }
 
     enableHorizontalDragScroll() {
-        new HorizontalDragScroll(this.slidesWrapperEl, { activeSlide: this.activeSlide })
+        new HorizontalDragScroll({ element: this.slidesWrapperEl, activeSlide: this.activeSlide })
     }
 
-    enableEdgeScroller() {
-        new EdgeScroller({ id: this.options.id, element: this.slidesWrapperEl, maxSpeed: 1, edgeWidthRatio: 5, activeSlide: this.activeSlide })
+    enableHorizontalEdgeScroller() {
+        new HorizontalEdgeScroller({ id: this.options.id, element: this.slidesWrapperEl, maxSpeed: 1, edgeWidthRatio: 5, activeSlide: this.activeSlide })
     }
 
     setupButtonEventListeners() {
@@ -655,8 +673,9 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 
     // Initialize edge scroller
-    new EdgeScroller({ element: document.querySelector('#timeline_content') })
+    new HorizontalEdgeScroller({ id: 'timeline', element: document.querySelector('#timeline_content') })
+    new HorizontalDragScroll({ element: document.querySelector('#timeline_content') })
     /* document.querySelectorAll('[data-carousel-slides]').forEach(element => {
-        new EdgeScroller({ edgeWidthRatio: 5 }).init(element)
+        new HorizontalEdgeScroller({ edgeWidthRatio: 5 }).init(element)
     }) */
 })
