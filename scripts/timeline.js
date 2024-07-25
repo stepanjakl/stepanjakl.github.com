@@ -379,7 +379,7 @@ class timeline extends HTMLElement {
 
         initializeTimeline()
 
-        function handleMouseMove(event) {
+        /* function handleMouseMove(event) {
             const rect = timelineContent.getBoundingClientRect()
             const edgeWidth = 3 * parseFloat(getComputedStyle(document.documentElement).fontSize)
 
@@ -437,7 +437,7 @@ class timeline extends HTMLElement {
         function calculateSpeed(distance, edgeWidth, direction) {
             const speed = (maxSpeed * (edgeWidth - distance)) / edgeWidth
             return direction === 'left' ? -speed : speed
-        }
+        } */
 
         const timelineContent = document.getElementById('timeline_content')
         let lastTimestamp = null
@@ -445,8 +445,8 @@ class timeline extends HTMLElement {
         const maxSpeed = 0.5
         let isScrolling = false
 
-        timelineContent.addEventListener('mousemove', handleMouseMove)
-        timelineContent.addEventListener('mouseleave', stopScroll)
+        /* timelineContent.addEventListener('mousemove', handleMouseMove)
+        timelineContent.addEventListener('mouseleave', stopScroll) */
 
 
         const highlightLabelEls = (() => {

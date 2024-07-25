@@ -1350,9 +1350,9 @@ body {
 
 [data-carousel-slides] {
     position: relative;
-    scroll-snap-type: x mandatory;
-    overflow-x: auto;
+    overflow-x: scroll;
     overflow-y: hidden;
+    scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
     scrollbar-width: none;
     column-gap: var(--slide-offset);
@@ -1361,11 +1361,11 @@ body {
     /* mask-image: linear-gradient(90deg, rgba(0, 0, 0, 1) calc(100% - calc(var(--slide-offset) * 2)), rgba(0, 0, 0, 0) 100%); */
 }
 
-[data-carousel-slides].pointer-down {
+[data-carousel-slides].carousel--mouse-down {
     cursor: grabbing;
 }
 
-[data-carousel-slides].dragging {
+[data-carousel-slides].carousel--dragging, [data-carousel-slides].carousel--scrolling {
     scroll-behavior: unset;
     scroll-snap-type: none;
 }
@@ -1425,7 +1425,7 @@ body {
 }
 
 
-[data-carousel-slides].dragging a {
+[data-carousel-slides].carousel--dragging a {
     pointer-events: none;
 }
 
@@ -1516,16 +1516,17 @@ body {
     justify-content: center;
     border-radius: 0.5rem;
     padding: 0.25rem 0.375rem;
+    cursor: pointer;
 }
 
 [data-carousel-arrows] li:first-child button {
     padding-right: 0.4375rem;
-    cursor: w-resize;
+    /* cursor: w-resize; */
 }
 
 [data-carousel-arrows] li:last-child button {
     padding-left: 0.4375rem;
-    cursor: e-resize;
+    /* cursor: e-resize; */
 }
 
 [data-carousel-arrows] li button::before {

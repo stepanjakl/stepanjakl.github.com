@@ -312,47 +312,187 @@ class HorizontalDragScroll {
     constructor(element, options) {
         this.element = element
         this.options = options
-        this.isPointerDown = false
+        this.isMouseDown = false
         this.startX = 0
         this.scrollLeft = 0
         this.init()
     }
 
     init() {
-        this.element.addEventListener('pointerdown', this.onPointerDown.bind(this))
-        this.element.addEventListener('pointermove', this.onPointerMove.bind(this))
-        this.element.addEventListener('pointerup', this.completeDrag.bind(this))
-        this.element.addEventListener('pointercancel', this.completeDrag.bind(this))
+        this.element.addEventListener('mousedown', this.onMouseDown.bind(this))
+        this.element.addEventListener('mousemove', this.onMouseMove.bind(this))
+        this.element.addEventListener('mouseup', this.completeDrag.bind(this))
+        this.element.addEventListener('mouseleave', this.completeDrag.bind(this))
+        this.element.addEventListener('mousecancel', this.completeDrag.bind(this))
     }
 
-    onPointerDown(event) {
-        this.isPointerDown = true
+    onMouseDown(event) {
+        this.isMouseDown = true
         this.startX = event.clientX
         this.scrollLeft = this.element.scrollLeft
-        this.element.classList.add('pointer-down')
+        this.element.classList.add('carousel--mouse-down')
     }
 
-    onPointerMove(event) {
-        if (!this.isPointerDown) return
+    onMouseMove(event) {
+        if (!this.isMouseDown) return
 
         event.preventDefault()
-        this.element.setPointerCapture(event.pointerId)
-        this.element.classList.add('dragging')
+        // this.element.setPointerCapture(event.pointerId)
+        this.element.classList.add('carousel--dragging')
         const moveX = event.clientX - this.startX
         this.element.scrollLeft = this.scrollLeft - moveX
     }
 
     completeDrag(event) {
-        this.isPointerDown = false
+        this.isMouseDown = false
         this.element.scrollTo({
             left: this.options.activeSlide.get().offsetLeft,
-            behavior: 'smooth',
+            behavior: 'smooth'
         })
 
         setTimeout(() => {
-            this.element.classList.remove('dragging', 'pointer-down')
-            this.element.releasePointerCapture(event.pointerId)
-        }, 250)
+            this.element.classList.remove('carousel--dragging', 'carousel--mouse-down')
+            // this.element.releasePointerCapture(event.pointerId)
+        }, 300)
+    }
+}
+
+
+class EdgeScroller {
+    constructor(options = {}) {
+        this.options = options
+        this.element = this.options.element
+        this.maxSpeed = this.options.maxSpeed || 0.75
+        this.scrollSpeed = 0
+        this.isScrolling = false
+        this.lastTimestamp = null
+        // this.edgeWidth = (this.options.edgeWidthRatio || 3) * parseFloat(getComputedStyle(document.documentElement).fontSize)
+        this.isSnapped = true
+
+        console.log(this.options)
+        this.scrollStep = this.scrollStep.bind(this)
+        this.handleMouseOut = this.handleMouseOut.bind(this)
+
+        this.init()
+    }
+
+    init() {
+        document.addEventListener('mousemove', this.handleMouseMove.bind(this))
+        window.addEventListener('resize', this.onResize.bind(this))
+        this.onResize()
+    }
+
+    onResize() {
+        this.edgeWidth = (this.options.edgeWidthRatio || 3) * parseFloat(getComputedStyle(document.documentElement).fontSize)
+        this.setPseudoElementsWidth()
+        console.log(this.edgeWidth)
+    }
+
+    setPseudoElementsWidth(selector, width) {
+
+        this.element.setAttribute('data-edge-scroll-id', this.options.id)
+
+        const style = document.createElement('style')
+        style.textContent = `
+          [${this.options.id}]::before {
+            content: '';
+            display: block;
+            left: 0;
+            height: 100%;
+            width: ${this.edgeWidth};
+            background-color: red; /* Adjust background if needed */
+          }
+        `
+        document.head.appendChild(style)
+    }
+
+    handleMouseOut() {
+        this.isSnapped = true
+
+        requestAnimationFrame(() => {
+            this.element.scrollTo({
+                left: this.options.activeSlide.get().offsetLeft,
+                behavior: 'smooth'
+            })
+        })
+
+        setTimeout(() => {
+            this.element.classList.remove('carousel--scrolling')
+        }, 300)
+    }
+
+    handleMouseMove(event) {
+        const rect = this.element.getBoundingClientRect()
+        const { clientX, clientY } = event
+
+        const withinXBounds = clientX >= rect.left && clientX <= rect.right
+        const withinYBounds = clientY >= rect.top && clientY <= rect.bottom
+        const nearLeftEdge = clientX < rect.left + this.edgeWidth
+        const nearRightEdge = clientX > rect.right - this.edgeWidth
+
+        if (withinXBounds && withinYBounds) {
+            if (nearLeftEdge) {
+                this.scrollSpeed = this.calculateSpeed(clientX - rect.left, this.edgeWidth, 'left')
+                this.startScroll()
+            } else if (nearRightEdge) {
+                this.scrollSpeed = this.calculateSpeed(rect.right - clientX, this.edgeWidth, 'right')
+                this.startScroll()
+            } else {
+                if (this.isScrolling) {
+                    this.stopScroll()
+                }
+            }
+        } else {
+            if (this.isScrolling) {
+                this.stopScroll()
+            }
+
+            if (!this.isSnapped) {
+                if (this.options.activeSlide) {
+                    this.handleMouseOut()
+                }
+            }
+        }
+    }
+
+    startScroll() {
+        if (!this.isScrolling) {
+            this.isScrolling = true
+            if (this.options.activeSlide) {
+                this.isSnapped = false
+                this.element.classList.add('carousel--scrolling')
+            }
+            requestAnimationFrame(this.scrollStep)
+        }
+    }
+
+    scrollStep(timestamp) {
+        if (this.lastTimestamp === null) {
+            this.lastTimestamp = timestamp
+        }
+        const elapsed = timestamp - this.lastTimestamp
+        this.lastTimestamp = timestamp
+
+        const maxScrollLeft = this.element.scrollWidth - this.element.clientWidth
+        const minScrollLeft = 0
+
+        this.element.scrollLeft += this.scrollSpeed * elapsed
+
+        if (this.scrollSpeed !== 0) {
+            requestAnimationFrame(this.scrollStep)
+        } else {
+            this.isScrolling = false
+            this.lastTimestamp = null
+        }
+    }
+
+    stopScroll() {
+        this.scrollSpeed = 0
+    }
+
+    calculateSpeed(distance, edgeWidth, direction) {
+        const speed = (this.maxSpeed * (edgeWidth - distance)) / edgeWidth
+        return direction === 'left' ? -speed : speed
     }
 }
 
@@ -384,14 +524,16 @@ class Popup {
 
 
 class Carousel {
-    constructor(carouselEl) {
-        this.carouselEl = carouselEl
-        this.slidesWrapperEl = carouselEl.querySelector('[data-carousel-slides]')
-        this.slideEls = Array.from(carouselEl.querySelectorAll('[data-carousel-slides] figure'))
-        this.navEl = carouselEl.querySelector('[data-carousel-nav]')
+    constructor(options = {}) {
+        console.log(options)
+        this.options = options
+        this.carouselEl = options.element
+        this.slidesWrapperEl = this.carouselEl.querySelector('[data-carousel-slides]')
+        this.slideEls = Array.from(this.carouselEl.querySelectorAll('[data-carousel-slides] figure'))
+        this.navEl = this.carouselEl.querySelector('[data-carousel-nav]')
         this.dotEls = []
-        this.prevButtonEl = carouselEl.querySelector('[data-carousel-arrows] li:first-child button')
-        this.nextButtonEl = carouselEl.querySelector('[data-carousel-arrows] li:last-child button')
+        this.prevButtonEl = this.carouselEl.querySelector('[data-carousel-arrows] li:first-child button')
+        this.nextButtonEl = this.carouselEl.querySelector('[data-carousel-arrows] li:last-child button')
         this.activeSlide = {
             element: null,
             get: () => this.activeSlide.element,
@@ -405,6 +547,7 @@ class Carousel {
         this.createNavigationDots()
         this.setupIntersectionObserver()
         this.enableHorizontalDragScroll()
+        this.enableEdgeScroller()
         this.setupDotEventListeners()
         this.setupButtonEventListeners()
     }
@@ -458,6 +601,10 @@ class Carousel {
         new HorizontalDragScroll(this.slidesWrapperEl, { activeSlide: this.activeSlide })
     }
 
+    enableEdgeScroller() {
+        new EdgeScroller({ id: this.options.id, element: this.slidesWrapperEl, maxSpeed: 1, edgeWidthRatio: 5, activeSlide: this.activeSlide })
+    }
+
     setupButtonEventListeners() {
         this.prevButtonEl.addEventListener('click', (event) => {
             event.preventDefault()
@@ -500,10 +647,16 @@ document.addEventListener('DOMContentLoaded', () => {
     window.textHighlighter = new TextHighlighter()
 
     // Initialize carousels
-    document.querySelectorAll('[data-carousel]').forEach(carouselEl => new Carousel(carouselEl))
+    document.querySelectorAll('[data-carousel]').forEach((carouselEl, index) => new Carousel({ id: `carousel-${index + 1}`, element: carouselEl }))
 
     // Initialize popups
     document.querySelectorAll('[data-carousel-slides] figure a').forEach(element => {
         element.addEventListener('click', event => new Popup().open(element, event))
     })
+
+    // Initialize edge scroller
+    new EdgeScroller({ element: document.querySelector('#timeline_content') })
+    /* document.querySelectorAll('[data-carousel-slides]').forEach(element => {
+        new EdgeScroller({ edgeWidthRatio: 5 }).init(element)
+    }) */
 })
