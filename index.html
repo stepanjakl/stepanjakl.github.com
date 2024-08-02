@@ -42,12 +42,13 @@
     <link rel="stylesheet" href="styles/state.css">
     <link rel="stylesheet" href="styles/animation.css">
     <script src="scripts/script.js"></script>
+    <script src="scripts/dialog.js"></script>
     <script src="scripts/timeline.js"></script>
     <script>
 		console.log('%cŠtěpán Jákl | Full-stack developer & interface designer', `border: max(1px, 0.0625rem) solid #4e7bff; border-radius: 0.125rem; color: #4e7bff; font-size: 0.78125rem; padding: 1.40625rem 2.1875rem 1.25rem 2.1875rem; margin: 1.25rem 1.25rem; /* padding: 1.859375rem 1.875rem 1.859375rem 5.25rem; background-image: url('data:image/svg+xml,%3Csvg width='100%' height='100%' viewBox='0 0 40 40' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M0 40V10.033L10.033 0H40V30L30 40H0ZM10 30V25H22.5L25 22.5H10V17.5H30V25L25 30H10ZM15 10H30V15H10L15 10Z' fill='%234e7bff'/%3E%3C/svg%3E%0A'); background-repeat: no-repeat; background-position: 1.25rem 50%; background-size: 2.5rem 2.5rem */`)
-		console.log('%cThis website was created with HTML, CSS and sprinkled with a bit of vanilla JavaScript.', 'color: #4e7bff; margin: 0.9375rem 0 0.9375rem 1.25rem;')
-		console.log('%cThe ambition has been to create a performant, pixel-perfect and responsive site.', 'color: #4e7bff; margin: 0.9375rem 0 0.9375rem 1.25rem;')
-		console.log('%cNo framework, no compiler, no site generator - only pure joy.', 'color: #4e7bff; margin: 0.9375rem 0 0.9375rem 1.25rem;')
+		console.log('%cThis website uses HTML, CSS, and optional JavaScript for accessibility and a better user experience.', 'color: #4e7bff; margin: 0.9375rem 0 0.9375rem 1.25rem;')
+		console.log('%cThe goal was to create a fast, pixel-perfect, and responsive site.', 'color: #4e7bff; margin: 0.9375rem 0 0.9375rem 1.25rem;')
+		console.log('%cNo frameworks, no compilers, no site generators—just pure joy.', 'color: #4e7bff; margin: 0.9375rem 0 0.9375rem 1.25rem;')
 		/* console.log('%cMade with tears, stress and anxiety. Just joking, of course it was crafted with love ;-)', 'color: #4e7bff; margin: 0.9375rem 0 0.9375rem 1.25rem;') */
 		console.log('%cInterested in working together? Reach out to me via email at %cstepanjakl@outlook.com', 'color: #4e7bff; margin: 0.9375rem 0 0.9375rem 1.25rem;', 'color: #4e7bff; text-decoration: underline;')
     </script>
@@ -194,6 +195,7 @@
                     </div>
                     <div id="menu_links" class="flex flex-col">
                         <a href="#profile"
+                        onclick="openDialog('modal_profile', this)"
                            aria-label="Learn more about me"
                            rel="noreferrer"
                            class="z-4 flex align-items-center tooltip_wrapper">
@@ -261,16 +263,16 @@
                     </div>
                     <div id="menu_button_wrapper" class="relative flex tooltip_wrapper">
                         <a href="#menu"
-                           id="menu_button-open"
+                           id="menu_button--open"
                            tabindex="0"
-                           onclick="event.preventDefault(); document.querySelector('#menu_dropdown').show(); window.location.hash = 'menu'; document.querySelector('#menu_button-close').focus()"
+                           onclick="event.preventDefault(); document.querySelector('#menu_dropdown').show(); window.location.hash = 'menu'; document.querySelector('#menu_button--close').focus()"
                            class="z-2 inset-0"
                            style="position: absolute"
                            aria-label="Open dropdown menu"></a>
                         <a href="#"
-                           id="menu_button-close"
+                           id="menu_button--close"
                            tabindex="0"
-                           onclick="document.querySelector('#menu_dropdown').close(); document.querySelector('#menu_button-open').focus()"
+                           onclick="document.querySelector('#menu_dropdown').close(); document.querySelector('#menu_button--open').focus()"
                            class="inset-0"
                            style="position: absolute"
                            aria-label="Close dropdown menu"></a>
@@ -444,6 +446,7 @@
             <div id="modal_profile" class="modal" role="dialog" aria-modal="true">
                 <div class="overflow-clip modal_content">
                     <a href="#"
+                    onclick="closeDialog(this)"
                        id="modal_button-close"
                        class="flex justify-content-center align-items-center"
                        aria-label="Close modal">
@@ -834,12 +837,8 @@
                                     height: 100%;
                                     padding-bottom: var(--segment-half)">
                         <!-- overflow-y: scroll; -->
-                        <div style="padding-top: 3rem; padding-left: 3rem; padding-right: 6rem">
-                            <div class="flex flex-col" style="column-gap: 1.5rem">
-                                <div class="grid"
-                                     style="grid-auto-flow: row;
-                                                grid-template-columns: minmax(20%, max-content) minmax(0, 1fr);
-                                                gap: 3rem">
+                        <div id="modal_archive-wrapper" style="padding-top: 3rem; padding-left: 3rem; padding-right: 6rem">
+                                <div id="modal_archive-content" class="grid">
                                     <div data-timeline-section="2023" class="flex flex-col">
                                         <div class="sticky flex flex-col align-items-end"
                                              style="row-gap: 1.25rem;
@@ -1008,7 +1007,6 @@
                                             <span>AHOJ</span>
                                         </div>
                                     </div>
-                                </div>
                             </div>
                         </div>
                         <div class="sticky"

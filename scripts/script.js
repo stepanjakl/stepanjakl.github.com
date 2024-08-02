@@ -54,8 +54,8 @@ class KeyHandler {
         this.tooltipSelectors = '#menu_links>a[href="#profile"], #menu_links>a[href="#archive"], #menu_button_wrapper'
         this.menuElementSelector = '.animate-fade-in-cta-2'
         this.menuDropdownSelector = '#menu_dropdown'
-        this.menuButtonOpenSelector = '#menu_button-open'
-        this.menuButtonCloseSelector = '#menu_button-close'
+        this.menuButtonOpenSelector = '#menu_button--open'
+        this.menuButtonCloseSelector = '#menu_button--close'
 
         document.addEventListener('keydown', this.handleKeydown.bind(this))
         document.addEventListener('keyup', this.handleKeyup.bind(this))
@@ -98,7 +98,15 @@ class KeyHandler {
 
     toggleProfile(event) {
         event.preventDefault()
-        document.location.hash = document.location.hash === '#profile' ? '' : '#profile'
+
+        if(document.location.hash === '#profile') {
+            aria.getCurrentDialog().close()
+            document.location.hash = ''
+        }
+        else {
+            openDialog('modal_profile', document.querySelector('#menu_links a[href="#profile"]'))
+            document.location.hash = '#profile'
+        }
     }
 
     toggleArchive(event) {
@@ -182,7 +190,8 @@ class WheelHandler {
         const scrollPositionTop = modalElement.scrollTop
 
         if (verticalScrollDirection === 'up' && scrollPositionTop === 0) {
-            window.location.hash = '#'
+            aria.getCurrentDialog().close()
+            document.location.hash = ''
         }
     }
 
@@ -192,6 +201,7 @@ class WheelHandler {
 
         if (verticalScrollDirection === 'down' && scrollPositionY + window.innerHeight >= totalHeight) {
             if (window.location.hash === '') {
+                openDialog('modal_profile', document.querySelector('#menu_links a[href="#profile"]'))
                 window.location.hash = '#profile'
             }
         }
@@ -209,7 +219,7 @@ class WheelHandler {
                 }
             } else if (horizontalScrollDirection === 'left' && scrollPositionX === 0) {
                 if (window.location.hash === '#menu') {
-                    window.location.hash = '#'
+                    window.location.hash = ''
                 }
             }
         }
@@ -268,7 +278,7 @@ class TouchHandler {
         const scrollPositionTop = modalElement.scrollTop
 
         if (verticalScrollDirection === 'up' && scrollPositionTop === 0) {
-            window.location.hash = '#'
+            window.location.hash = ''
         }
     }
 
@@ -291,7 +301,7 @@ class TouchHandler {
         if (this.isAnimationFinished('.animate-fade-in-cta-2')) {
             if (horizontalScrollDirection === 'right' && scrollPositionX + window.innerWidth >= totalWidth) {
                 if (window.location.hash === '#menu') {
-                    window.location.hash = '#'
+                    window.location.hash = ''
                 }
             } else if (horizontalScrollDirection === 'left' && scrollPositionX === 0) {
                 if (window.location.hash === '') {

@@ -323,7 +323,7 @@ svg.animate-face-icon path {
     animation-delay: calc((var(--delay-segment) * 5) + 0.1s);
 }
 
-#availability_button a:hover #availability_button_dot {
+#availability_button a:hover #availability_button_dot, #availability_button a:focus #availability_button_dot {
     animation: none;
 }
 
@@ -334,7 +334,7 @@ svg.animate-face-icon path {
     z-index: -1;
 }
 
-#availability_button a:hover #availability_button_dot::before {
+#availability_button a:hover #availability_button_dot::before, #availability_button a:focus #availability_button_dot::before {
     transition: opacity calc(2 * var(--animate-in-segment)) var(--ease-in-quad), transform calc(2 * var(--animate-in-segment)) var(--ease-in-quad);
     transform: translate3d(0,0,0);
     transform: scale(135);
@@ -345,7 +345,7 @@ svg.animate-face-icon path {
     transform: translate3d(0,0,0);
 }
 
-#availability_button a:hover #availability_button_dot::after {
+#availability_button a:hover #availability_button_dot::after, #availability_button a:focus #availability_button_dot::after {
     transition: background-color var(--animate-in-segment) linear var(--animate-in-segment);
     transform: translate3d(0,0,0);
     background-color: var(--cyan-full-5);
@@ -356,7 +356,7 @@ svg.animate-face-icon path {
     transform: translate3d(0,0,0);
 }
 
-#availability_button a:hover #availability_button_text {
+#availability_button a:hover #availability_button_text, #availability_button a:focus #availability_button_text {
     transition: color var(--animate-in-segment) linear var(--animate-in-segment);
     transform: translate3d(0,0,0);
     color: var(--cyan-full-5);
@@ -370,35 +370,35 @@ svg.animate-face-icon path {
     transform: translate3d(0,0,0);
 }
 
-#menu_links>a:hover, #menu_links>a.tooltip-key--active {
+#menu_links>a:hover, #menu_links>a:focus, #menu_links>a.tooltip-key--active, #menu_button--open:focus ~ #menu_button {
     transition: background-color var(--animate-in-segment-2\/3) linear;
     transform: translate3d(0,0,0);
     background-color: var(--highlight-secondary);
 }
 
-#menu_links>a[href="#profile"]:hover, #menu_links>a[href="#profile"].tooltip-key--active {
+#menu_links>a[href="#profile"]:hover, #menu_links>a[href="#profile"]:focus, #menu_links>a[href="#profile"].tooltip-key--active {
     background-color: var(--highlight-primary);
 }
 
-#menu_links>a svg, #menu_email_button svg {
+#menu_links>a svg, #menu_email_button>div svg {
     transition: color var(--animate-out-segment-2\/3) linear;
     transform: translate3d(0,0,0);
     color: var(--icon);
 }
 
-#menu_links>a:hover svg, #menu_email_button:hover svg {
+#menu_links>a:hover svg, #menu_links>a:focus svg, #menu_email_button>div:hover svg, #menu_email_button>div:focus svg {
     transition: color var(--animate-in-segment-2\/3) linear;
     transform: translate3d(0,0,0);
     color: var(--icon-hover);
 }
 
-#menu_links>a span.button-label, #menu_email_button span.button-label {
+#menu_links>a span.button-label, #menu_email_button>div span.button-label {
     transition: color var(--animate-out-segment-2\/3) linear;
     transform: translate3d(0,0,0);
     color: var(--text-2);
 }
 
-#menu_links>a:hover span.button-label, #menu_email_button:hover span.button-label {
+#menu_links>a:hover span.button-label, #menu_links>a:focus span.button-label, #menu_email_button>div:hover span.button-label, #menu_email_button>div:focus span.button-label {
     transition: color var(--animate-in-segment-2\/3) linear;
     transform: translate3d(0,0,0);
     color: var(--text-1);
@@ -409,7 +409,7 @@ svg.animate-face-icon path {
     transform: translate3d(0,0,0);
 }
 
-#menu_links>a:hover span.button-label u {
+#menu_links>a:hover span.button-label u, #menu_links>a:focus span.button-label u {
     transition: text-decoration var(--animate-in-segment-2\/3) linear;
     transform: translate3d(0,0,0);
     text-decoration-color: var(--text-2) !important;
@@ -428,7 +428,7 @@ svg.animate-face-icon path {
     z-index: 6;
 }
 
-#menu:target #menu_button-close {
+#menu:target #menu_button--close {
     z-index: 7;
 }
 
