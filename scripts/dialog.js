@@ -108,12 +108,19 @@ aria.Dialog = function (dialogId, focusAfterClosed, focusFirst) {
 
     this.focusFirst = typeof focusFirst === 'string' ? document.getElementById(focusFirst) : focusFirst || null
 
+    if (this.dialogNode.id === 'menu_button_wrapper') {
+        document.querySelector('#menu_button--open').setAttribute('tabindex', '-1')
+        document.querySelector('#underlay_menu').setAttribute('tabindex', '-1')
+    }
+
     this.preNode = document.createElement('div')
     this.preNode.tabIndex = 0
+    this.preNode.className = 'contents'
     this.dialogNode.parentNode.insertBefore(this.preNode, this.dialogNode)
 
     this.postNode = document.createElement('div')
     this.postNode.tabIndex = 0
+    this.postNode.className = 'contents'
     this.dialogNode.parentNode.insertBefore(this.postNode, this.dialogNode.nextSibling)
 
     if (aria.OpenDialogList.length > 0) aria.getCurrentDialog().removeListeners()
@@ -143,6 +150,12 @@ aria.Dialog.prototype.close = function () {
     aria.Utils.remove(this.postNode)
     // this.dialogNode.classList.add('hidden')
     this.backdropNode.classList.remove('active')
+
+    if (this.dialogNode.id === 'menu_button_wrapper') {
+        document.querySelector('#menu_button--open').setAttribute('tabindex', '0')
+        document.querySelector('#underlay_menu').setAttribute('tabindex', '0')
+    }
+
     this.focusAfterClosed.focus()
 
     if (aria.OpenDialogList.length > 0) {
@@ -190,8 +203,10 @@ aria.Dialog.prototype.trapFocus = function (event) {
 window.openDialog = (dialogId, focusAfterClosed, focusFirst) => new aria.Dialog(dialogId, focusAfterClosed, focusFirst)
 
 window.closeDialog = (closeButton) => {
+    console.log('Close dialog')
+
     const topDialog = aria.getCurrentDialog()
-    if (topDialog.dialogNode.contains(closeButton)) topDialog.close()
+    /* if (topDialog.dialogNode.contains(closeButton)) */ topDialog.close()
 }
 
 window.replaceDialog = (newDialogId, newFocusAfterClosed, newFocusFirst) => {

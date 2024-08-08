@@ -749,7 +749,9 @@ svg.animate-face-icon path {
 }
 
 #menu_dropdown label#menu_dropdown_light-mode:hover span,
-#menu_dropdown label#menu_dropdown_light-mode:hover svg {
+#menu_dropdown label#menu_dropdown_light-mode:hover svg,
+#menu_dropdown label#menu_dropdown_light-mode:focus span,
+#menu_dropdown label#menu_dropdown_light-mode:focus svg {
     color: var(--cyan-full-10);
 }
 
@@ -927,13 +929,13 @@ svg.animate-face-icon path {
     transition: color var(--animate-out-segment-2\/3) linear, background-color var(--animate-out-segment-2\/3) linear, border var(--animate-out-segment-2\/3) linear;
 }
 
-#modal_button-close:hover {
+#modal_button-close:hover, #modal_button-close:focus {
     transition: color var(--animate-in-segment-2\/3) linear, background-color var(--animate-in-segment-2\/3) linear, border var(--animate-in-segment-2\/3) linear;
     color: var(--modal-icon-hover);
     background-color: var(--highlight-secondary);
 }
 
-#modal_button-close:hover svg {
+#modal_button-close:hover svg, #modal_button-close:focus svg {
     color: var(--modal-icon-hover);
 }
 

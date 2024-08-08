@@ -1,3 +1,7 @@
+window.isTouchDevice = () => {
+    return 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0
+}
+
 class TextHighlighter {
     constructor() {
         this.originalText = ''
@@ -99,7 +103,7 @@ class KeyHandler {
     toggleProfile(event) {
         event.preventDefault()
 
-        if(document.location.hash === '#profile') {
+        if (document.location.hash === '#profile') {
             aria.getCurrentDialog().close()
             document.location.hash = ''
         }
@@ -382,10 +386,8 @@ class HorizontalEdgeScroller {
         this.scrollSpeed = 0
         this.isScrolling = false
         this.lastTimestamp = null
-        // this.edgeWidth = (this.options.edgeWidthRatio || 3) * parseFloat(getComputedStyle(document.documentElement).fontSize)
         this.isSnapped = true
 
-        console.log(this.options)
         this.scrollStep = this.scrollStep.bind(this)
         this.handleMouseOut = this.handleMouseOut.bind(this)
 
@@ -393,9 +395,11 @@ class HorizontalEdgeScroller {
     }
 
     init() {
-        document.addEventListener('mousemove', this.handleMouseMove.bind(this))
-        window.addEventListener('resize', this.onResize.bind(this))
-        this.onResize()
+        if (!isTouchDevice()) {
+            document.addEventListener('mousemove', this.handleMouseMove.bind(this))
+            window.addEventListener('resize', this.onResize.bind(this))
+            this.onResize()
+        }
     }
 
     onResize() {
@@ -487,7 +491,7 @@ class HorizontalEdgeScroller {
         if (!this.isScrolling) {
             this.isScrolling = true
             // if (this.options.activeSlide) {
-                this.isSnapped = false
+            this.isSnapped = false
             // }
             this.element.classList.add('edge-x-scroll--scrolling')
             requestAnimationFrame(this.scrollStep)

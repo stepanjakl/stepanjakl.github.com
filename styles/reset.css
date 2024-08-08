@@ -123,11 +123,17 @@ ol {
 }
 
 dialog {
-    display: flex;
+    display: block;
+    color: unset;
     background: unset;
     border: unset;
     background-color: unset;
     padding: unset;
+    margin: unset;
+    width: auto;
+    height: auto;
+    inset-inline-start: auto;
+    inset-inline-end: auto;
 }
 
 /* https://bubblin.io/blog/notch */

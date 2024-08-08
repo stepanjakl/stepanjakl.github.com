@@ -200,38 +200,38 @@ main {
 
 /* Debug grid - light mode */
 
-#mode:checked~#debug:checked~svg#debug-grid * {
+#mode:checked~#debug:checked~main #debug-grid * {
     outline: none !important;
 }
 
-#mode:checked~#debug:checked~svg#debug-grid {
+#mode:checked~#debug:checked~main #debug-grid {
     visibility: visible !important;
 }
 
-#mode:checked~#debug:checked~svg#debug-grid #debug-grid-fill {
+#mode:checked~#debug:checked~main #debug-grid #debug-grid-fill {
     color: var(--blue-full-65);
 }
 
-#mode:checked~#debug:checked~svg#debug-grid #debug-grid-outline {
+#mode:checked~#debug:checked~main #debug-grid #debug-grid-outline {
     color: var(--blue-full-55);
 }
 
 /* Debug grid - dark mode */
 
-#mode:not(:checked)~#debug:checked~svg#debug-grid * {
+#mode:not(:checked)~#debug:checked~main #debug-grid * {
     outline: none !important;
 }
 
-#mode:not(:checked)~#debug:checked~svg#debug-grid {
+#mode:not(:checked)~#debug:checked~main #debug-grid {
     visibility: visible !important;
 }
 
-#mode:not(:checked)~#debug:checked~svg#debug-grid #debug-grid-fill {
-    color: var(--blue-full-45);
+#mode:not(:checked)~#debug:checked~main #debug-grid #debug-grid-fill {
+    color: var(--blue-full-35);
 }
 
-#mode:not(:checked)~#debug:checked~svg#debug-grid #debug-grid-outline {
-    color: var(--blue-full-35);
+#mode:not(:checked)~#debug:checked~main #debug-grid #debug-grid-outline {
+    color: var(--blue-full-25);
 }
 
 
@@ -1024,22 +1024,24 @@ body {
 /* Dialog */
 
 .dialog-backdrop {
-    pointer-events: none;
+    display: contents;
+    /* pointer-events: none;
     position: fixed;
     overflow-y: auto;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
-    z-index: 10;
+    z-index: 10; */
 }
 
-.dialog-backdrop.active {
+/* .dialog-backdrop.active {
     pointer-events: all;
-}
+    display: contents;
+} */
 
 .has-dialog {
-    overflow: hidden;
+    overflow: hidden !important;
 }
 
 
@@ -1318,6 +1320,11 @@ body {
     padding: 0.609375rem 0.75rem 0.5rem;
     /* margin-right: 0.5rem;
     margin-bottom: 0.625rem; */
+}
+
+#modal_profile .information dl dd#modal_profile_tags ul li svg {
+    width: 0.875rem;
+    height: 0.875rem;
 }
 
 #modal_profile .information dl dd#modal_profile_tags ul li span {

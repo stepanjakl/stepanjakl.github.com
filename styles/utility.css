@@ -215,6 +215,10 @@ body {
     display: none;
 }
 
+.contents {
+    display: contents;
+}
+
 
 /* Visibility */
 
@@ -269,6 +273,13 @@ body {
 
 .justify-content-between {
     justify-content: space-between;
+}
+
+
+/* Align Self */
+
+.alig-self-start {
+    align-self: start;
 }
 
 
@@ -493,8 +504,36 @@ body {
 }
 
 
+/* Border */
+
+.border-none {
+    border-style: none;
+}
+
+
 /* Border Radius */
 
 .rounded-full {
     border-radius: 999rem;
+}
+
+
+/* Fill */
+
+.fill-current {
+    fill: currentColor;
+}
+
+
+/* Hover */
+
+.hover\:underline {
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    transition: text-decoration-color var(--animate-out-segment-2\/3) linear;
+}
+
+.hover\:underline:hover, .hover\:underline:focus {
+    text-decoration-color: inherit;
+    transition: text-decoration-color var(--animate-in-segment-2\/3) linear;
 }

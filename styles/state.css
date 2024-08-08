@@ -4,11 +4,11 @@
 
 /* Debug */
 
-#debug:checked~.page .debug-checked\:flex {
+#debug:checked~main .debug-checked\:flex {
     display: flex;
 }
 
-#debug:checked~.page .debug-checked\:hidden {
+#debug:checked~main .debug-checked\:hidden {
     display: none;
 }
 
