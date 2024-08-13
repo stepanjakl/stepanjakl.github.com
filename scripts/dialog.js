@@ -82,7 +82,7 @@ aria.handleEscape = (event) => {
 
 document.addEventListener('keyup', aria.handleEscape)
 
-aria.Dialog = function (dialogId, focusAfterClosed, focusFirst) {
+aria.Dialog = function (dialogId, focusAfterClosed, focusFirst, hash) {
     this.dialogNode = document.getElementById(dialogId)
     if (!this.dialogNode) throw new Error(`No element found with id="${dialogId}".`)
 
@@ -100,6 +100,10 @@ aria.Dialog = function (dialogId, focusAfterClosed, focusFirst) {
         this.dialogNode.parentNode.insertBefore(this.backdropNode, this.dialogNode)
         this.backdropNode.appendChild(this.dialogNode)
     }
+
+    console.log('focusAfterClosed', focusAfterClosed, document.getElementById(focusAfterClosed));
+
+
     this.backdropNode.classList.add('active')
     document.body.classList.add(aria.Utils.dialogOpenClass)
 
@@ -108,10 +112,10 @@ aria.Dialog = function (dialogId, focusAfterClosed, focusFirst) {
 
     this.focusFirst = typeof focusFirst === 'string' ? document.getElementById(focusFirst) : focusFirst || null
 
-    if (this.dialogNode.id === 'menu_button_wrapper') {
+    /* if (this.dialogNode.id === 'menu_button-wrapper') {
         document.querySelector('#menu_button--open').setAttribute('tabindex', '-1')
         document.querySelector('#underlay_menu').setAttribute('tabindex', '-1')
-    }
+    } */
 
     this.preNode = document.createElement('div')
     this.preNode.tabIndex = 0
@@ -130,20 +134,22 @@ aria.Dialog = function (dialogId, focusAfterClosed, focusFirst) {
     this.clearDialog()
     // this.dialogNode.classList.remove('hidden')
 
-    if (this.focusFirst) {
-        this.focusFirst.focus()
-    } else {
-        aria.Utils.focusFirstDescendant(this.dialogNode)
-    }
-
-    this.lastFocus = document.activeElement
+    requestAnimationFrame(() => {
+        if (hash) window.location.hash = hash
+        if (this.focusFirst) {
+            this.focusFirst.focus()
+        } else {
+            aria.Utils.focusFirstDescendant(this.dialogNode)
+        }
+        this.lastFocus = document.activeElement
+    })
 }
 
 aria.Dialog.prototype.clearDialog = function () {
     this.dialogNode.querySelectorAll('input').forEach(input => (input.value = ''))
 }
 
-aria.Dialog.prototype.close = function () {
+aria.Dialog.prototype.close = function (hash) {
     aria.OpenDialogList.pop()
     this.removeListeners()
     aria.Utils.remove(this.preNode)
@@ -151,18 +157,22 @@ aria.Dialog.prototype.close = function () {
     // this.dialogNode.classList.add('hidden')
     this.backdropNode.classList.remove('active')
 
-    if (this.dialogNode.id === 'menu_button_wrapper') {
+    /* if (this.dialogNode.id === 'menu_button-wrapper') {
         document.querySelector('#menu_button--open').setAttribute('tabindex', '0')
         document.querySelector('#underlay_menu').setAttribute('tabindex', '0')
-    }
+    } */
 
-    this.focusAfterClosed.focus()
+    requestAnimationFrame(() => {
+        if (hash) window.location.hash = hash
 
-    if (aria.OpenDialogList.length > 0) {
-        aria.getCurrentDialog().addListeners()
-    } else {
-        document.body.classList.remove(aria.Utils.dialogOpenClass)
-    }
+        this.focusAfterClosed.focus()
+
+        if (aria.OpenDialogList.length > 0) {
+            aria.getCurrentDialog().addListeners()
+        } else {
+            document.body.classList.remove(aria.Utils.dialogOpenClass)
+        }
+    })
 }
 
 aria.Dialog.prototype.replace = function (newDialogId, newFocusAfterClosed, newFocusFirst) {
@@ -200,13 +210,11 @@ aria.Dialog.prototype.trapFocus = function (event) {
     }
 }
 
-window.openDialog = (dialogId, focusAfterClosed, focusFirst) => new aria.Dialog(dialogId, focusAfterClosed, focusFirst)
+window.openDialog = (dialogId, focusAfterClosed, focusFirst, hash) => new aria.Dialog(dialogId, focusAfterClosed, focusFirst, hash)
 
-window.closeDialog = (closeButton) => {
-    console.log('Close dialog')
-
+window.closeDialog = (hash) => {
     const topDialog = aria.getCurrentDialog()
-    /* if (topDialog.dialogNode.contains(closeButton)) */ topDialog.close()
+    topDialog.close(hash)
 }
 
 window.replaceDialog = (newDialogId, newFocusAfterClosed, newFocusFirst) => {

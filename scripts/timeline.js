@@ -37,7 +37,7 @@ class timeline extends HTMLElement {
                     inset: -0.5rem;
                 }
 
-                #timeline_wrapper {
+                #timeline-wrapper {
                     transition: border-radius var(--animate-out-segment) var(--ease-in-quad), transform var(--animate-out-segment) var(--ease-in-quad);
                     position: relative;
                     border-radius: 0.75rem;
@@ -48,13 +48,13 @@ class timeline extends HTMLElement {
                     width: 100%;
                 }
 
-                horizontal-timeline:hover #timeline_wrapper {
+                horizontal-timeline:hover #timeline-wrapper {
                     transition: border-radius var(--animate-in-segment) var(--ease-out-quad), transform var(--animate-in-segment) var(--ease-out-quad);
                     border-radius: 1.125rem;
-                    transform: translateY(calc((0.375rem + 0.375rem + 0.375rem) / 2)); // derived from #timeline_content padding values
+                    transform: translateY(calc((0.375rem + 0.375rem + 0.375rem) / 2)); // derived from #timeline-content padding values
                 }
 
-                #timeline_content {
+                #timeline-content {
                     transition: padding var(--animate-out-segment) var(--ease-in-quad);
                     overflow-x: scroll;
                     overflow-y: hidden;
@@ -68,21 +68,21 @@ class timeline extends HTMLElement {
                     mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) var(--segment), rgba(0, 0, 0, 1) calc(100% - var(--segment)), rgba(0, 0, 0, 0) 100%);
                 }
 
-                #timeline_content::-webkit-scrollbar {
+                #timeline-content::-webkit-scrollbar {
                     display: none;
                 }
 
-                horizontal-timeline:hover #timeline_content {
+                horizontal-timeline:hover #timeline-content {
                     transition: padding var(--animate-in-segment) var(--ease-out-quad);
                     padding: calc(0.5rem + 0.375rem) calc(1.5rem + 4rem) calc(0.25rem + 0.375rem) calc(1.5rem + 4rem);
                 }
 
-                #timeline_content > div {
+                #timeline-content > div {
                     transition: row-gap var(--animate-out-segment) var(--ease-in-quad);
                     /* row-gap: 0.5rem; */
                 }
 
-                horizontal-timeline:hover #timeline_content > div {
+                horizontal-timeline:hover #timeline-content > div {
                     transition: row-gap var(--animate-in-segment) var(--ease-out-quad);
                     /* row-gap: calc(0.5rem + 0.375rem); */
                 }
@@ -277,8 +277,8 @@ class timeline extends HTMLElement {
                 </style>
             </noscript>
 
-            <div id="timeline_wrapper">
-                <div id="timeline_content">
+            <div id="timeline-wrapper">
+                <div id="timeline-content">
                     <div class="inline-flex flex-col">
                         <div id="timeline" class="flex">
                             ${this.labels.map((label, index) => `
@@ -334,11 +334,19 @@ class timeline extends HTMLElement {
             })
         }
 
-        const scrollParentToChildVertical = (parent, child) => {
+        const scrollParentToChildVertical = (parent, child, scrollBehavior) => {
+            if (scrollBehavior === 'instant') {
+                parent.classList.add('scroll-behavior-auto')
+            }
+
             const parentRect = parent.getBoundingClientRect()
             const childRect = child.getBoundingClientRect()
             const scrollAmount = childRect.top - parentRect.top - 24
             parent.scrollTop += scrollAmount
+
+            if (scrollBehavior === 'instant') {
+                parent.classList.remove('scroll-behavior-auto')
+            }
         }
 
         const handleLabelClick = (modalArchiveEl, labelEl) => () => {
@@ -355,25 +363,34 @@ class timeline extends HTMLElement {
                 const targetLabelEl = this.querySelector(`[data-label-for="${targetSection}"]`)
                 const timelineEls = Array.from(this.querySelectorAll('#timeline div'))
 
-                if (entry.isIntersecting) {
-                    console.log('isIntersecting', targetSection)
-                    targetLabelEl.focus({ preventScroll: true })
+                const updateParams = (paramName, paramValue) => {
+                    const params = new URLSearchParams()
+                    params.set(paramName, paramValue)
+                    return params.toString()
+                }
 
-                    if (!firstLoad) {
-                        await scrollParentToChildCenterHorizontal(timelineContentEl, targetLabelEl)
-                    }
-                    else {
+                if (entry.isIntersecting) {
+                    if (firstLoad) {
                         firstLoad = false
                     }
+                    else {
+                        console.log('isIntersecting', targetSection)
 
-                    labelEls.forEach((labelEl) => labelEl.classList.remove('active'))
-                    targetLabelEl.classList.add('active')
+                        targetLabelEl.focus({ preventScroll: true })
 
-                    const index = labelEls.findIndex((labelEl) => labelEl.getAttribute('data-label-for') === targetSection)
-                    timelineEls.forEach((timelineEl) => timelineEl.classList.remove('active'))
-                    timelineEls[3 + (index === 0 ? 0 : index * 6)].classList.add('active')
+                        await scrollParentToChildCenterHorizontal(timelineContentEl, targetLabelEl)
+                        window.history.replaceState({}, '', window.location.pathname + window.location.search + window.location.hash.split('?')[0] + '?' + updateParams('year', targetSection))
 
-                    this.activeSection = targetSection
+
+                        labelEls.forEach((labelEl) => labelEl.classList.remove('active'))
+                        targetLabelEl.classList.add('active')
+
+                        const index = labelEls.findIndex((labelEl) => labelEl.getAttribute('data-label-for') === targetSection)
+                        timelineEls.forEach((timelineEl) => timelineEl.classList.remove('active'))
+                        timelineEls[3 + (index === 0 ? 0 : index * 6)].classList.add('active')
+
+                        this.activeSection = targetSection
+                    }
                 }
             })
         }
@@ -383,8 +400,10 @@ class timeline extends HTMLElement {
             document.querySelectorAll('[data-timeline-section]').forEach(async (element) => await intersectionObserver.observe(element))
         }
 
-        const initializeTimeline = () => {
-            const timelineContentEl = this.querySelector('#timeline_content')
+        const initializeTimeline = (() => {
+            console.log('initializeTimeline')
+
+            const timelineContentEl = this.querySelector('#timeline-content')
             const modalArchiveEl = document.querySelector('#modal_archive')
             const labelEls = Array.from(this.querySelectorAll('[data-label-for]'))
 
@@ -392,23 +411,34 @@ class timeline extends HTMLElement {
                 labelEl.addEventListener('click', handleLabelClick(modalArchiveEl, labelEl))
             })
 
-            console.log(timelineContentEl, labelEls)
-
             setupIntersectionObserver(timelineContentEl, labelEls)
+
+            if (window.location.hash.includes('?year=')) {
+                const year = window.location.hash.split('?year=')[1]
+                console.log(year)
+
+                window.history.pushState({}, '', `${window.location.pathname + window.location.search}#archive`)
+
+                requestAnimationFrame(() => {
+
+                    console.log(year);
+
+
+                    window.history.replaceState({}, '', `${window.location.pathname + window.location.search}#archive?year=${year}`)
+                    openDialog('modal_archive', document.querySelector('#menu_link_archive'))
+
+                    const targetElement = document.querySelector(`[data-timeline-section="${year}"]`)
+                    if (targetElement) {
+                        scrollParentToChildVertical(modalArchiveEl, targetElement, 'instant')
+                    }
+                })
+            }
 
             this.addEventListener('mouseleave', async () => {
                 if (this.isScrolling) return
                 await scrollParentToChildCenterHorizontal(timelineContentEl, this.querySelector(`[data-label-for="${this.activeSection}"]`))
             })
-        }
-
-        initializeTimeline()
-
-        // const timelineContent = this.getElementById('timeline_content')
-        /* let lastTimestamp = null
-        let scrollSpeed = 0
-        const maxSpeed = 0.5
-        let isScrolling = false */
+        })()
 
         const highlightLabelEls = (() => {
             const timelineEls = this.querySelectorAll('#timeline [data-value]')

@@ -1,5 +1,21 @@
-window.isTouchDevice = () => {
-    return 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0
+window.isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0
+
+function handleTouchButtonClick(element, event, callback) {
+    event.preventDefault()
+    if (isTouchDevice) {
+        element.clickCount = element.clickCount || 0
+        element.clickCount++
+        if (element.clickCount === 1) {
+            element.focus()
+        } else if (element.clickCount === 2) {
+            element.blur()
+            element.clickCount = 0
+            callback()
+        }
+    }
+    else {
+        callback()
+    }
 }
 
 class TextHighlighter {
@@ -55,7 +71,7 @@ class TextHighlighter {
 
 class KeyHandler {
     constructor() {
-        this.tooltipSelectors = '#menu_links>a[href="#profile"], #menu_links>a[href="#archive"], #menu_button_wrapper'
+        this.tooltipSelectors = '#menu_link_profile, #menu_link_archive, #menu_button-wrapper'
         this.menuElementSelector = '.animate-fade-in-cta-2'
         this.menuDropdownSelector = '#menu_dropdown'
         this.menuButtonOpenSelector = '#menu_button--open'
@@ -68,7 +84,7 @@ class KeyHandler {
     handleKeydown(event) {
         switch (event.keyCode) {
             case 27: // Escape key
-                this.clearHash()
+                closeDialog('#')
                 break
             case 80: // P key
                 this.toggleProfile(event)
@@ -96,37 +112,34 @@ class KeyHandler {
         })
     }
 
-    clearHash() {
-        document.location.hash = ''
-    }
-
     toggleProfile(event) {
         event.preventDefault()
-
-        if (document.location.hash === '#profile') {
-            aria.getCurrentDialog().close()
-            document.location.hash = ''
+        if (window.location.hash === '#profile') {
+            aria.getCurrentDialog().close('#')
         }
         else {
-            openDialog('modal_profile', document.querySelector('#menu_links a[href="#profile"]'))
-            document.location.hash = '#profile'
+            openDialog('modal_profile', 'menu_link_profile', null, 'profile')
         }
     }
 
     toggleArchive(event) {
         event.preventDefault()
-        document.location.hash = document.location.hash === '#archive' ? '' : '#archive'
+        if (window.location.hash === '#archive') {
+            aria.getCurrentDialog().close('#')
+        }
+        else {
+            openDialog('modal_archive', 'menu_link_archive', null, 'archive')
+        }
     }
 
     toggleMenu(event) {
         event.preventDefault()
         const menuElement = document.querySelector(this.menuElementSelector)
-
         if (this.isAnimationFinished(menuElement)) {
-            if (document.location.hash === '#menu') {
-                this.closeMenu()
+            if (window.location.hash === '#menu') {
+                aria.getCurrentDialog().close('#')
             } else {
-                this.openMenu()
+                openDialog('menu_button-wrapper', 'menu_button--open', 'menu_button--close', 'menu')
             }
         }
     }
@@ -136,23 +149,11 @@ class KeyHandler {
         return animations.length === 0 || animations[0].playState === 'finished'
     }
 
-    closeMenu() {
-        document.location.hash = ''
-        document.querySelector(this.menuDropdownSelector).close()
-        document.querySelector(this.menuButtonOpenSelector).focus()
-    }
-
-    openMenu() {
-        document.location.hash = '#menu'
-        document.querySelector(this.menuDropdownSelector).show()
-        document.querySelector(this.menuButtonCloseSelector).focus()
-    }
-
     handleTooltipActiveClass(event) {
-        if (document.location.hash !== '') {
+        if (window.location.hash !== '') {
             this.toggleTooltipActiveClass('remove')
         } else if (event.ctrlKey || event.metaKey) {
-            if (document.location.hash === '') {
+            if (window.location.hash === '') {
                 this.toggleTooltipActiveClass('add')
             }
         }
@@ -194,8 +195,7 @@ class WheelHandler {
         const scrollPositionTop = modalElement.scrollTop
 
         if (verticalScrollDirection === 'up' && scrollPositionTop === 0) {
-            aria.getCurrentDialog().close()
-            document.location.hash = ''
+            aria.getCurrentDialog().close('#')
         }
     }
 
@@ -205,8 +205,7 @@ class WheelHandler {
 
         if (verticalScrollDirection === 'down' && scrollPositionY + window.innerHeight >= totalHeight) {
             if (window.location.hash === '') {
-                openDialog('modal_profile', document.querySelector('#menu_links a[href="#profile"]'))
-                window.location.hash = '#profile'
+                openDialog('modal_profile', 'menu_link_profile', null, 'profile')
             }
         }
     }
@@ -219,11 +218,11 @@ class WheelHandler {
         if (this.isAnimationFinished('.animate-fade-in-cta-2')) {
             if (horizontalScrollDirection === 'right' && scrollPositionX + window.innerWidth >= totalWidth) {
                 if (window.location.hash === '') {
-                    window.location.hash = '#menu'
+                    openDialog('menu_button-wrapper', 'menu_button--open', 'menu_button--close', 'menu')
                 }
             } else if (horizontalScrollDirection === 'left' && scrollPositionX === 0) {
                 if (window.location.hash === '#menu') {
-                    window.location.hash = ''
+                    closeDialog('#')
                 }
             }
         }
@@ -282,7 +281,7 @@ class TouchHandler {
         const scrollPositionTop = modalElement.scrollTop
 
         if (verticalScrollDirection === 'up' && scrollPositionTop === 0) {
-            window.location.hash = ''
+            aria.getCurrentDialog().close('#')
         }
     }
 
@@ -292,7 +291,7 @@ class TouchHandler {
 
         if (verticalScrollDirection === 'down' && scrollPositionY + window.innerHeight >= totalHeight) {
             if (window.location.hash === '') {
-                window.location.hash = '#profile'
+                openDialog('modal_profile', 'menu_link_profile', null, 'profile')
             }
         }
     }
@@ -305,11 +304,11 @@ class TouchHandler {
         if (this.isAnimationFinished('.animate-fade-in-cta-2')) {
             if (horizontalScrollDirection === 'right' && scrollPositionX + window.innerWidth >= totalWidth) {
                 if (window.location.hash === '#menu') {
-                    window.location.hash = ''
+                    closeDialog('#')
                 }
             } else if (horizontalScrollDirection === 'left' && scrollPositionX === 0) {
                 if (window.location.hash === '') {
-                    window.location.hash = '#menu'
+                    openDialog('menu_button-wrapper', 'menu_button--open', 'menu_button--close', 'menu')
                 }
             }
         }
@@ -324,7 +323,6 @@ class TouchHandler {
 
 class HorizontalDragScroll {
     constructor(options = {}) {
-        console.log(options)
         this.element = options.element
         this.options = options
         this.isMouseDown = false
@@ -370,8 +368,10 @@ class HorizontalDragScroll {
             })
         }
 
+        this.element.classList.remove('x-drag-scroll--mouse-down')
+
         setTimeout(() => {
-            this.element.classList.remove('x-drag-scroll--dragging', 'x-drag-scroll--mouse-down')
+            this.element.classList.remove('x-drag-scroll--dragging')
             /* this.element.releasePointerCapture(event.pointerId) */
         }, 300)
     }
@@ -395,7 +395,7 @@ class HorizontalEdgeScroller {
     }
 
     init() {
-        if (!isTouchDevice()) {
+        if (!isTouchDevice) {
             document.addEventListener('mousemove', this.handleMouseMove.bind(this))
             window.addEventListener('resize', this.onResize.bind(this))
             this.onResize()
@@ -405,7 +405,6 @@ class HorizontalEdgeScroller {
     onResize() {
         this.edgeWidth = (this.options.edgeWidthRatio || 3) * parseFloat(getComputedStyle(document.documentElement).fontSize)
         this.setPseudoElementsWidth()
-        console.log(this.edgeWidth)
     }
 
     setPseudoElementsWidth(selector, width) {
@@ -557,7 +556,6 @@ class Popup {
 
 class Carousel {
     constructor(options = {}) {
-        console.log(options)
         this.options = options
         this.carouselEl = options.element
         this.slidesWrapperEl = this.carouselEl.querySelector('[data-carousel-slides]')
@@ -658,6 +656,20 @@ class Carousel {
     }
 }
 
+const openDialogOnLoad = () => {
+    switch (window.location.hash.slice(1)) {
+        case 'profile':
+            openDialog('modal_profile', 'menu_link_profile', null, 'profile')
+            break
+        case 'archive':
+            openDialog('modal_archive', 'menu_link_archive', null, 'archive')
+            break
+        case 'menu':
+            openDialog('menu_button-wrapper', 'menu_button--open', 'menu_button--close', 'menu')
+            break
+    }
+}
+
 
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize the UI elements based on the current hash
@@ -667,7 +679,9 @@ document.addEventListener('DOMContentLoaded', () => {
         ).forEach(element => {
             element.classList.add('noanimation')
         })
-        document.querySelector('#menu_dropdown').show()
+        // document.querySelector('#menu_dropdown').show()
+
+        openDialogOnLoad()
     }
 
     // Initialize handlers
@@ -687,8 +701,8 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 
     // Initialize edge scroller
-    new HorizontalEdgeScroller({ id: 'timeline', element: document.querySelector('#timeline_content') })
-    new HorizontalDragScroll({ element: document.querySelector('#timeline_content') })
+    new HorizontalEdgeScroller({ id: 'timeline', element: document.querySelector('#timeline-content') })
+    new HorizontalDragScroll({ element: document.querySelector('#timeline-content') })
     /* document.querySelectorAll('[data-carousel-slides]').forEach(element => {
         new HorizontalEdgeScroller({ edgeWidthRatio: 5 }).init(element)
     }) */

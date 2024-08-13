@@ -402,8 +402,8 @@ button,
         --modal-bg: var(--cyan-half-25);
     }
 
-    #modal_profile .modal_content,
-    #modal_archive .modal_content {
+    #modal_profile .modal-content,
+    #modal_archive .modal-content {
         transform: none !important;
     }
 }
@@ -772,8 +772,8 @@ main {
 #availability_button_dot::before {
     content: "";
     position: absolute;
-    width: 0.4375rem;
-    height: 0.4375rem;
+    width: round(down, 0.4375rem, 1px);
+    height: round(down, 0.4375rem, 1px);
     border-radius: 999rem;
     background-color: var(--green);
 }
@@ -781,8 +781,8 @@ main {
 #availability_button_dot::after {
     content: "";
     position: absolute;
-    width: 0.4375rem;
-    height: 0.4375rem;
+    width: round(down, 0.4375rem, 1px);
+    height: round(down, 0.4375rem, 1px);
     border-radius: 999rem;
     background-color: transparent;
 }
@@ -831,7 +831,7 @@ main {
     -webkit-backdrop-filter: blur(0.09375rem);
 }
 
-#menu_email_button, #menu_links>a {
+#menu_email_button-wrapper, #menu_links>a {
     background-color: var(--inner-bg-light-1);
     padding: 0.1875rem;
     border-radius: 1.375rem 0.375rem 0.375rem 1.375rem;
@@ -841,7 +841,7 @@ main {
     row-gap: 0.375rem;
 }
 
-#menu_link_text_wrapper {
+#menu_link_text-wrapper {
     padding: 0 0.75rem 0 1rem;
     margin-top: -0.078125rem;
     letter-spacing: 0.125rem;
@@ -858,7 +858,7 @@ main {
         border-radius: 1.75rem 1rem 1rem 1.75rem;
     }
 
-    #menu_email_button {
+    #menu_email_button-wrapper {
         border-radius: 1.375rem 0.375rem 0.375rem 1.375rem;
     }
 
@@ -869,17 +869,13 @@ main {
         row-gap: 0;
     }
 
-    #menu_link_text_wrapper {
+    #menu_link_text-wrapper {
         padding: 0 0.75rem 0 0.5rem;
     }
 
-    #menu_button_wrapper {
+    #menu_button-wrapper {
         grid-row: span 2 / span 2;
     }
-}
-
-#menu_button_wrapper>#menu_button--close {
-    z-index: -1;
 }
 
 /* #shortcut-profile::before, #shortcut-archive::before {
@@ -1076,7 +1072,7 @@ body {
     }
 }
 
-.modal .modal_content {
+.modal .modal-content {
     display: flex;
     flex-direction: column;
     row-gap: var(--segment-quarter);
@@ -1090,11 +1086,11 @@ body {
     padding-top: calc(var(--segment) / 5);
 }
 
-.modal .modal_content>* {
+.modal .modal-content>* {
     transform: translateY(calc(calc(var(--segment) / 5) * -1));
 }
 
-.modal .modal_content::before {
+.modal .modal-content::before {
     content: "";
     position: absolute;
     inset: max(1px, 0.0625rem);
@@ -1105,31 +1101,31 @@ body {
 }
 
 @media (min-width: 45rem) and (min-aspect-ratio: 3/4) {
-    .modal .modal_content {
+    .modal .modal-content {
         padding-top: var(--segment-quarter);
     }
 
-    .modal .modal_content>* {
+    .modal .modal-content>* {
         transform: translateY(calc(var(--segment-quarter) * -1));
     }
 }
 
 @media (min-width: 60rem) {
-    .modal .modal_content {
+    .modal .modal-content {
         padding-top: var(--segment-half);
     }
 
-    .modal .modal_content>* {
+    .modal .modal-content>* {
         transform: translateY(calc(var(--segment-half) * -1));
     }
 }
 
 @media (min-width: 75rem) {
-    .modal .modal_content {
+    .modal .modal-content {
         padding-top: var(--segment);
     }
 
-    .modal .modal_content>* {
+    .modal .modal-content>* {
         transform: translateY(calc(var(--segment) * -1));
     }
 }
@@ -1737,11 +1733,11 @@ body {
 
 /* Tooltip */
 
-.tooltip_wrapper {
+.tooltip-wrapper {
     position: relative;
 }
 
-.tooltip_wrapper .tooltip {
+.tooltip-wrapper .tooltip {
     position: absolute;
     z-index: 100;
     left: 50%;
@@ -1808,7 +1804,7 @@ body {
 }
 
 @media (max-width: 45rem) {
-    #menu_button_wrapper .tooltip.tooltip--active {
+    #menu_button-wrapper .tooltip.tooltip--active {
         left: unset;
         right: 0;
         bottom: 50%;
@@ -1817,7 +1813,7 @@ body {
         transform: translateX(100%) translateY(50%);
     }
 
-    #menu_links>a[href="#profile"] .tooltip.tooltip--active, #menu_links>a[href="#archive"] .tooltip.tooltip--active {
+    #menu_link_profile .tooltip.tooltip--active, #menu_link_archive .tooltip.tooltip--active {
         left: unset;
         right: 0;
         top: 50%;
@@ -1830,7 +1826,7 @@ body {
 
 /* Tooltip - Active */
 
-.tooltip_wrapper .tooltip.tooltip--active {
+.tooltip-wrapper .tooltip.tooltip--active {
     padding: 0.375rem 0.5rem;
 }
 
@@ -1909,7 +1905,7 @@ footer>div {
 @media (min-width: 105rem) {
     /* rules here apply to devices from 105rem and higher */
 
-    .intro_wrapper {
+    .intro-wrapper {
         max-width: var(--breakpoint-2xl);
         /*padding: 3rem 5rem 3rem 3rem;*/
         padding: 3rem;
@@ -1924,7 +1920,7 @@ footer>div {
 @media (min-width: 160rem) {
     /* rules here apply to devices from 160rem and higher */
 
-    .intro_wrapper {
+    .intro-wrapper {
         padding-top: 6rem;
         padding-bottom: 6rem;
     }
@@ -1955,7 +1951,7 @@ footer>div {
 @media (max-width: 90rem) {
     /* rules here apply to devices from 90rem (xl) and lower */
 
-    .intro_wrapper {
+    .intro-wrapper {
         max-width: var(--breakpoint-xl);
     }
 
@@ -1967,7 +1963,7 @@ footer>div {
 @media (max-width: 75rem) {
     /* rules here apply to devices from 75rem (lg) and lower */
 
-    /* .intro_wrapper,
+    /* .intro-wrapper,
     footer>div {
         max-width: var(--breakpoint-lg);
     } */
@@ -2009,11 +2005,11 @@ footer>div {
         padding-top: 2.875rem;
     } */
 
-    /* #menu_email_button {
+    /* #menu_email_button-wrapper {
         padding-top: 6.625rem;
     } */
 
-    .modal .modal_content .information dl div {
+    .modal .modal-content .information dl div {
         padding-top: 1.25rem;
         padding-left: 1.25rem;
         padding-right: 1.75rem;
@@ -2022,11 +2018,11 @@ footer>div {
         row-gap: 0.875rem;
     }
 
-    .modal .modal_content .information dl div:first-child {
+    .modal .modal-content .information dl div:first-child {
         padding-top: 1.75rem;
     }
 
-    .modal .modal_content .information dl div dt {
+    .modal .modal-content .information dl div dt {
         padding-bottom: 0.171875rem;
     }
 
@@ -2054,7 +2050,7 @@ footer>div {
         margin-top: 1.25rem;
     }
 
-    #menu_email_button {
+    #menu_email_button-wrapper {
         padding-top: 3.625rem;
     } */
 }
@@ -2062,7 +2058,7 @@ footer>div {
 @media (max-width: 30rem) {
     /* rules here apply to devices from 30rem (xs) and lower */
 
-    .intro_wrapper {
+    .intro-wrapper {
         max-width: var(--breakpoint-xs);
     }
 }

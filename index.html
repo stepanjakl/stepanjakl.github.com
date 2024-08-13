@@ -79,7 +79,7 @@
                 <header id="intro">
                     <div id="intro_left-column"
                          class="z-1 flex flex-col-reverse align-items-start">
-                        <h2 class="inline-flex animate-fade-in-name select-none highlight-text tooltip_wrapper"
+                        <h2 class="inline-flex tooltip-wrapper animate-fade-in-name select-none highlight-text"
                             onmousedown="if ((event.which && event.which == 3) || (event.button && event.button == 2)) { if ('speechSynthesis' in window) { let msg = new SpeechSynthesisUtterance(); msg.volume= 0.25; msg.lang = 'cs-CZ'; msg.voice = speechSynthesis.getVoices().filter(voice => voice.name === 'Zuzana')[0]; msg.text = 'Štěpán Jákl'; speechSynthesis.speak(msg) } } else { navigator.clipboard.writeText('Štěpán Jákl'); textHighlighter.highlightAndCopyText(event, this.querySelector('.tooltip-bottom span'), this, 'Copied to the clipboard') }"
                             tabindex="0"
                             role="button"
@@ -114,16 +114,16 @@
                         </h3>
                         <div id="availability_button"
                              class="relative flex align-items-center animate-fade-in-cta-1">
-                            <div class="tooltip_wrapper">
+                            <div class="tooltip-wrapper">
                                 <a href="https://cal.com/stepanjakl"
+                                   onclick="handleTouchButtonClick(this, event, () => { window.open(this.getAttribute('href'), '_blank') })"
                                    target="_blank"
-                                   rel="noreferrer"
                                    aria-label="Open to new opportunities, book a virtual meeting"
                                    class="relative z-0 flex overflow-hidden"
                                    style="padding: 0.6875rem 0.9375rem;
                                           background-color: var(--highlight-primary);
                                           border-radius: 0.5rem">
-                                    <div class="inline-flex justify-content-center align-items-center tooltip_wrapper"
+                                    <div class="inline-flex justify-content-center align-items-center tooltip-wrapper"
                                          style="column-gap: 0.875rem">
                                         <span id="availability_button_dot"
                                               class="relative flex justify-content-center align-items-center rounded-full"></span>
@@ -137,13 +137,13 @@
                             </div>
                         </div>
                         <nav id="menu" class="relative grid animate-fade-in-cta-2">
-                            <div id="menu_email_button"
-                                 class="inline-flex tooltip_wrapper"
+                            <div id="menu_email_button-wrapper"
+                                 class="inline-flex tooltip-wrapper"
                                  style="place-self: self-start">
-                                <div class="inline-flex align-items-center"
-                                     onmousedown="navigator.clipboard.writeText('stepanjakl@outlook.com'); textHighlighter.highlightAndCopyText(event, this.querySelector('.tooltip span'), this.querySelector('.highlight-text'), 'Copied to the clipboard')"
-                                     onkeydown="window.prompt('Copy to the clipboard: `Cmd/Ctrl + C` and then press `Enter`', 'stepanjakl@outlook.com')"
-                                     tabindex="0"
+                                <!-- onmousedown="navigator.clipboard.writeText('stepanjakl@outlook.com'); textHighlighter.highlightAndCopyText(event, this.querySelector('.tooltip span'), this.querySelector('.highlight-text'), 'Copied to the clipboard')"
+                                     onkeydown="window.prompt('Copy to the clipboard: `Cmd/Ctrl + C` and then press `Enter`', 'stepanjakl@outlook.com')" -->
+                                <button type="button" class="inline-flex align-items-center"
+                                     onclick="handleTouchButtonClick(this, event, () => { navigator.clipboard.writeText('stepanjakl@outlook.com'); textHighlighter.highlightAndCopyText(event, this.querySelector('.tooltip span'), this.querySelector('.highlight-text'), 'Copied to the clipboard') })"
                                      aria-label="Contact me via email">
                                     <span class="inline-flex rounded-full"
                                           style="padding: 0.625rem;
@@ -158,14 +158,14 @@
                                     <abbr class="tooltip-top tooltip">
                                         <span>Click to copy</span>
                                     </abbr>
-                                </div>
+                                </button>
                             </div>
                             <div id="menu_links" class="flex flex-col">
                                 <a href="#profile"
-                                   onclick="event.preventDefault(); window.location.hash = 'profile'; openDialog('modal_profile', this)"
+                                   id="menu_link_profile"
+                                   onclick="handleTouchButtonClick(this, event, () => { openDialog('modal_profile', this, null, 'profile') })"
                                    aria-label="Learn more about me"
-                                   rel="noreferrer"
-                                   class="z-4 flex align-items-center tooltip_wrapper">
+                                   class="z-4 flex align-items-center tooltip-wrapper">
                                     <span id="menu_link_icon"
                                           class="inline-flex rounded-full"
                                           style="padding: 0.59375rem;
@@ -181,7 +181,7 @@
                                             <path d="M14.917 24c-.64 0-1.174-.215-1.605-.646-.43-.43-.645-.965-.645-1.604 0-.639.222-1.173.666-1.604.445-.43.986-.646 1.625-.646.64 0 1.167.215 1.584.646.417.43.625.965.625 1.604 0 .639-.215 1.173-.646 1.604-.43.43-.965.646-1.604.646Zm10.166 0c-.639 0-1.173-.215-1.604-.646-.43-.43-.646-.965-.646-1.604 0-.639.215-1.173.646-1.604.43-.43.965-.646 1.604-.646.64 0 1.181.215 1.625.646.445.43.667.965.667 1.604 0 .639-.222 1.173-.667 1.604a2.25 2.25 0 0 1-1.625.646ZM20 33.667c3.805 0 7.035-1.326 9.688-3.979 2.653-2.653 3.979-5.883 3.979-9.688 0-.695-.049-1.368-.146-2.021a9.868 9.868 0 0 0-.438-1.812 11.41 11.41 0 0 1-1.75.291c-.61.056-1.25.084-1.916.084-2.611 0-5.07-.535-7.375-1.604a16.598 16.598 0 0 1-5.917-4.605A16.73 16.73 0 0 1 12.208 16a18.409 18.409 0 0 1-5.833 3.75v.292c0 3.805 1.32 7.027 3.958 9.666 2.64 2.64 5.862 3.959 9.667 3.959Zm.042 3.666c-2.417 0-4.674-.458-6.771-1.375-2.097-.917-3.93-2.153-5.5-3.708-1.57-1.555-2.812-3.389-3.729-5.5-.917-2.111-1.375-4.361-1.375-6.75 0-2.389.458-4.639 1.375-6.75.917-2.111 2.16-3.945 3.729-5.5 1.57-1.555 3.403-2.791 5.5-3.708 2.097-.917 4.354-1.375 6.771-1.375 2.389 0 4.632.458 6.729 1.375 2.097.917 3.93 2.153 5.5 3.708 1.57 1.555 2.805 3.389 3.708 5.5s1.354 4.361 1.354 6.75c0 2.389-.451 4.639-1.354 6.75-.903 2.111-2.139 3.952-3.708 5.521-1.57 1.57-3.41 2.805-5.521 3.708-2.111.903-4.347 1.354-6.708 1.354Z">
                                         </svg>
                                     </span>
-                                    <span id="menu_link_text_wrapper">
+                                    <span id="menu_link_text-wrapper">
                                         <span class="text-xs uppercase select-none button-label"
                                               style="border-bottom: solid 0.125rem var(--highlight-primary)">
                                             Profile
@@ -197,10 +197,10 @@
                                     </abbr>
                                 </a>
                                 <a href="#archive"
-                                   onclick="openDialog('modal_archive', this)"
+                                id="menu_link_archive"
+                                   onclick="handleTouchButtonClick(this, event, () => { openDialog('modal_archive', this, null, 'archive') })"
                                    aria-label="Explore snippets of my past work"
-                                   rel="noreferrer"
-                                   class="z-3 flex align-items-center tooltip_wrapper">
+                                   class="z-3 flex align-items-center tooltip-wrapper">
                                     <span id="menu_link_icon"
                                           class="inline-flex rounded-full"
                                           style="padding: 0.65625rem;
@@ -209,7 +209,7 @@
                                             <use xlink:href="images/icons.svg#archive"></use>
                                         </svg>
                                     </span>
-                                    <span id="menu_link_text_wrapper"
+                                    <span id="menu_link_text-wrapper"
                                           class="text-xs uppercase select-none button-label">
                                         Archive
                                     </span>
@@ -224,11 +224,11 @@
                                 </a>
                             </div>
                             <div role="dialog"
-                                 id="menu_button_wrapper"
-                                 class="relative flex tooltip_wrapper">
+                                 id="menu_button-wrapper"
+                                 class="relative flex tooltip-wrapper">
                                 <!-- onclick="event.preventDefault(); document.querySelector('#menu_dropdown').show(); window.location.hash = 'menu'; document.querySelector('#menu_button--close').focus()" -->
                                 <a href="#menu"
-                                   onclick="event.preventDefault(); window.location.hash = 'menu'; openDialog('menu_button_wrapper', this)"
+                                   onclick="event.preventDefault(); openDialog('menu_button-wrapper', this, 'menu_button--close', 'menu');"
                                    id="menu_button--open"
                                    tabindex="0"
                                    class="z-2 inset-0"
@@ -236,7 +236,7 @@
                                    aria-label="Open dropdown menu"></a>
                                 <!-- onclick="document.querySelector('#menu_dropdown').close(); document.querySelector('#menu_button--open').focus()" -->
                                 <a href="#"
-                                   onclick="closeDialog(this)"
+                                   onclick="event.preventDefault(); closeDialog('#')"
                                    id="menu_button--close"
                                    tabindex="0"
                                    class="inset-0"
@@ -259,13 +259,12 @@
                                     <span>+</span>
                                     <kbd><span>M</span></kbd>
                                 </abbr>
-                                <a href="#" id="underlay_menu" class="fixed inset-0 cursor-default"></a>
+                                <a href="#" tabindex="-1" id="underlay_menu" class="fixed inset-0 cursor-default"></a>
                                 <dialog role="dialog" id="menu_dropdown" class="z-10 absolute pt-1/2">
                                     <div>
                                         <a href="https://cal.com/stepanjakl"
                                            target="_blank"
-                                           aria-label="Schedule a call"
-                                           rel="noreferrer">
+                                           aria-label="Schedule a call">
                                             <svg class="fill-current" style="width: 1.5rem; height: 1.5rem">
                                                 <use xlink:href="images/icons.svg#menu-call"></use>
                                             </svg>
@@ -293,8 +292,7 @@
                                         </a>
                                         <a href="https://github.com/stepanjakl"
                                            target="_blank"
-                                           aria-label="Visit my profile on GitHub"
-                                           rel="noreferrer">
+                                           aria-label="Visit my profile on GitHub">
                                             <svg class="fill-current" style="width: 1.5rem; height: 1.5rem">
                                                 <use xlink:href="images/icons.svg#menu-github"></use>
                                             </svg>
@@ -348,9 +346,9 @@
                         </nav>
                     </div>
                     <dialog id="modal_profile" class="modal" role="dialog" aria-modal="true">
-                        <div class="overflow-clip modal_content">
+                        <div class="overflow-clip modal-content">
                             <a href="#"
-                               onclick="closeDialog(this)"
+                               onclick="event.preventDefault(); closeDialog('#')"
                                id="modal_button-close"
                                class="flex justify-content-center align-items-center"
                                aria-label="Close modal">
@@ -430,8 +428,7 @@
                                         <a href="https://www.google.com/maps/place/Czechia"
                                            class="hover:underline"
                                            target="_blank"
-                                           aria-label="See where I am from"
-                                           rel="noreferrer">
+                                           aria-label="See where I am from">
                                             <span>Czech</span>
                                             <img alt="czech-flag"
                                                  src="images/cs-2.svg"
@@ -452,8 +449,7 @@
                                         <a href="https://www.google.com/maps/place/Manchester"
                                            class="hover:underline"
                                            target="_blank"
-                                           aria-label="See where I currently live"
-                                           rel="noreferrer">
+                                           aria-label="See where I currently live">
                                             <span>Manchester, United Kingdom</span>
                                             <img alt="united-kingdom-flag"
                                                  src="images/gb-2.svg"
@@ -608,8 +604,9 @@
                     </div>
                 </dialog>
                 <dialog id="modal_archive" class="modal" role="dialog" aria-modal="true">
-                    <div class="overflow-clip modal_content">
+                    <div class="overflow-clip modal-content">
                         <a href="#"
+                        onclick="event.preventDefault(); closeDialog('#')"
                            id="modal_button-close"
                            class="flex justify-content-center align-items-center"
                            aria-label="Close modal">
@@ -621,7 +618,6 @@
                                     height: 100%;
                                     padding-bottom: var(--segment-half)">
 
-                            <iframe src="archive.html" loading="lazy" class="border-none w-full"></iframe>
 
                             <!-- overflow-y: scroll; -->
                             <div id="modal_archive-wrapper"
@@ -808,7 +804,7 @@
                                             left: calc(3rem + 3rem + 15rem );
                                             right: calc(3rem + 3rem);
                                             /* outline: max(1px, 0.0625rem) solid red */">
-                                    <div id="horizontal-timeline_wrapper">
+                                    <div id="horizontal-timeline-wrapper">
                                         <horizontal-timeline labels="[2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014]"></horizontal-timeline>
                                     </div>
                                 </div>

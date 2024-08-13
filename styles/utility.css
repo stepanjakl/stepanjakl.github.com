@@ -525,6 +525,13 @@ body {
 }
 
 
+/* Scroll Behavior */
+
+.scroll-behavior-auto {
+    scroll-behavior: auto !important;
+}
+
+
 /* Hover */
 
 .hover\:underline {

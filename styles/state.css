@@ -20,7 +20,7 @@
     overflow: auto;
 }
 
-#profile:target~main #modal_profile .modal_content {
+#profile:target~main #modal_profile .modal-content {
     pointer-events: auto;
 }
 
@@ -30,6 +30,6 @@
     overflow: auto;
 }
 
-#archive:target~main #modal_archive .modal_content {
+#archive:target~main #modal_archive .modal-content {
     pointer-events: auto;
 }
