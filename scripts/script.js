@@ -1,6 +1,6 @@
-window.isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0
+const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0
 
-function handleTouchButtonClick(element, event, callback) {
+const handleTouchButtonClick = (element, event, callback) => {
     event.preventDefault()
     if (isTouchDevice) {
         element.clickCount = element.clickCount || 0
@@ -17,6 +17,29 @@ function handleTouchButtonClick(element, event, callback) {
         callback()
     }
 }
+
+
+const initializeTimeline = () => {
+    const timelineEl = document.createElement('horizontal-timeline')
+    timelineEl.setAttribute('labels', JSON.stringify([
+        2025, 2024, 2023, 2022, 2021, 2020,
+        2019, 2018, 2017, 2016, 2015, 2014
+    ]))
+
+    document.querySelector('#horizontal-timeline-wrapper').appendChild(timelineEl)
+
+    new HorizontalEdgeScroller({ id: 'timeline', element: document.querySelector('#timeline-content') })
+    new HorizontalDragScroll({ element: document.querySelector('#timeline-content') })
+}
+
+
+const openArchive = () => {
+    openDialog('modal_archive', 'menu_link_archive', null, 'archive')
+    if (!document.querySelector('#horizontal-timeline-wrapper horizontal-timeline')) {
+        initializeTimeline()
+    }
+}
+
 
 class TextHighlighter {
     constructor() {
@@ -128,7 +151,7 @@ class KeyHandler {
             aria.getCurrentDialog().close('#')
         }
         else {
-            openDialog('modal_archive', 'menu_link_archive', null, 'archive')
+            openArchive()
         }
     }
 
@@ -179,7 +202,7 @@ class WheelHandler {
 
     handleVerticalScroll(deltaY) {
         const verticalScrollDirection = deltaY > 0 ? 'down' : 'up'
-        const currentHash = window.location.hash
+        const currentHash = window.location.hash.split('?')[0]
 
         if (currentHash === '#profile' || currentHash === '#archive') {
             this.handleModalVerticalScroll(verticalScrollDirection, currentHash)
@@ -193,7 +216,6 @@ class WheelHandler {
             currentHash === '#profile' ? '#modal_profile' : '#modal_archive'
         )
         const scrollPositionTop = modalElement.scrollTop
-
         if (verticalScrollDirection === 'up' && scrollPositionTop === 0) {
             aria.getCurrentDialog().close('#')
         }
@@ -267,7 +289,7 @@ class TouchHandler {
 
     handleVerticalScroll(touchEndY) {
         const verticalScrollDirection = touchEndY < this.touchStartY ? 'down' : 'up'
-        const currentHash = window.location.hash
+        const currentHash = window.location.hash.split('?')[0]
 
         if (currentHash === '#profile' || currentHash === '#archive') {
             this.handleModalScroll(verticalScrollDirection, currentHash)
@@ -657,14 +679,14 @@ class Carousel {
 }
 
 const openDialogOnLoad = () => {
-    switch (window.location.hash.slice(1)) {
-        case 'profile':
+    switch (window.location.hash.split('?')[0]) {
+        case '#profile':
             openDialog('modal_profile', 'menu_link_profile', null, 'profile')
             break
-        case 'archive':
-            openDialog('modal_archive', 'menu_link_archive', null, 'archive')
+        case '#archive':
+            openArchive()
             break
-        case 'menu':
+        case '#menu':
             openDialog('menu_button-wrapper', 'menu_button--open', 'menu_button--close', 'menu')
             break
     }
@@ -679,8 +701,6 @@ document.addEventListener('DOMContentLoaded', () => {
         ).forEach(element => {
             element.classList.add('noanimation')
         })
-        // document.querySelector('#menu_dropdown').show()
-
         openDialogOnLoad()
     }
 
@@ -699,11 +719,4 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('[data-carousel-slides] figure a').forEach(element => {
         element.addEventListener('click', event => new Popup().open(element, event))
     })
-
-    // Initialize edge scroller
-    new HorizontalEdgeScroller({ id: 'timeline', element: document.querySelector('#timeline-content') })
-    new HorizontalDragScroll({ element: document.querySelector('#timeline-content') })
-    /* document.querySelectorAll('[data-carousel-slides]').forEach(element => {
-        new HorizontalEdgeScroller({ edgeWidthRatio: 5 }).init(element)
-    }) */
 })

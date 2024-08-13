@@ -101,9 +101,6 @@ aria.Dialog = function (dialogId, focusAfterClosed, focusFirst, hash) {
         this.backdropNode.appendChild(this.dialogNode)
     }
 
-    console.log('focusAfterClosed', focusAfterClosed, document.getElementById(focusAfterClosed));
-
-
     this.backdropNode.classList.add('active')
     document.body.classList.add(aria.Utils.dialogOpenClass)
 

@@ -46,37 +46,35 @@ body {
 }
 
 .animate-fade-in-name>div>span,
-.animate-fade-in-title>span,
-.animate-fade-in-cta-1,
-.animate-fade-in-logo {
-    transform: translate3d(0,0,0);
-}
-
-.animate-fade-in-name>div>span,
 .animate-fade-in-title>span {
-    animation-name: fade-in-opacity, fade-in-blur;
-    transform: translate3d(0,0,0);
-    animation-duration: 2.5s, 0.75s;
+    --initial-delay: 0.3s;
+    animation-name: fade-in-opacity, fade-in-scale, fade-in-blur;
+    animation-duration: 2s, 0.25s, 0.75s;
+    animation-timing-function: var(--ease-out-quad), var(--ease-in-out-quad), var(--ease-out-quad);
+    transform-origin: center;
+    will-change: opacity, transform, filter;
 }
 
 .animate-fade-in-name>div>span {
-    animation-delay: calc(0.3s + var(--i) * 15ms);
+    animation-duration: 2.5s, 0.225s, 0.775s;
+    animation-delay: calc(var(--initial-delay) + var(--i) * 30ms);
+    /* animation-delay: calc(var(--initial-delay) + var(--i) * 10ms), calc(var(--initial-delay) + var(--i) * 15ms), calc(var(--initial-delay) + var(--i) * 15ms), calc(var(--initial-delay) + var(--i) * 15ms); */
 }
 
 .animate-fade-in-title>span {
-    animation-delay: calc(0.3s + var(--delay-segment) + var(--i) * 15ms);
+    animation-delay: calc(var(--initial-delay) + (var(--delay-segment) * 2) + var(--i) * 15ms);
 }
 
 .animate-fade-in-cta-1 {
-    animation-delay: calc((var(--delay-segment) * 5) + 0.15s);
+    animation-delay: calc((var(--delay-segment) * 6) + 0.15s);
 }
 
 .animate-fade-in-cta-2 {
-    animation-delay: calc((var(--delay-segment) * 7) + 0.15s);
+    animation-delay: calc((var(--delay-segment) * 8) + 0.15s);
 }
 
 .animate-fade-in-logo {
-    animation-delay: calc((var(--delay-segment) * 9) + 0.15s);
+    animation-delay: calc((var(--delay-segment) * 10) + 0.15s);
 }
 
 @keyframes fade-in-opacity {
@@ -95,14 +93,22 @@ body {
     }
 }
 
-@keyframes fade-in-blur {
+@keyframes fade-in-scale {
     0% {
-        transform: scale(0.95);
-        filter: blur(0.5rem);
+        transform: scale(1.75) scaleY(0.15);
     }
 
     100% {
         transform: scale(1);
+    }
+}
+
+@keyframes fade-in-blur {
+    0% {
+        filter: blur(0.75rem);
+    }
+
+    100% {
         filter: blur(0);
     }
 }
@@ -120,6 +126,46 @@ body {
 }
 
 
+/* Intro - Text Load Highlight */
+
+.animate-fade-in-title span.highlight-load,
+.animate-fade-in-title span.highlight-load-alt {
+    animation-fill-mode: both;
+    animation-duration: 2s, 0.25s, 0.75s, 1s;
+    animation-delay: calc(var(--initial-delay) + (var(--delay-segment) * 2) + var(--i) * 15ms), calc(var(--initial-delay) + (var(--delay-segment) * 2) + var(--i) * 15ms), calc(var(--initial-delay) + (var(--delay-segment) * 2) + var(--i) * 15ms), calc(var(--initial-delay) + (var(--delay-segment) * 3) + var(--i) * 20ms);
+    -webkit-font-smoothing: subpixel-antialiased;
+}
+
+.animate-fade-in-title span.highlight-load {
+    animation-name: fade-in-opacity, fade-in-scale, fade-in-blur, de-highlight-load;
+    animation-timing-function: var(--ease-out-quad), var(--ease-in-out-quad), var(--ease-out-quad), var(--ease-out-quad);
+}
+
+@keyframes de-highlight-load {
+    0% {
+        color: var(--highlight-primary);
+    }
+
+    100% {
+        color: var(--text-1);
+    }
+}
+
+.animate-fade-in-title span.highlight-load-alt {
+    animation-name: fade-in-opacity, fade-in-scale, fade-in-blur, de-highlight-load-alt;
+}
+
+@keyframes de-highlight-load-alt {
+    0% {
+        color: var(--yellow);
+    }
+
+    100% {
+        color: var(--text-1);
+    }
+}
+
+
 /* Triangle - Flicker */
 
 .animate-flicker-triangle-light::after,
@@ -128,16 +174,15 @@ body {
     animation-timing-function: linear;
     animation-iteration-count: infinite;
     animation-delay: calc(var(--delay-segment) * 10 + 0.1s);
+    will-change: transform;
 }
 
 .animate-flicker-triangle-light::after {
     animation-name: flicker-light;
-    transform: translate3d(0,0,0);
 }
 
 .animate-flicker-triangle-shadow::after {
     animation-name: flicker-shadow;
-    transform: translate3d(0,0,0);
 }
 
 #profile:target~main .animate-flicker-triangle-light::after,
@@ -173,62 +218,21 @@ body {
 
 /* Text Higlight */
 
+.highlight-text {
+    will-change: color;
+}
+
 .highlight-text:focus {
     transition: color calc(2 * var(--animate-out-segment)) var(--ease-in-quad);
-    transform: translate3d(0,0,0);
 }
 
 .highlight-text:hover {
     transition: color calc(2 * var(--animate-out-segment)) var(--ease-in-quad) !important;
-    transform: translate3d(0,0,0);
 }
 
 .highlight-text.highlight-text--active {
     transition: color calc(2 * var(--animate-in-segment)) var(--ease-out-quad) !important;
     color: var(--highlight-primary) !important;
-    transform: translate3d(0,0,0);
-}
-
-
-/* Intro - Text Load Highlight */
-
-.animate-fade-in-title span.highlight-load,
-.animate-fade-in-title span.highlight-load-alt {
-    animation-fill-mode: both;
-    animation-duration: 2.25s, 0.75s, 1s;
-    animation-timing-function: var(--ease-out-quad);
-    animation-delay: calc(0.3s + var(--delay-segment) + var(--i) * 15ms), calc(0.3s + var(--delay-segment) + var(--i) * 15ms), calc(0.3s + (var(--delay-segment) * 2) + var(--i) * 20ms);
-    -webkit-font-smoothing: subpixel-antialiased;
-}
-
-.animate-fade-in-title span.highlight-load {
-    animation-name: fade-in-opacity, fade-in-blur, de-highlight-load;
-    transform: translate3d(0,0,0);
-}
-
-@keyframes de-highlight-load {
-    0% {
-        color: var(--highlight-primary);
-    }
-
-    100% {
-        color: var(--text-1);
-    }
-}
-
-.animate-fade-in-title span.highlight-load-alt {
-    animation-name: fade-in-opacity, fade-in-blur, de-highlight-load-alt;
-    transform: translate3d(0,0,0);
-}
-
-@keyframes de-highlight-load-alt {
-    0% {
-        color: var(--yellow);
-    }
-
-    100% {
-        color: var(--text-1);
-    }
 }
 
 
@@ -243,7 +247,6 @@ body {
 svg.animate-face-icon path {
     will-change: d;
     animation-name: face-icon-animation;
-    transform: translate3d(0,0,0);
     animation-fill-mode: both;
     animation-duration: calc(var(--delay-segment) * 24);
     animation-timing-function: linear;
@@ -315,7 +318,6 @@ svg.animate-face-icon path {
 #availability_button_dot {
     will-change: opacity;
     animation-name: availability-dot-fade-animation;
-    transform: translate3d(0,0,0);
     animation-fill-mode: both;
     animation-timing-function: linear;
     animation-duration: calc(var(--animate-in-segment) * 32);
@@ -329,36 +331,38 @@ svg.animate-face-icon path {
 
 #availability_button_dot::before {
     transition: opacity calc(2 * var(--animate-out-segment)) var(--ease-out-quad), transform calc(2 * var(--animate-out-segment)) var(--ease-out-quad);
-    transform: translate3d(0,0,0);
+    will-change: opacity, transform;
     transform-origin: center;
     z-index: -1;
 }
 
+#availability_button_dot::after {
+    transition: background-color var(--animate-out-segment) linear;
+    will-change: background-color;
+}
+
 #availability_button a:hover #availability_button_dot::before, #availability_button a:focus #availability_button_dot::before {
     transition: opacity calc(2 * var(--animate-in-segment)) var(--ease-in-quad), transform calc(2 * var(--animate-in-segment)) var(--ease-in-quad);
-    transform: translate3d(0,0,0);
     transform: scale(135);
 }
 
 #availability_button_dot {
     transition: color var(--animate-out-segment) linear;
-    transform: translate3d(0,0,0);
 }
 
 #availability_button a:hover #availability_button_dot::after, #availability_button a:focus #availability_button_dot::after {
     transition: background-color var(--animate-in-segment) linear var(--animate-in-segment);
-    transform: translate3d(0,0,0);
+    will-change: background-color;
     background-color: var(--cyan-full-5);
 }
 
 #availability_button_text {
     transition: color var(--animate-out-segment) linear;
-    transform: translate3d(0,0,0);
+    will-change: color;
 }
 
 #availability_button a:hover #availability_button_text, #availability_button a:focus #availability_button_text {
     transition: color var(--animate-in-segment) linear var(--animate-in-segment);
-    transform: translate3d(0,0,0);
     color: var(--cyan-full-5);
 }
 
@@ -367,12 +371,11 @@ svg.animate-face-icon path {
 
 #menu_links>a {
     transition: background-color var(--animate-out-segment-2\/3) linear;
-    transform: translate3d(0,0,0);
+    will-change: background-color;
 }
 
 #menu_links>a:hover, #menu_links>a:focus, #menu_links>a.tooltip-key--active, #menu_button--open:focus ~ #menu_button {
     transition: background-color var(--animate-in-segment-2\/3) linear;
-    transform: translate3d(0,0,0);
     background-color: var(--highlight-secondary);
 }
 
@@ -382,36 +385,33 @@ a#menu_link_profile:hover, a#menu_link_profile:focus, a#menu_link_profile.toolti
 
 #menu_links>a svg, #menu_email_button-wrapper>button svg {
     transition: color var(--animate-out-segment-2\/3) linear;
-    transform: translate3d(0,0,0);
+    will-change: color;
     color: var(--icon);
 }
 
 #menu_links>a:hover svg, #menu_links>a:focus svg, #menu_email_button-wrapper>button:hover svg, #menu_email_button-wrapper>button:focus svg {
     transition: color var(--animate-in-segment-2\/3) linear;
-    transform: translate3d(0,0,0);
     color: var(--icon-hover);
 }
 
 #menu_links>a span.button-label, #menu_email_button-wrapper>button span.button-label {
     transition: color var(--animate-out-segment-2\/3) linear;
-    transform: translate3d(0,0,0);
+    will-change: color;
     color: var(--text-2);
 }
 
 #menu_links>a:hover span.button-label, #menu_links>a:focus span.button-label, #menu_email_button-wrapper>button:hover span.button-label, #menu_email_button-wrapper>button:focus span.button-label {
     transition: color var(--animate-in-segment-2\/3) linear;
-    transform: translate3d(0,0,0);
     color: var(--text-1);
 }
 
 #menu_links>a span.button-label u {
     transition: text-decoration var(--animate-out-segment-2\/3) linear;
-    transform: translate3d(0,0,0);
+    will-change: text-decoration;
 }
 
 #menu_links>a:hover span.button-label u, #menu_links>a:focus span.button-label u {
     transition: text-decoration var(--animate-in-segment-2\/3) linear;
-    transform: translate3d(0,0,0);
     text-decoration-color: var(--text-2) !important;
 }
 
@@ -420,7 +420,7 @@ a#menu_link_profile:hover, a#menu_link_profile:focus, a#menu_link_profile.toolti
 
 #menu_button {
     transition: color var(--animate-out-segment-2\/3) linear, background-color var(--animate-out-segment-2\/3) linear;
-    transform: translate3d(0,0,0);
+    will-change: color, background-color;
     color: var(--icon);
 }
 
@@ -444,7 +444,6 @@ a#menu_link_profile:hover, a#menu_link_profile:focus, a#menu_link_profile.toolti
 
 #menu_button-wrapper:hover #menu_button, #menu_button-wrapper.tooltip-key--active #menu_button, #menu:target #menu_button {
     transition: color var(--animate-in-segment-2\/3) linear,  background-color var(--animate-in-segment-2\/3) linear;
-    transform: translate3d(0,0,0);
     color: var(--icon-hover);
     background-color: var(--highlight-secondary);
 }
@@ -454,55 +453,46 @@ a#menu_link_profile:hover, a#menu_link_profile:focus, a#menu_link_profile.toolti
     will-change: transform;
     animation-fill-mode: both;
     animation-name: initial;
-    transform: translate3d(0,0,0);
 }
 
 #menu_button span:nth-child(1) {
     animation-duration: calc((var(--animate-in-segment) * 3));
     animation-name: menu-top-left-reverse;
-    transform: translate3d(0,0,0);
 }
 
 #menu:target #menu_button span:nth-child(1) {
     animation-duration: calc((var(--animate-out-segment) * 3));
     animation-name: menu-top-left;
-    transform: translate3d(0,0,0);
 }
 
 #menu_button span:nth-child(2) {
     animation-duration: calc((var(--animate-in-segment) * 3));
     animation-name: menu-top-right-reverse;
-    transform: translate3d(0,0,0);
 }
 
 #menu:target #menu_button span:nth-child(2) {
     animation-duration: calc((var(--animate-out-segment) * 3));
     animation-name: menu-top-right;
-    transform: translate3d(0,0,0);
 }
 
 #menu_button span:nth-child(3) {
     animation-duration: calc((var(--animate-in-segment) * 3));
     animation-name: menu-bottom-left-reverse;
-    transform: translate3d(0,0,0);
 }
 
 #menu:target #menu_button span:nth-child(3) {
     animation-duration: calc((var(--animate-out-segment) * 3));
     animation-name: menu-bottom-left;
-    transform: translate3d(0,0,0);
 }
 
 #menu_button span:nth-child(4) {
     animation-duration: calc((var(--animate-in-segment) * 3));
     animation-name: menu-bottom-right-reverse;
-    transform: translate3d(0,0,0);
 }
 
 #menu:target #menu_button span:nth-child(4) {
     animation-duration: calc((var(--animate-out-segment) * 3));
     animation-name: menu-bottom-right;
-    transform: translate3d(0,0,0);
 }
 
 @keyframes initial {}
@@ -670,7 +660,7 @@ a#menu_link_profile:hover, a#menu_link_profile:focus, a#menu_link_profile.toolti
 #menu_dropdown a::before,
 #menu_dropdown label::before {
     transition: opacity var(--animate-out-segment) linear, inset var(--animate-out-segment) var(--ease-in-quad);
-    transform: translate3d(0,0,0);
+    will-change: opacity, inset;
     content: "";
     opacity: 0;
     position: absolute;
@@ -692,20 +682,19 @@ a#menu_link_profile:hover, a#menu_link_profile:focus, a#menu_link_profile.toolti
 #menu_dropdown a::after,
 #menu_dropdown label::after {
     transition: opacity var(--animate-out-segment) linear, inset var(--animate-out-segment) var(--ease-in-quad);
-    transform: translate3d(0,0,0);
+    will-change: opacity, inset;
     content: "";
     opacity: 0;
     position: absolute;
     inset: min(-1px, -0.0625rem) min(-1px, -0.0625rem) 0 min(-1px, -0.0625rem);
     z-index: 1;
-
     border: max(1px, 0.0625rem) solid transparent;
     background-image: linear-gradient(to right, rgba(0, 118, 132, 1), rgba(0, 118, 132, 0)); /* 210, 100, 45 */
     background-origin: border-box;
     background-clip: border-box;
-    -webkit-mask: linear-gradient(#000 0 0) padding-box, linear-gradient(#000 0 0);
-    -webkit-mask-composite: destination-out;
-    -webkit-mask-repeat: no-repeat;
+    mask: linear-gradient(#000 0 0) padding-box, linear-gradient(#000 0 0);
+    mask-composite: destination-out;
+    mask-repeat: no-repeat;
     mask-composite: exclude;
 }
 
@@ -722,7 +711,6 @@ a#menu_link_profile:hover, a#menu_link_profile:focus, a#menu_link_profile.toolti
 #menu_dropdown a:focus-within::after,
 #menu_dropdown label:focus-within::after  {
     transition: opacity var(--animate-in-segment) linear, inset var(--animate-in-segment) var(--ease-out-quad);
-    transform: translate3d(0,0,0);
     opacity: 1;
     /* transition: opacity var(--animate-in-segment-2\/3) linear, inset var(--animate-in-segment-2\/3) var(--ease-out-quad);
     transform: translate3d(0,0,0);
@@ -733,20 +721,19 @@ a#menu_link_profile:hover, a#menu_link_profile:focus, a#menu_link_profile.toolti
 #menu_dropdown a span,
 #menu_dropdown label span {
     transition: color var(--animate-out-segment) linear;
-    transform: translate3d(0,0,0);
+    will-change: color;
     z-index: 1;
 }
 
 #menu_dropdown a:hover span,
 #menu_dropdown label:hover span {
     transition: color var(--animate-in-segment) linear;
-    transform: translate3d(0,0,0);
 }
 
 #menu_dropdown a svg,
 #menu_dropdown label svg {
     transition: color var(--animate-out-segment) linear;
-    transform: translate3d(0,0,0);
+    will-change: color;
     color: var(--icon);
     z-index: 1;
 }
@@ -754,7 +741,6 @@ a#menu_link_profile:hover, a#menu_link_profile:focus, a#menu_link_profile.toolti
 #menu_dropdown a:hover svg,
 #menu_dropdown label:hover svg {
     transition: color var(--animate-out-segment) linear, background-color var(--animate-out-segment) linear;
-    transform: translate3d(0,0,0);
     color: var(--icon-hover);
 }
 
@@ -799,7 +785,7 @@ a#menu_link_profile:hover, a#menu_link_profile:focus, a#menu_link_profile.toolti
 #modal_profile .modal-content,
 #modal_archive .modal-content {
     transition: opacity var(--animate-out-segment) linear, transform var(--animate-out-segment) var(--ease-in-quad), visibility 0s var(--animate-out-segment);
-    transform: translate3d(0,0,0);
+    /* will-change: opacity, transform; */
     transform: scale(1.05);
     transform-origin: top;
 }
@@ -808,7 +794,6 @@ a#menu_link_profile:hover, a#menu_link_profile:focus, a#menu_link_profile.toolti
 #archive:target~main #modal_archive .modal-content {
     visibility: visible;
     transition: opacity var(--animate-in-segment) linear, transform var(--animate-in-segment) var(--ease-out-quad);
-    transform: translate3d(0,0,0);
     opacity: 1;
     transform: scale(1);
 }
@@ -829,7 +814,7 @@ a#menu_link_profile:hover, a#menu_link_profile:focus, a#menu_link_profile.toolti
 #archive:target~main #intro_left-column,
 #archive:target~main #intro_right-column {
     transition: transform var(--animate-in-segment) var(--ease-out-quad);
-    transform: translate3d(0,0,0);
+    will-change: transform;
     transform: scale(0.95);
 }
 
@@ -958,7 +943,7 @@ a#menu_link_profile:hover, a#menu_link_profile:focus, a#menu_link_profile.toolti
     pointer-events: none;
     opacity: 0;
     transition: opacity var(--animate-out-segment) linear;
-    transform: translate3d(0,0,0);
+    will-change: opacity;
 }
 
 #underlay_menu {
@@ -978,7 +963,6 @@ a#menu_link_profile:hover, a#menu_link_profile:focus, a#menu_link_profile.toolti
     pointer-events: auto;
     opacity: 1;
     transition: opacity var(--animate-in-segment) linear;
-    transform: translate3d(0,0,0);
 }
 
 #debug:not(:checked)~#profile:target~main #underlay_modal,
@@ -987,7 +971,6 @@ a#menu_link_profile:hover, a#menu_link_profile:focus, a#menu_link_profile.toolti
     pointer-events: auto;
     opacity: 1;
     transition: opacity var(--animate-in-segment) linear;
-    transform: translate3d(0,0,0);
 }
 
 

@@ -142,9 +142,10 @@
                                  style="place-self: self-start">
                                 <!-- onmousedown="navigator.clipboard.writeText('stepanjakl@outlook.com'); textHighlighter.highlightAndCopyText(event, this.querySelector('.tooltip span'), this.querySelector('.highlight-text'), 'Copied to the clipboard')"
                                      onkeydown="window.prompt('Copy to the clipboard: `Cmd/Ctrl + C` and then press `Enter`', 'stepanjakl@outlook.com')" -->
-                                <button type="button" class="inline-flex align-items-center"
-                                     onclick="handleTouchButtonClick(this, event, () => { navigator.clipboard.writeText('stepanjakl@outlook.com'); textHighlighter.highlightAndCopyText(event, this.querySelector('.tooltip span'), this.querySelector('.highlight-text'), 'Copied to the clipboard') })"
-                                     aria-label="Contact me via email">
+                                <button type="button"
+                                        class="inline-flex align-items-center"
+                                        onclick="handleTouchButtonClick(this, event, () => { navigator.clipboard.writeText('stepanjakl@outlook.com'); textHighlighter.highlightAndCopyText(event, this.querySelector('.tooltip span'), this.querySelector('.highlight-text'), 'Copied to the clipboard') })"
+                                        aria-label="Contact me via email">
                                     <span class="inline-flex rounded-full"
                                           style="padding: 0.625rem;
                                                  background-color: var(--inner-bg-dark-1)">
@@ -197,7 +198,7 @@
                                     </abbr>
                                 </a>
                                 <a href="#archive"
-                                id="menu_link_archive"
+                                   id="menu_link_archive"
                                    onclick="handleTouchButtonClick(this, event, () => { openDialog('modal_archive', this, null, 'archive') })"
                                    aria-label="Explore snippets of my past work"
                                    class="z-3 flex align-items-center tooltip-wrapper">
@@ -259,7 +260,12 @@
                                     <span>+</span>
                                     <kbd><span>M</span></kbd>
                                 </abbr>
-                                <a href="#" tabindex="-1" id="underlay_menu" class="fixed inset-0 cursor-default"></a>
+                                <a href="#"
+                                   aria-hidden="true"
+                                   onclick="event.preventDefault(); closeDialog('#')"
+                                   tabindex="-1"
+                                   id="underlay_menu"
+                                   class="fixed inset-0 cursor-default"></a>
                                 <dialog role="dialog" id="menu_dropdown" class="z-10 absolute pt-1/2">
                                     <div>
                                         <a href="https://cal.com/stepanjakl"
@@ -606,7 +612,7 @@
                 <dialog id="modal_archive" class="modal" role="dialog" aria-modal="true">
                     <div class="overflow-clip modal-content">
                         <a href="#"
-                        onclick="event.preventDefault(); closeDialog('#')"
+                           onclick="event.preventDefault(); closeDialog('#')"
                            id="modal_button-close"
                            class="flex justify-content-center align-items-center"
                            aria-label="Close modal">
@@ -805,7 +811,7 @@
                                             right: calc(3rem + 3rem);
                                             /* outline: max(1px, 0.0625rem) solid red */">
                                     <div id="horizontal-timeline-wrapper">
-                                        <horizontal-timeline labels="[2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014]"></horizontal-timeline>
+                                        <!-- <horizontal-timeline labels="[2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014]"></horizontal-timeline> -->
                                     </div>
                                 </div>
                             </div>

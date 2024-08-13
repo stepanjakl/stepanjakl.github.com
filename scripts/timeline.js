@@ -370,27 +370,20 @@ class timeline extends HTMLElement {
                 }
 
                 if (entry.isIntersecting) {
-                    if (firstLoad) {
-                        firstLoad = false
-                    }
-                    else {
-                        console.log('isIntersecting', targetSection)
+                    targetLabelEl.focus({ preventScroll: true })
 
-                        targetLabelEl.focus({ preventScroll: true })
-
-                        await scrollParentToChildCenterHorizontal(timelineContentEl, targetLabelEl)
-                        window.history.replaceState({}, '', window.location.pathname + window.location.search + window.location.hash.split('?')[0] + '?' + updateParams('year', targetSection))
+                    await scrollParentToChildCenterHorizontal(timelineContentEl, targetLabelEl)
+                    window.history.replaceState({}, '', window.location.pathname + window.location.search + window.location.hash.split('?')[0] + '?' + updateParams('year', targetSection))
 
 
-                        labelEls.forEach((labelEl) => labelEl.classList.remove('active'))
-                        targetLabelEl.classList.add('active')
+                    labelEls.forEach((labelEl) => labelEl.classList.remove('active'))
+                    targetLabelEl.classList.add('active')
 
-                        const index = labelEls.findIndex((labelEl) => labelEl.getAttribute('data-label-for') === targetSection)
-                        timelineEls.forEach((timelineEl) => timelineEl.classList.remove('active'))
-                        timelineEls[3 + (index === 0 ? 0 : index * 6)].classList.add('active')
+                    const index = labelEls.findIndex((labelEl) => labelEl.getAttribute('data-label-for') === targetSection)
+                    timelineEls.forEach((timelineEl) => timelineEl.classList.remove('active'))
+                    timelineEls[3 + (index === 0 ? 0 : index * 6)].classList.add('active')
 
-                        this.activeSection = targetSection
-                    }
+                    this.activeSection = targetSection
                 }
             })
         }
@@ -401,8 +394,6 @@ class timeline extends HTMLElement {
         }
 
         const initializeTimeline = (() => {
-            console.log('initializeTimeline')
-
             const timelineContentEl = this.querySelector('#timeline-content')
             const modalArchiveEl = document.querySelector('#modal_archive')
             const labelEls = Array.from(this.querySelectorAll('[data-label-for]'))
@@ -414,20 +405,15 @@ class timeline extends HTMLElement {
             setupIntersectionObserver(timelineContentEl, labelEls)
 
             if (window.location.hash.includes('?year=')) {
-                const year = window.location.hash.split('?year=')[1]
-                console.log(year)
+                const yearParam = window.location.hash.split('?year=')[1]
 
                 window.history.pushState({}, '', `${window.location.pathname + window.location.search}#archive`)
 
                 requestAnimationFrame(() => {
-
-                    console.log(year);
-
-
-                    window.history.replaceState({}, '', `${window.location.pathname + window.location.search}#archive?year=${year}`)
+                    window.history.replaceState({}, '', `${window.location.pathname + window.location.search}#archive?year=${yearParam}`)
                     openDialog('modal_archive', document.querySelector('#menu_link_archive'))
 
-                    const targetElement = document.querySelector(`[data-timeline-section="${year}"]`)
+                    const targetElement = document.querySelector(`[data-timeline-section="${yearParam}"]`)
                     if (targetElement) {
                         scrollParentToChildVertical(modalArchiveEl, targetElement, 'instant')
                     }
