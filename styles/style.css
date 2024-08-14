@@ -1471,6 +1471,37 @@ body {
     /* transform: translateX(100%); */
 }
 
+
+[data-timeline-section] {
+    position: relative;
+}
+[data-timeline-section]::before {
+    content: '';
+    position: absolute;
+    top: 0; /* Adjust based on rootMargin top value */
+    right: 0; /* Adjust based on rootMargin right value */
+    bottom: 0; /* Adjust based on rootMargin bottom value */
+    left: 0; /* Adjust based on rootMargin left value */
+    border: 2px dashed rgba(255, 0, 0, 0.75); /* Red dashed border to visualize margin */
+    pointer-events: none;
+    z-index: 15; /* Ensure it is above other content */
+    /* transform: translateX(100%); */
+    }
+
+    body::before {
+        content: '';
+        position: fixed;
+        z-index: 100;
+        top: 50%; /* Adjust based on rootMargin top value */
+        right: 0; /* Adjust based on rootMargin right value */
+        bottom: 50%; /* Adjust based on rootMargin bottom value */
+        left: 0; /* Adjust based on rootMargin left value */
+        border: 2px dashed rgba(255, 0, 0, 0.75); /* Red dashed border to visualize margin */
+        pointer-events: none;
+        z-index: 15; /* Ensure it is above other content */
+        /* transform: translateX(100%); */
+        }
+
 [data-carousel-slides]::-webkit-scrollbar {
     display: none;
 }

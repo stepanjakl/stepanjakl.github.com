@@ -311,12 +311,18 @@ class timeline extends HTMLElement {
 
                 const isScrollEndSupported = 'onscrollend' in window
 
+                const handleScrollEnd = (event) => {
+                    parent.removeEventListener('scrollend', handleScrollEnd)
+                    this.isScrolling = false
+                    resolve()
+                }
+
+                if(initialScrollLeft === 0 && scrollAmount < 0) {
+                    resolve()
+                    return
+                }
+
                 if (isScrollEndSupported) {
-                    const handleScrollEnd = (event) => {
-                        parent.removeEventListener('scrollend', handleScrollEnd)
-                        this.isScrolling = false
-                        resolve()
-                    }
                     parent.addEventListener('scrollend', handleScrollEnd)
                 }
 
@@ -370,6 +376,8 @@ class timeline extends HTMLElement {
                 }
 
                 if (entry.isIntersecting) {
+                    console.log('isIntersecting', targetSection, targetLabelEl);
+
                     targetLabelEl.focus({ preventScroll: true })
 
                     await scrollParentToChildCenterHorizontal(timelineContentEl, targetLabelEl)
@@ -389,7 +397,10 @@ class timeline extends HTMLElement {
         }
 
         const setupIntersectionObserver = (timelineContentEl, labelEls) => {
-            const intersectionObserver = new IntersectionObserver(handleIntersection(timelineContentEl, labelEls), { threshold: 0.75 })
+            const intersectionObserver = new IntersectionObserver(handleIntersection(timelineContentEl, labelEls), {
+                rootMargin: '-50% 0% -50% 0%',
+                threshold: 0
+            })
             document.querySelectorAll('[data-timeline-section]').forEach(async (element) => await intersectionObserver.observe(element))
         }
 

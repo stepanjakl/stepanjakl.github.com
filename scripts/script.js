@@ -175,7 +175,7 @@ class KeyHandler {
 
     toggleArchive(event) {
         event.preventDefault()
-        if (window.location.hash === '#archive') {
+        if (window.location.hash.includes('#archive')) {
             aria.getCurrentDialog().close('#')
         }
         else {

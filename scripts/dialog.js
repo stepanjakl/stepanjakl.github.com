@@ -1,3 +1,5 @@
+/* Inspired by https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/examples/dialog/ */
+
 var aria = aria || {}
 
 aria.Utils = aria.Utils || {
@@ -174,6 +176,8 @@ aria.Dialog.prototype.close = function (hash) {
 
         this.focusAfterClosed.addEventListener('blur', handleBlur)
 
+        console.log(aria.OpenDialogList);
+
         if (aria.OpenDialogList.length > 0) {
             aria.getCurrentDialog().addListeners()
         } else {
@@ -182,7 +186,7 @@ aria.Dialog.prototype.close = function (hash) {
     })
 }
 
-aria.Dialog.prototype.replace = function (newDialogId, newFocusAfterClosed, newFocusFirst) {
+aria.Dialog.prototype.replace = function (newDialogId, newFocusAfterClosed, newFocusFirst, hash) {
     aria.OpenDialogList.pop()
     this.removeListeners()
     aria.Utils.remove(this.preNode)
@@ -191,7 +195,7 @@ aria.Dialog.prototype.replace = function (newDialogId, newFocusAfterClosed, newF
     this.backdropNode.classList.remove('active')
 
     const focusAfterClosed = newFocusAfterClosed || this.focusAfterClosed
-    new aria.Dialog(newDialogId, focusAfterClosed, newFocusFirst)
+    new aria.Dialog(newDialogId, focusAfterClosed, newFocusFirst, hash)
 }
 
 aria.Dialog.prototype.addListeners = function () {
@@ -217,16 +221,17 @@ aria.Dialog.prototype.trapFocus = function (event) {
     }
 }
 
-window.openDialog = (dialogId, focusAfterClosed, focusFirst, hash) => new aria.Dialog(dialogId, focusAfterClosed, focusFirst, hash)
+window.openDialog = (dialogId, focusAfterClosed, focusFirst, hash) => {
+    if (aria.OpenDialogList.length > 0) {
+        const topDialog = aria.getCurrentDialog()
+        topDialog.replace(dialogId, focusAfterClosed, focusFirst, hash)
+    }
+    else {
+        new aria.Dialog(dialogId, focusAfterClosed, focusFirst, hash)
+    }
+}
 
 window.closeDialog = (hash) => {
     const topDialog = aria.getCurrentDialog()
     topDialog.close(hash)
-}
-
-window.replaceDialog = (newDialogId, newFocusAfterClosed, newFocusFirst) => {
-    const topDialog = aria.getCurrentDialog()
-    if (topDialog.dialogNode.contains(document.activeElement)) {
-        topDialog.replace(newDialogId, newFocusAfterClosed, newFocusFirst)
-    }
 }
