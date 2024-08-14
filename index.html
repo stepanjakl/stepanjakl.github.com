@@ -1,6 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <!-- GlitchTip -->
+        <script src="https://browser.sentry-cdn.com/8.25.0/bundle.min.js"
+                crossorigin="anonymous"></script>
+        <script>
+            Sentry.init({
+                dsn: "https://f290201df2b04ab98a6863d0f5f322ca@app.glitchtip.com/7660",
+                tracesSampleRate: 0.01,
+            })
+
+            window.onerror = function(message, source, lineno, colno, error) {
+                Sentry.captureException(error)
+            }
+
+            window.onunhandledrejection = function(event) {
+                Sentry.captureException(event.reason)
+            }
+        </script>
         <title>Štěpán Jákl | Full-stack web developer & interface designer</title>
         <meta charset="UTF-8">
         <meta name="description"
@@ -80,8 +97,9 @@
                     <div id="intro_left-column"
                          class="z-1 flex flex-col-reverse align-items-start">
                         <h2 class="inline-flex tooltip-wrapper animate-fade-in-name select-none highlight-text"
-                            onmousedown="if ((event.which && event.which == 3) || (event.button && event.button == 2)) { if ('speechSynthesis' in window) { let msg = new SpeechSynthesisUtterance(); msg.volume= 0.25; msg.lang = 'cs-CZ'; msg.voice = speechSynthesis.getVoices().filter(voice => voice.name === 'Zuzana')[0]; msg.text = 'Štěpán Jákl'; speechSynthesis.speak(msg) } } else { navigator.clipboard.writeText('Štěpán Jákl'); textHighlighter.highlightAndCopyText(event, this.querySelector('.tooltip-bottom span'), this, 'Copied to the clipboard') }"
-                            tabindex="0"
+                        tabindex="0"
+                            onkeypress="this.click()"
+                            onclick="handleTouchButtonClick(this, event, () => { if ((event.which && event.which == 3) || (event.button && event.button == 2)) { if ('speechSynthesis' in window) { let msg = new SpeechSynthesisUtterance(); msg.volume= 0.25; msg.lang = 'cs-CZ'; msg.voice = speechSynthesis.getVoices().filter(voice => voice.name === 'Zuzana')[0]; msg.text = 'Štěpán Jákl'; speechSynthesis.speak(msg) } } else { navigator?.clipboard?.writeText('Štěpán Jákl'); textHighlighter.highlightAndCopyText(event, this.querySelector('.tooltip-bottom span'), this, 'Copied to the clipboard') } }, true)"
                             role="button"
                             aria-label="Click to copy name to clipboard">
                             <div class="inline-flex flex-wrap select-none" aria-hidden="true">
@@ -116,7 +134,8 @@
                              class="relative flex align-items-center animate-fade-in-cta-1">
                             <div class="tooltip-wrapper">
                                 <a href="https://cal.com/stepanjakl"
-                                   onclick="handleTouchButtonClick(this, event, () => { window.open(this.getAttribute('href'), '_blank') })"
+                                tabindex="0"
+                                   onclick="handleTouchButtonClick(this, event, () => { window.open(this.getAttribute('href'), '_blank') }, true)"
                                    target="_blank"
                                    aria-label="Open to new opportunities, book a virtual meeting"
                                    class="relative z-0 flex overflow-hidden"
@@ -143,8 +162,9 @@
                                 <!-- onmousedown="navigator.clipboard.writeText('stepanjakl@outlook.com'); textHighlighter.highlightAndCopyText(event, this.querySelector('.tooltip span'), this.querySelector('.highlight-text'), 'Copied to the clipboard')"
                                      onkeydown="window.prompt('Copy to the clipboard: `Cmd/Ctrl + C` and then press `Enter`', 'stepanjakl@outlook.com')" -->
                                 <button type="button"
-                                        class="inline-flex align-items-center"
-                                        onclick="handleTouchButtonClick(this, event, () => { navigator.clipboard.writeText('stepanjakl@outlook.com'); textHighlighter.highlightAndCopyText(event, this.querySelector('.tooltip span'), this.querySelector('.highlight-text'), 'Copied to the clipboard') })"
+                                tabindex="0"
+                                onclick="handleTouchButtonClick(this, event, () => { navigator?.clipboard?.writeText('stepanjakl@outlook.com'); textHighlighter.highlightAndCopyText(event, this.querySelector('.tooltip span'), this.querySelector('.highlight-text'), 'Copied to the clipboard') })"
+                                class="inline-flex align-items-center"
                                         aria-label="Contact me via email">
                                     <span class="inline-flex rounded-full"
                                           style="padding: 0.625rem;
@@ -163,7 +183,8 @@
                             </div>
                             <div id="menu_links" class="flex flex-col">
                                 <a href="#profile"
-                                   id="menu_link_profile"
+                                id="menu_link_profile"
+                                tabindex="0"
                                    onclick="handleTouchButtonClick(this, event, () => { openDialog('modal_profile', this, null, 'profile') })"
                                    aria-label="Learn more about me"
                                    class="z-4 flex align-items-center tooltip-wrapper">
@@ -199,6 +220,7 @@
                                 </a>
                                 <a href="#archive"
                                    id="menu_link_archive"
+                                   tabindex="0"
                                    onclick="handleTouchButtonClick(this, event, () => { openDialog('modal_archive', this, null, 'archive') })"
                                    aria-label="Explore snippets of my past work"
                                    class="z-3 flex align-items-center tooltip-wrapper">
@@ -229,17 +251,17 @@
                                  class="relative flex tooltip-wrapper">
                                 <!-- onclick="event.preventDefault(); document.querySelector('#menu_dropdown').show(); window.location.hash = 'menu'; document.querySelector('#menu_button--close').focus()" -->
                                 <a href="#menu"
+                                tabindex="0"
                                    onclick="event.preventDefault(); openDialog('menu_button-wrapper', this, 'menu_button--close', 'menu');"
                                    id="menu_button--open"
-                                   tabindex="0"
                                    class="z-2 inset-0"
                                    style="position: absolute"
                                    aria-label="Open dropdown menu"></a>
                                 <!-- onclick="document.querySelector('#menu_dropdown').close(); document.querySelector('#menu_button--open').focus()" -->
                                 <a href="#"
+                                tabindex="0"
                                    onclick="event.preventDefault(); closeDialog('#')"
                                    id="menu_button--close"
-                                   tabindex="0"
                                    class="inset-0"
                                    style="position: absolute"
                                    aria-label="Close dropdown menu"></a>
@@ -318,13 +340,19 @@
                                                    box-shadow: 0 min(-1px, -0.0625rem) 0 0 var(--context-border-light);
                                                    box-sizing: content-box;
                                                    overflow: visible">
-                                        <label id="menu_dropdown_light-mode" for="mode" tabindex="0">
+                                        <label id="menu_dropdown_light-mode"
+                                               for="mode"
+                                               tabindex="0"
+                                               onkeypress="if(event.key === 'Enter') { document.getElementById('mode').click(); document.getElementById('menu_dropdown_dark-mode').focus(); }">
                                             <svg class="fill-current" style="width: 1.5rem; height: 1.5rem">
                                                 <use xlink:href="images/icons.svg#menu-light-mode"></use>
                                             </svg>
                                             <span class="text-sm whitespace-nowrap">Light mode</span>
                                         </label>
-                                        <label id="menu_dropdown_dark-mode" for="mode" tabindex="0">
+                                        <label id="menu_dropdown_dark-mode"
+                                               for="mode"
+                                               tabindex="0"
+                                               onkeypress="if(event.key === 'Enter') { document.getElementById('mode').click(); document.getElementById('menu_dropdown_light-mode').focus(); }">
                                             <svg class="fill-current"
                                                  style="color: var(--navy);
                                                         width: 1.5rem;
@@ -333,7 +361,10 @@
                                             </svg>
                                             <span class="text-sm whitespace-nowrap">Dark mode</span>
                                         </label>
-                                        <label id="menu_dropdown_debug" for="debug" tabindex="0">
+                                        <label id="menu_dropdown_debug"
+                                               for="debug"
+                                               tabindex="0"
+                                               onkeypress="if(event.key === 'Enter') { document.getElementById('debug').click(); }">
                                             <svg class="flex debug-checked:hidden fill-current"
                                                  style="width: 1.5rem;
                                                         height: 1.5rem">

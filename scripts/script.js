@@ -1,23 +1,49 @@
 const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0
 
-const handleTouchButtonClick = (element, event, callback) => {
+// const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream
+
+const handleTouchButtonClick = (element, event, callback, focusAfterClick) => {
     event.preventDefault()
-    if (isTouchDevice) {
-        element.clickCount = element.clickCount || 0
-        element.clickCount++
-        if (element.clickCount === 1) {
-            element.focus()
-        } else if (element.clickCount === 2) {
-            element.blur()
-            element.clickCount = 0
-            callback()
-        }
+
+    if (!isTouchDevice) {
+        callback()
+        return
     }
-    else {
+
+    element.clickCount = (element.clickCount || 0) + 1
+
+    console.log(element.clickCount)
+
+    if (!element.handleBlur) {
+        element.handleBlur = (() => {
+            const handleBlur = (event) => {
+                if (event.target !== document.activeElement) {
+                    element.clickCount = 0
+                    delete element.handleBlur
+                    event.target.removeAttribute('data-focus-after-click')
+                    event.target.removeEventListener('blur', handleBlur)
+                }
+            }
+            element.addEventListener('blur', handleBlur)
+        })()
+    }
+
+    if (element.clickCount === 2 || element.getAttribute('data-focus-after-click') === 'true') {
+        callback()
+
+        if (focusAfterClick) {
+            element.setAttribute('data-focus-after-click', 'true')
+            element.focus()
+
+            element.addEventListener('blur', () => { element.removeAttribute('data-focus-after-click') }, { once: true })
+
+        }
+    } else if (element.clickCount === 1) {
+        element.focus()
+    } else {
         callback()
     }
 }
-
 
 const initializeTimeline = () => {
     const timelineEl = document.createElement('horizontal-timeline')
@@ -84,9 +110,9 @@ class TextHighlighter {
         setTimeout(() => {
             this.restoreOriginalText(event, textElement)
             this.deactivateHighlight(highlightElement)
-            setTimeout(() => {
+            /* setTimeout(() => {
                 document.activeElement.blur()
-            }, 200)
+            }, 200) */
         }, 1000)
     }
 }
@@ -107,7 +133,9 @@ class KeyHandler {
     handleKeydown(event) {
         switch (event.keyCode) {
             case 27: // Escape key
-                closeDialog('#')
+                if (aria.getCurrentDialog()) {
+                    closeDialog('#')
+                }
                 break
             case 80: // P key
                 this.toggleProfile(event)
@@ -362,8 +390,6 @@ class HorizontalDragScroll {
     }
 
     onMouseDown(event) {
-        // if (this.element.classList.contains('edge-x-scroll--scrolling')) return
-
         this.isMouseDown = true
         this.startX = event.clientX
         this.scrollLeft = this.element.scrollLeft
@@ -511,9 +537,7 @@ class HorizontalEdgeScroller {
     startScroll() {
         if (!this.isScrolling) {
             this.isScrolling = true
-            // if (this.options.activeSlide) {
             this.isSnapped = false
-            // }
             this.element.classList.add('edge-x-scroll--scrolling')
             requestAnimationFrame(this.scrollStep)
         }

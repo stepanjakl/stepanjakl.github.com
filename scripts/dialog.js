@@ -162,7 +162,17 @@ aria.Dialog.prototype.close = function (hash) {
     requestAnimationFrame(() => {
         if (hash) window.location.hash = hash
 
+        this.focusAfterClosed.setAttribute('data-focus-after-click', 'true')
         this.focusAfterClosed.focus()
+
+        const handleBlur = (event) => {
+            if (event.target !== document.activeElement) {
+                event.target.removeAttribute('data-focus-after-click')
+                event.target.removeEventListener('blur', handleBlur)
+            }
+        }
+
+        this.focusAfterClosed.addEventListener('blur', handleBlur)
 
         if (aria.OpenDialogList.length > 0) {
             aria.getCurrentDialog().addListeners()

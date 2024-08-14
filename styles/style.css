@@ -1413,6 +1413,7 @@ body {
     column-gap: var(--slide-offset);
     border-radius: 0.5rem;
     cursor: grab;
+    touch-action: pan-x;
     /* mask-image: linear-gradient(90deg, rgba(0, 0, 0, 1) calc(100% - calc(var(--slide-offset) * 2)), rgba(0, 0, 0, 0) 100%); */
 }
 
@@ -1493,18 +1494,47 @@ body {
 } */
 
 [data-carousel-slides] figure a {
+    position: relative;
     display: block;
     aspect-ratio: 4 / 3;
     overflow: hidden;
     border-radius: 0.5rem;
     cursor: zoom-in;
+    view-timeline-name: --parallaxTimeline;
+    view-timeline-axis: x;
 }
 
 [data-carousel-slides] figure a img {
-    object-fit: cover;
+    /* object-fit: cover;
     object-position: center;
     width: 100%;
-    height: 100%;
+    height: 100%; */
+
+    position: absolute;
+    top: 50%;
+    left: 0%;
+    transform: translate(0%, -50%);
+
+    width: 150%;
+    height: 150%;
+    max-width: unset;
+    object-fit: cover;
+}
+
+@supports (animation-timeline: view()) {
+    @keyframes parallax {
+        to {
+            transform: translate(calc(1/3 * -100%), -50%);
+        }
+    }
+
+    [data-carousel-slides] figure a img {
+        animation-name: parallax;
+        animation-duration: 1ms;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
+        animation-timeline: --parallaxTimeline;
+    }
 }
 
 [data-carousel-controls] {
@@ -1643,7 +1673,7 @@ body {
     display: block;
 }
 
-#logo:hover span {
+#logo:hover span, #logo:focus span {
     animation-play-state: running;
 }
 
