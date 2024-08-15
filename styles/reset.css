@@ -44,6 +44,7 @@ a:not([class]) {
 
 label {
     cursor: pointer;
+    outline: none;
 }
 
 img,
@@ -134,6 +135,7 @@ dialog {
     height: auto;
     inset-inline-start: auto;
     inset-inline-end: auto;
+    outline: none;
 }
 
 /* https://bubblin.io/blog/notch */

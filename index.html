@@ -58,9 +58,9 @@
         <link rel="stylesheet" href="styles/style.css">
         <link rel="stylesheet" href="styles/state.css">
         <link rel="stylesheet" href="styles/animation.css">
-        <script src="scripts/script.js"></script>
-        <script src="scripts/dialog.js"></script>
-        <script src="scripts/timeline.js"></script>
+        <script defer src="scripts/script.js"></script>
+        <script defer src="scripts/dialog.js"></script>
+        <script defer src="scripts/timeline.js"></script>
         <script>
             console.log('%cŠtěpán Jákl | Full-stack developer & interface designer', `border: max(1px, 0.0625rem) solid #4e7bff; border-radius: 0.125rem; color: #4e7bff; font-size: 0.78125rem; padding: 1.40625rem 2.1875rem 1.25rem 2.1875rem; margin: 1.25rem 1.25rem; /* padding: 1.859375rem 1.875rem 1.859375rem 5.25rem; background-image: url('data:image/svg+xml,%3Csvg width='100%' height='100%' viewBox='0 0 40 40' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M0 40V10.033L10.033 0H40V30L30 40H0ZM10 30V25H22.5L25 22.5H10V17.5H30V25L25 30H10ZM15 10H30V15H10L15 10Z' fill='%234e7bff'/%3E%3C/svg%3E%0A'); background-repeat: no-repeat; background-position: 1.25rem 50%; background-size: 2.5rem 2.5rem */`)
             console.log('%cThis website uses HTML, CSS, and optional JavaScript for accessibility and a better user experience.', 'color: #4e7bff; margin: 0.9375rem 0 0.9375rem 1.25rem;')
@@ -97,7 +97,7 @@
                     <div id="intro_left-column"
                          class="z-1 flex flex-col-reverse align-items-start">
                         <h2 class="inline-flex tooltip-wrapper animate-fade-in-name select-none highlight-text"
-                        tabindex="0"
+                            tabindex="0"
                             onkeypress="this.click()"
                             onclick="handleTouchButtonClick(this, event, () => { if ((event.which && event.which == 3) || (event.button && event.button == 2)) { if ('speechSynthesis' in window) { let msg = new SpeechSynthesisUtterance(); msg.volume= 0.25; msg.lang = 'cs-CZ'; msg.voice = speechSynthesis.getVoices().filter(voice => voice.name === 'Zuzana')[0]; msg.text = 'Štěpán Jákl'; speechSynthesis.speak(msg) } } else { navigator?.clipboard?.writeText('Štěpán Jákl'); textHighlighter.highlightAndCopyText(event, this.querySelector('.tooltip-bottom span'), this, 'Copied to the clipboard') } }, true)"
                             role="button"
@@ -134,7 +134,7 @@
                              class="relative flex align-items-center animate-fade-in-cta-1">
                             <div class="tooltip-wrapper">
                                 <a href="https://cal.com/stepanjakl"
-                                tabindex="0"
+                                   tabindex="0"
                                    onclick="handleTouchButtonClick(this, event, () => { window.open(this.getAttribute('href'), '_blank') }, true)"
                                    target="_blank"
                                    aria-label="Open to new opportunities, book a virtual meeting"
@@ -162,9 +162,9 @@
                                 <!-- onmousedown="navigator.clipboard.writeText('stepanjakl@outlook.com'); textHighlighter.highlightAndCopyText(event, this.querySelector('.tooltip span'), this.querySelector('.highlight-text'), 'Copied to the clipboard')"
                                      onkeydown="window.prompt('Copy to the clipboard: `Cmd/Ctrl + C` and then press `Enter`', 'stepanjakl@outlook.com')" -->
                                 <button type="button"
-                                tabindex="0"
-                                onclick="handleTouchButtonClick(this, event, () => { navigator?.clipboard?.writeText('stepanjakl@outlook.com'); textHighlighter.highlightAndCopyText(event, this.querySelector('.tooltip span'), this.querySelector('.highlight-text'), 'Copied to the clipboard') })"
-                                class="inline-flex align-items-center"
+                                        tabindex="0"
+                                        onclick="handleTouchButtonClick(this, event, () => { navigator?.clipboard?.writeText('stepanjakl@outlook.com'); textHighlighter.highlightAndCopyText(event, this.querySelector('.tooltip span'), this.querySelector('.highlight-text'), 'Copied to the clipboard') })"
+                                        class="inline-flex align-items-center"
                                         aria-label="Contact me via email">
                                     <span class="inline-flex rounded-full"
                                           style="padding: 0.625rem;
@@ -183,8 +183,8 @@
                             </div>
                             <div id="menu_links" class="flex flex-col">
                                 <a href="#profile"
-                                id="menu_link_profile"
-                                tabindex="0"
+                                   id="menu_link_profile"
+                                   tabindex="0"
                                    onclick="handleTouchButtonClick(this, event, () => { openDialog('modal_profile', this, null, 'profile') })"
                                    aria-label="Learn more about me"
                                    class="z-4 flex align-items-center tooltip-wrapper">
@@ -251,7 +251,7 @@
                                  class="relative flex tooltip-wrapper">
                                 <!-- onclick="event.preventDefault(); document.querySelector('#menu_dropdown').show(); window.location.hash = 'menu'; document.querySelector('#menu_button--close').focus()" -->
                                 <a href="#menu"
-                                tabindex="0"
+                                   tabindex="0"
                                    onclick="event.preventDefault(); openDialog('menu_button-wrapper', this, 'menu_button--close', 'menu');"
                                    id="menu_button--open"
                                    class="z-2 inset-0"
@@ -259,7 +259,7 @@
                                    aria-label="Open dropdown menu"></a>
                                 <!-- onclick="document.querySelector('#menu_dropdown').close(); document.querySelector('#menu_button--open').focus()" -->
                                 <a href="#"
-                                tabindex="0"
+                                   tabindex="0"
                                    onclick="event.preventDefault(); closeDialog('#')"
                                    id="menu_button--close"
                                    class="inset-0"
@@ -284,6 +284,7 @@
                                 </abbr>
                                 <a href="#"
                                    aria-hidden="true"
+                                   tabindex="-1"
                                    onclick="event.preventDefault(); closeDialog('#')"
                                    id="underlay_menu"
                                    class="fixed inset-0 cursor-default"></a>
@@ -291,6 +292,7 @@
                                     <div>
                                         <a href="https://cal.com/stepanjakl"
                                            target="_blank"
+                                           tabindex="1"
                                            aria-label="Schedule a call">
                                             <svg class="fill-current" style="width: 1.5rem; height: 1.5rem">
                                                 <use xlink:href="images/icons.svg#menu-call"></use>
@@ -305,6 +307,7 @@
                                         </a>
                                         <a href="https://www.linkedin.com/in/stepanjakl"
                                            target="_blank"
+                                           tabindex="2"
                                            aria-label="Find out more about me on LinkedIn">
                                             <svg class="fill-current" style="width: 1.5rem; height: 1.5rem">
                                                 <use xlink:href="images/icons.svg#menu-linkedin"></use>
@@ -319,6 +322,7 @@
                                         </a>
                                         <a href="https://github.com/stepanjakl"
                                            target="_blank"
+                                           tabindex="3"
                                            aria-label="Visit my profile on GitHub">
                                             <svg class="fill-current" style="width: 1.5rem; height: 1.5rem">
                                                 <use xlink:href="images/icons.svg#menu-github"></use>
@@ -341,7 +345,7 @@
                                                    overflow: visible">
                                         <label id="menu_dropdown_light-mode"
                                                for="mode"
-                                               tabindex="0"
+                                               tabindex="4"
                                                onkeypress="if(event.key === 'Enter') { document.getElementById('mode').click(); document.getElementById('menu_dropdown_dark-mode').focus(); }">
                                             <svg class="fill-current" style="width: 1.5rem; height: 1.5rem">
                                                 <use xlink:href="images/icons.svg#menu-light-mode"></use>
@@ -350,7 +354,7 @@
                                         </label>
                                         <label id="menu_dropdown_dark-mode"
                                                for="mode"
-                                               tabindex="0"
+                                               tabindex="4"
                                                onkeypress="if(event.key === 'Enter') { document.getElementById('mode').click(); document.getElementById('menu_dropdown_light-mode').focus(); }">
                                             <svg class="fill-current"
                                                  style="color: var(--navy);
@@ -362,7 +366,7 @@
                                         </label>
                                         <label id="menu_dropdown_debug"
                                                for="debug"
-                                               tabindex="0"
+                                               tabindex="5"
                                                onkeypress="if(event.key === 'Enter') { document.getElementById('debug').click(); }">
                                             <svg class="flex debug-checked:hidden fill-current"
                                                  style="width: 1.5rem;
@@ -848,7 +852,7 @@
                         </div>
                     </div>
                 </dialog>
-                <div id="underlay_modal" class="z-1 fixed inset-0 pointer-events-none">
+                <div aria-hidden="true" tabindex="-1" id="underlay_modal" class="z-1 fixed inset-0 pointer-events-none">
                 </div>
             </header>
             <div id="triangle-left"

@@ -1,3 +1,7 @@
+/*
+ * Animation
+ */
+
 body {
     --animate-in-segment: 0.15s;
     --animate-out-segment: 0.1s;
@@ -183,16 +187,6 @@ body {
 
 .animate-flicker-triangle-shadow::after {
     animation-name: flicker-shadow;
-}
-
-#profile:target~main .animate-flicker-triangle-light::after,
-#archive:target~main .animate-flicker-triangle-light::after {
-    animation: none;
-}
-
-#profile:target~main .animate-flicker-triangle-shadow::after,
-#archive:target~main .animate-flicker-triangle-shadow::after {
-    animation: none;
 }
 
 @keyframes flicker-light {
@@ -424,22 +418,9 @@ a#menu_link_profile:hover, a#menu_link_profile:focus, a#menu_link_profile.toolti
     color: var(--icon);
 }
 
-#menu:target #menu_button {
-    z-index: 6;
-}
-
-#menu:target #menu_button--open {
-    visibility: hidden;
-}
-
 #menu_button--close {
     z-index: -1;
     visibility: hidden;
-}
-
-#menu:target #menu_button--close {
-    z-index: 7;
-    visibility: visible;
 }
 
 #menu_button-wrapper:hover #menu_button, #menu_button-wrapper.tooltip-key--active #menu_button, #menu:target #menu_button {
@@ -772,12 +753,6 @@ a#menu_link_profile:hover, a#menu_link_profile:focus, a#menu_link_profile.toolti
 
 /* Modals */
 
-#profile:target~main #modal_profile,
-#archive:target~main #modal_archive {
-    pointer-events: auto;
-    z-index: 2;
-}
-
 .modal .modal-content {
     visibility: hidden;
 }
@@ -986,4 +961,8 @@ a#menu_link_profile:hover, a#menu_link_profile:focus, a#menu_link_profile.toolti
 .tooltip-wrapper.tooltip-key--active .tooltip.tooltip--active, .tooltip-wrapper:focus-within.tooltip-key--active .tooltip.tooltip--active {
     transition: var(--animate-in-segment-2\/3) linear var(--delay-segment-1\/3);
     opacity: 1;
+}
+
+a:hover, button:hover, [tabindex="0"]:hover {
+    z-index: 100;
 }

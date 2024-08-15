@@ -22,6 +22,7 @@ aria.Utils = aria.Utils || {
 
     isFocusable: (element) => {
         if (element.tabIndex < 0 || element.disabled) return false
+
         switch (element.nodeName) {
             case 'A':
                 return !!element.href && element.rel != 'ignore'
@@ -30,6 +31,7 @@ aria.Utils = aria.Utils || {
             case 'BUTTON':
             case 'SELECT':
             case 'TEXTAREA':
+            case 'LABEL':
                 return true
             default:
                 return false
@@ -54,9 +56,7 @@ aria.Utils = aria.Utils || {
     attemptFocus: (element) => {
         if (!aria.Utils.isFocusable(element)) return false
         aria.Utils.IgnoreUtilFocusChanges = true
-        try {
-            element.focus()
-        } catch (e) { }
+        element.focus()
         aria.Utils.IgnoreUtilFocusChanges = false
         return document.activeElement === element
     },
@@ -176,7 +176,7 @@ aria.Dialog.prototype.close = function (hash) {
 
         this.focusAfterClosed.addEventListener('blur', handleBlur)
 
-        console.log(aria.OpenDialogList);
+        console.log(aria.OpenDialogList)
 
         if (aria.OpenDialogList.length > 0) {
             aria.getCurrentDialog().addListeners()
@@ -210,9 +210,12 @@ aria.Dialog.prototype.trapFocus = function (event) {
     if (aria.Utils.IgnoreUtilFocusChanges) return
 
     const currentDialog = aria.getCurrentDialog()
+
     if (currentDialog.dialogNode.contains(event.target)) {
         currentDialog.lastFocus = event.target
     } else {
+        console.log(aria.Utils.focusFirstDescendant(currentDialog.dialogNode))
+
         aria.Utils.focusFirstDescendant(currentDialog.dialogNode)
         if (currentDialog.lastFocus === document.activeElement) {
             aria.Utils.focusLastDescendant(currentDialog.dialogNode)

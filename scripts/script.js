@@ -146,6 +146,9 @@ class KeyHandler {
             case 77: // M key
                 this.toggleMenu(event)
                 break
+            case 68: // D key
+                this.toggleDebug(event)
+                break
             default:
                 break
         }
@@ -193,6 +196,12 @@ class KeyHandler {
                 openDialog('menu_button-wrapper', 'menu_button--open', 'menu_button--close', 'menu')
             }
         }
+    }
+
+    toggleDebug(event) {
+        event.preventDefault()
+        const debugElement = document.getElementById('debug')
+        debugElement.checked = !debugElement.checked
     }
 
     isAnimationFinished(element) {
