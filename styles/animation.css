@@ -864,7 +864,7 @@ a#menu_link_profile:hover, a#menu_link_profile:focus, a#menu_link_profile.toolti
     background-color: var(--inner-bg-light-3);
 }
 
-[data-carousel-arrows] li button:hover {
+[data-carousel-arrows] li button:hover, [data-carousel-arrows] li button:focus {
     transition: background-color var(--animate-out-segment-2\/3) linear;
     background-color: var(--inner-bg-light-4);
 }
@@ -957,12 +957,12 @@ a#menu_link_profile:hover, a#menu_link_profile:focus, a#menu_link_profile.toolti
 
 }
 
-.tooltip-wrapper:hover:not(.tooltip-key--active) .tooltip:not(.tooltip--active), .tooltip-wrapper:focus-within:not(.tooltip-key--active) .tooltip:not(.tooltip--active),
+.tooltip-wrapper:hover:not(.tooltip-key--active) .tooltip:not(.tooltip--active), .tooltip-wrapper:focus-within:not(.tooltip-key--active):not([data-focus-after-click]) .tooltip:not(.tooltip--active),
 .tooltip-wrapper.tooltip-key--active .tooltip.tooltip--active, .tooltip-wrapper:focus-within.tooltip-key--active .tooltip.tooltip--active {
     transition: var(--animate-in-segment-2\/3) linear var(--delay-segment-1\/3);
     opacity: 1;
 }
 
 a:hover, button:hover, [tabindex="0"]:hover {
-    z-index: 100;
+    z-index: 20;
 }

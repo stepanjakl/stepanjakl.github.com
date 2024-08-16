@@ -135,6 +135,7 @@ aria.Dialog = function (dialogId, focusAfterClosed, focusFirst, hash) {
 
     requestAnimationFrame(() => {
         if (hash) window.location.hash = hash
+
         if (this.focusFirst) {
             this.focusFirst.focus()
         } else {
@@ -176,8 +177,6 @@ aria.Dialog.prototype.close = function (hash) {
 
         this.focusAfterClosed.addEventListener('blur', handleBlur)
 
-        console.log(aria.OpenDialogList)
-
         if (aria.OpenDialogList.length > 0) {
             aria.getCurrentDialog().addListeners()
         } else {
@@ -214,8 +213,6 @@ aria.Dialog.prototype.trapFocus = function (event) {
     if (currentDialog.dialogNode.contains(event.target)) {
         currentDialog.lastFocus = event.target
     } else {
-        console.log(aria.Utils.focusFirstDescendant(currentDialog.dialogNode))
-
         aria.Utils.focusFirstDescendant(currentDialog.dialogNode)
         if (currentDialog.lastFocus === document.activeElement) {
             aria.Utils.focusLastDescendant(currentDialog.dialogNode)

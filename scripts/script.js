@@ -12,8 +12,6 @@ const handleTouchButtonClick = (element, event, callback, focusAfterClick) => {
 
     element.clickCount = (element.clickCount || 0) + 1
 
-    console.log(element.clickCount)
-
     if (!element.handleBlur) {
         element.handleBlur = (() => {
             const handleBlur = (event) => {
@@ -36,7 +34,6 @@ const handleTouchButtonClick = (element, event, callback, focusAfterClick) => {
             element.focus()
 
             element.addEventListener('blur', () => { element.removeAttribute('data-focus-after-click') }, { once: true })
-
         }
     } else if (element.clickCount === 1) {
         element.focus()
@@ -46,7 +43,7 @@ const handleTouchButtonClick = (element, event, callback, focusAfterClick) => {
 }
 
 const initializeTimeline = () => {
-    const timelineEl = document.createElement('horizontal-timeline')
+    window.timelineEl = document.createElement('horizontal-timeline')
     timelineEl.setAttribute('labels', JSON.stringify([
         2025, 2024, 2023, 2022, 2021, 2020,
         2019, 2018, 2017, 2016, 2015, 2014
@@ -64,6 +61,9 @@ const openArchive = () => {
     if (!document.querySelector('#horizontal-timeline-wrapper horizontal-timeline')) {
         initializeTimeline()
     }
+    requestAnimationFrame(() => {
+        timelineEl.startIntersectionObserver()
+    })
 }
 
 
@@ -179,6 +179,7 @@ class KeyHandler {
     toggleArchive(event) {
         event.preventDefault()
         if (window.location.hash.includes('#archive')) {
+            timelineEl.stopIntersectionObserver()
             aria.getCurrentDialog().close('#')
         }
         else {
@@ -254,7 +255,7 @@ class WheelHandler {
         )
         const scrollPositionTop = modalElement.scrollTop
         if (verticalScrollDirection === 'up' && scrollPositionTop === 0) {
-            aria.getCurrentDialog().close('#')
+            aria.getCurrentDialog()?.close('#')
         }
     }
 
@@ -751,5 +752,19 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize popups
     document.querySelectorAll('[data-carousel-slides] figure a').forEach(element => {
         element.addEventListener('click', event => new Popup().open(element, event))
+    })
+
+    // Prevent the default behavior of scrolling to the hash
+    let scrollTop = document.documentElement.scrollTop
+    window.addEventListener('scroll', () => {
+        scrollTop = document.documentElement.scrollTop
+    })
+    window.addEventListener('hashchange', () => {
+        document.body.classList.add('overflow-hidden')
+        window.scroll(0, scrollTop)
+
+        requestAnimationFrame(() => {
+            document.body.classList.remove('overflow-hidden')
+        })
     })
 })

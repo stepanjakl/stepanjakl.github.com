@@ -77,7 +77,7 @@
     </style>
 </noscript> -->
     </head>
-    <body class="overflow-auto primary-font">
+    <body class="primary-font">
         <input id="mode" type="checkbox" hidden aria-hidden="true">
         <input id="debug" type="checkbox" hidden aria-hidden="true">
         <input id="profile" type="hidden" hidden aria-hidden="true">
@@ -214,7 +214,6 @@
                                     </abbr>
                                     <abbr class="tooltip-bottom tooltip--active tooltip">
                                         <kbd style="background-color: var(--highlight-primary);"><span>⌘</span></kbd>
-                                        <span>+</span>
                                         <kbd><span>P</span></kbd>
                                     </abbr>
                                 </a>
@@ -241,7 +240,6 @@
                                     </abbr>
                                     <abbr class="tooltip-bottom tooltip--active tooltip">
                                         <kbd style="background-color: var(--highlight-primary);"><span>⌘</span></kbd>
-                                        <span>+</span>
                                         <kbd><span>A</span></kbd>
                                     </abbr>
                                 </a>
@@ -279,7 +277,6 @@
                                 </button>
                                 <abbr class="tooltip-top tooltip--active tooltip">
                                     <kbd style="background-color: var(--highlight-primary);"><span>⌘</span></kbd>
-                                    <span>+</span>
                                     <kbd><span>M</span></kbd>
                                 </abbr>
                                 <a href="#"
@@ -292,7 +289,7 @@
                                     <div>
                                         <a href="https://cal.com/stepanjakl"
                                            target="_blank"
-                                           tabindex="1"
+                                           tabindex="0"
                                            aria-label="Schedule a call">
                                             <svg class="fill-current" style="width: 1.5rem; height: 1.5rem">
                                                 <use xlink:href="images/icons.svg#menu-call"></use>
@@ -307,7 +304,7 @@
                                         </a>
                                         <a href="https://www.linkedin.com/in/stepanjakl"
                                            target="_blank"
-                                           tabindex="2"
+                                           tabindex="0"
                                            aria-label="Find out more about me on LinkedIn">
                                             <svg class="fill-current" style="width: 1.5rem; height: 1.5rem">
                                                 <use xlink:href="images/icons.svg#menu-linkedin"></use>
@@ -322,7 +319,7 @@
                                         </a>
                                         <a href="https://github.com/stepanjakl"
                                            target="_blank"
-                                           tabindex="3"
+                                           tabindex="0"
                                            aria-label="Visit my profile on GitHub">
                                             <svg class="fill-current" style="width: 1.5rem; height: 1.5rem">
                                                 <use xlink:href="images/icons.svg#menu-github"></use>
@@ -345,7 +342,7 @@
                                                    overflow: visible">
                                         <label id="menu_dropdown_light-mode"
                                                for="mode"
-                                               tabindex="4"
+                                               tabindex="0"
                                                onkeypress="if(event.key === 'Enter') { document.getElementById('mode').click(); document.getElementById('menu_dropdown_dark-mode').focus(); }">
                                             <svg class="fill-current" style="width: 1.5rem; height: 1.5rem">
                                                 <use xlink:href="images/icons.svg#menu-light-mode"></use>
@@ -354,7 +351,7 @@
                                         </label>
                                         <label id="menu_dropdown_dark-mode"
                                                for="mode"
-                                               tabindex="4"
+                                               tabindex="0"
                                                onkeypress="if(event.key === 'Enter') { document.getElementById('mode').click(); document.getElementById('menu_dropdown_light-mode').focus(); }">
                                             <svg class="fill-current"
                                                  style="color: var(--navy);
@@ -366,7 +363,7 @@
                                         </label>
                                         <label id="menu_dropdown_debug"
                                                for="debug"
-                                               tabindex="5"
+                                               tabindex="0"
                                                onkeypress="if(event.key === 'Enter') { document.getElementById('debug').click(); }">
                                             <svg class="flex debug-checked:hidden fill-current"
                                                  style="width: 1.5rem;

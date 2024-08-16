@@ -1,10 +1,12 @@
 class timeline extends HTMLElement {
     constructor() {
         super()
-        // this.timelineContentEl = null
         this.labels = []
         this.activeSection = null
         this.isScrolling = false
+        this.intersectionObserver = null
+        this.timelineContentEl = null
+        this.labelEls = null
     }
 
     static get observedAttributes() {
@@ -304,10 +306,10 @@ class timeline extends HTMLElement {
         const scrollParentToChildCenterHorizontal = (parent, child) => {
             return new Promise((resolve) => {
                 this.isScrolling = true
-                var parentRect = parent.getBoundingClientRect()
-                var childRect = child.getBoundingClientRect()
-                var scrollAmount = childRect.left - parentRect.left - (parentRect.width - childRect.width) / 2
-                var initialScrollLeft = parent.scrollLeft
+                let parentRect = parent.getBoundingClientRect()
+                let childRect = child.getBoundingClientRect()
+                let scrollAmount = childRect.left - parentRect.left - (parentRect.width - childRect.width) / 2
+                let initialScrollLeft = parent.scrollLeft
 
                 const isScrollEndSupported = 'onscrollend' in window
 
@@ -317,7 +319,7 @@ class timeline extends HTMLElement {
                     resolve()
                 }
 
-                if(initialScrollLeft === 0 && scrollAmount < 0) {
+                if (initialScrollLeft === 0 && scrollAmount < 0) {
                     resolve()
                     return
                 }
@@ -376,13 +378,9 @@ class timeline extends HTMLElement {
                 }
 
                 if (entry.isIntersecting) {
-                    console.log('isIntersecting', targetSection, targetLabelEl);
-
                     targetLabelEl.focus({ preventScroll: true })
-
-                    await scrollParentToChildCenterHorizontal(timelineContentEl, targetLabelEl)
                     window.history.replaceState({}, '', window.location.pathname + window.location.search + window.location.hash.split('?')[0] + '?' + updateParams('year', targetSection))
-
+                    await scrollParentToChildCenterHorizontal(timelineContentEl, targetLabelEl)
 
                     labelEls.forEach((labelEl) => labelEl.classList.remove('active'))
                     targetLabelEl.classList.add('active')
@@ -396,24 +394,33 @@ class timeline extends HTMLElement {
             })
         }
 
+        this.startIntersectionObserver = () => {
+            console.log('startIntersectionObserver', this.labelEls);
+
+            setupIntersectionObserver(this.timelineContentEl, this.labelEls)
+        }
+
+        this.stopIntersectionObserver = () => {
+            this.intersectionObserver.disconnect()
+        }
+
         const setupIntersectionObserver = (timelineContentEl, labelEls) => {
-            const intersectionObserver = new IntersectionObserver(handleIntersection(timelineContentEl, labelEls), {
+            this.intersectionObserver = new IntersectionObserver(handleIntersection(timelineContentEl, labelEls), {
                 rootMargin: '-50% 0% -50% 0%',
                 threshold: 0
             })
-            document.querySelectorAll('[data-timeline-section]').forEach(async (element) => await intersectionObserver.observe(element))
+            document.querySelectorAll('[data-timeline-section]').forEach(async (element) => await this.intersectionObserver.observe(element))
         }
 
         const initializeTimeline = (() => {
-            const timelineContentEl = this.querySelector('#timeline-content')
-            const modalArchiveEl = document.querySelector('#modal_archive')
-            const labelEls = Array.from(this.querySelectorAll('[data-label-for]'))
+            this.timelineContentEl = this.querySelector('#timeline-content')
+            this.labelEls = Array.from(this.querySelectorAll('[data-label-for]'))
 
-            labelEls.forEach((labelEl) => {
+            const modalArchiveEl = document.querySelector('#modal_archive')
+
+            this.labelEls.forEach((labelEl) => {
                 labelEl.addEventListener('click', handleLabelClick(modalArchiveEl, labelEl))
             })
-
-            setupIntersectionObserver(timelineContentEl, labelEls)
 
             if (window.location.hash.includes('?year=')) {
                 const yearParam = window.location.hash.split('?year=')[1]
@@ -433,7 +440,7 @@ class timeline extends HTMLElement {
 
             this.addEventListener('mouseleave', async () => {
                 if (this.isScrolling) return
-                await scrollParentToChildCenterHorizontal(timelineContentEl, this.querySelector(`[data-label-for="${this.activeSection}"]`))
+                await scrollParentToChildCenterHorizontal(this.timelineContentEl, this.querySelector(`[data-label-for="${this.activeSection}"]`))
             })
         })()
 
@@ -461,9 +468,7 @@ class timeline extends HTMLElement {
         })()
 
         const highlightTimelineEls = (() => {
-            const labelEls = this.querySelectorAll('#timeline_labels button')
-
-            labelEls.forEach(labelEl => {
+            this.labelEls.forEach(labelEl => {
                 const value = labelEl.getAttribute('data-label-for')
                 const timelineEl = this.querySelector(`#timeline div:nth-child(6n + 4)[data-value="${value}"]`)
 
