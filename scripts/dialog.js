@@ -232,6 +232,10 @@ window.openDialog = (dialogId, focusAfterClosed, focusFirst, hash) => {
 }
 
 window.closeDialog = (hash) => {
+    /* if (window.location.hash.includes('#archive')) {
+        timelineEl.stopIntersectionObserver()
+    } */
+
     const topDialog = aria.getCurrentDialog()
-    topDialog.close(hash)
+    topDialog?.close(hash)
 }

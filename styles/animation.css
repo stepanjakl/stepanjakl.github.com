@@ -226,7 +226,7 @@ body {
 
 .highlight-text.highlight-text--active {
     transition: color calc(2 * var(--animate-in-segment)) var(--ease-out-quad) !important;
-    color: var(--highlight-primary) !important;
+    color: var(--blue-full-65) !important;
 }
 
 

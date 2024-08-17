@@ -7,6 +7,7 @@ class timeline extends HTMLElement {
         this.intersectionObserver = null
         this.timelineContentEl = null
         this.labelEls = null
+        this.hash = '#archive'
     }
 
     static get observedAttributes() {
@@ -18,7 +19,6 @@ class timeline extends HTMLElement {
         this[property] = stringToArray(newValue)
     }
 
-    /* TODO add variables, use --segment where possible */
     connectedCallback() {
         this.innerHTML = `
             <style>
@@ -81,12 +81,10 @@ class timeline extends HTMLElement {
 
                 #timeline-content > div {
                     transition: row-gap var(--animate-out-segment) var(--ease-in-quad);
-                    /* row-gap: 0.5rem; */
                 }
 
                 horizontal-timeline:hover #timeline-content > div {
                     transition: row-gap var(--animate-in-segment) var(--ease-out-quad);
-                    /* row-gap: calc(0.5rem + 0.375rem); */
                 }
 
                 #timeline {
@@ -110,7 +108,7 @@ class timeline extends HTMLElement {
                 }
 
                 #timeline div span {
-                    transition: background var(--animate-out-segment-2\\/3) linear, height var(--animate-out-segment-2\\/3) var(--ease-in-quad);
+                    transition: background-color var(--animate-out-segment-2\\/3) linear, height var(--animate-out-segment-2\\/3) var(--ease-in-quad);
                     background-color: rgba(255, 255, 255, 0.45);
                     width: max(1.5px, 0.09375rem);
                     height: calc((6/18) * 100%);
@@ -119,7 +117,7 @@ class timeline extends HTMLElement {
 
                 #timeline div:hover span,
                 #timeline div.highlight span {
-                    transition: background var(--animate-in-segment-2\\/3) linear, height var(--animate-in-segment-2\\/3) var(--ease-out-quad) !important;
+                    transition: background-color var(--animate-in-segment-2\\/3) linear, height var(--animate-in-segment-2\\/3) var(--ease-out-quad) !important;
                     height: 100% !important;
                 }
 
@@ -153,44 +151,35 @@ class timeline extends HTMLElement {
                     background-color: rgba(255, 255, 255, 0.25);
                 }
 
-                /* #timeline div.active,
-                #timeline div.active + div span,
-                #timeline div.active + div + div span,
-                #timeline div.active + div + div + div span,
-                #timeline div.active + div + div + div + div span,
-                #timeline div.active + div + div + div + div + div span {
-                    transition: background var(--animate-in-segment-2\\/3) linear, height var(--animate-in-segment-2\\/3) var(--ease-out-quad);
-                } */
-
                 #timeline div.active span {
                     background-color: rgba(255, 255, 255, 0.75);
                     height: 100%;
                 }
 
                 #timeline div.active + div span {
-                    transition: background var(--animate-in-segment-2\\/3) linear calc(var(--delay-segment-1\\/3)), height var(--animate-in-segment-2\\/3) var(--ease-out-quad));
+                    transition: background-color var(--animate-in-segment-2\\/3) linear calc(var(--delay-segment-1\\/3)), height var(--animate-in-segment-2\\/3) var(--ease-out-quad));
                     background-color: rgba(255, 255, 255, 0.7);
                     height: calc((14/18) * 100%);
                 }
 
                 #timeline div.active + div + div span {
-                    transition: background var(--animate-in-segment-2\\/3) linear calc(2 * var(--delay-segment-1\\/3)), height var(--animate-in-segment-2\\/3) var(--ease-out-quad);
+                    transition: background-color var(--animate-in-segment-2\\/3) linear calc(2 * var(--delay-segment-1\\/3)), height var(--animate-in-segment-2\\/3) var(--ease-out-quad);
                     background-color: rgba(255, 255, 255, 0.65);
                     height: calc((10/18) * 100%);
                 }
 
                 #timeline div.active + div + div + div span {
-                    transition: background var(--animate-in-segment-2\\/3) linear calc(3 * var(--delay-segment-1\\/3)), height var(--animate-in-segment-2\\/3) var(--ease-out-quad);
+                    transition: background-color var(--animate-in-segment-2\\/3) linear calc(3 * var(--delay-segment-1\\/3)), height var(--animate-in-segment-2\\/3) var(--ease-out-quad);
                     background-color: rgba(255, 255, 255, 0.6);
                 }
 
                 #timeline div.active + div + div + div + div span {
-                    transition: background var(--animate-in-segment-2\\/3) linear calc(4 * var(--delay-segment-1\\/3)), height var(--animate-in-segment-2\\/3) var(--ease-out-quad);
+                    transition: background-color var(--animate-in-segment-2\\/3) linear calc(4 * var(--delay-segment-1\\/3)), height var(--animate-in-segment-2\\/3) var(--ease-out-quad);
                     background-color: rgba(255, 255, 255, 0.55);
                 }
 
                 #timeline div.active + div + div + div + div + div span {
-                    transition: background var(--animate-in-segment-2\\/3) linear calc(5 * var(--delay-segment-1\\/3)), height var(--animate-in-segment-2\\/3) var(--ease-out-quad);
+                    transition: background-color var(--animate-in-segment-2\\/3) linear calc(5 * var(--delay-segment-1\\/3)), height var(--animate-in-segment-2\\/3) var(--ease-out-quad);
                     background-color: rgba(255, 255, 255, 0.5);
                 }
 
@@ -378,7 +367,7 @@ class timeline extends HTMLElement {
                 }
 
                 if (entry.isIntersecting) {
-                    targetLabelEl.focus({ preventScroll: true })
+                    if(window.location.hash.split('?year=')[1] === targetSection || !window.location.hash.includes(this.hash)) return
                     window.history.replaceState({}, '', window.location.pathname + window.location.search + window.location.hash.split('?')[0] + '?' + updateParams('year', targetSection))
                     await scrollParentToChildCenterHorizontal(timelineContentEl, targetLabelEl)
 
@@ -395,8 +384,6 @@ class timeline extends HTMLElement {
         }
 
         this.startIntersectionObserver = () => {
-            console.log('startIntersectionObserver', this.labelEls);
-
             setupIntersectionObserver(this.timelineContentEl, this.labelEls)
         }
 
@@ -425,10 +412,10 @@ class timeline extends HTMLElement {
             if (window.location.hash.includes('?year=')) {
                 const yearParam = window.location.hash.split('?year=')[1]
 
-                window.history.pushState({}, '', `${window.location.pathname + window.location.search}#archive`)
+                window.history.pushState({}, '', `${window.location.pathname + window.location.search}${this.hash}`)
 
                 requestAnimationFrame(() => {
-                    window.history.replaceState({}, '', `${window.location.pathname + window.location.search}#archive?year=${yearParam}`)
+                    window.history.replaceState({}, '', `${window.location.pathname + window.location.search}${this.hash}?year=${yearParam}`)
                     openDialog('modal_archive', document.querySelector('#menu_link_archive'))
 
                     const targetElement = document.querySelector(`[data-timeline-section="${yearParam}"]`)

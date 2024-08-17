@@ -21,15 +21,13 @@
         <title>Štěpán Jákl | Full-stack web developer & interface designer</title>
         <meta charset="UTF-8">
         <meta name="description"
-              content="Experienced and detail-oriented user interface engineer who specializes in crafting intuitive digital solutions. Committed to delivering high-quality results for projects with exciting propositions and realistic goals. Proficient in both back-end and front-end development, with a focus on prioritizing user experience. Equally dedicated to code and design.">
+              content="Experienced and detail-oriented user interface engineer who specializes in crafting intuitive digital solutions. Committed to delivering high-quality results for projects with exciting propositions and realistic goals. Proficient in both back-end and front-end development, with a focus on prioritising user experience. Equally dedicated to code and design.">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
         <meta name="color-scheme" content="dark light">
         <meta name="keywords" content="developer, designer">
         <!-- Viewport -->
-
         <!-- <meta name="viewport"
        content="width=480, shrink-to-fit=yes, viewport-fit=contain"> -->
-
         <meta name="viewport"
               content="width=device-width, initial-scale=1, viewport-fit=contain">
 
@@ -69,20 +67,12 @@
             /* console.log('%cMade with tears, stress and anxiety. Just joking, of course it was crafted with love ;-)', 'color: #4e7bff; margin: 0.9375rem 0 0.9375rem 1.25rem;') */
             console.log('%cInterested in working together? Reach out to me via email at %cstepanjakl@outlook.com', 'color: #4e7bff; margin: 0.9375rem 0 0.9375rem 1.25rem;', 'color: #4e7bff; text-decoration: underline;')
         </script>
-        <!-- <noscript>
-    <style>
-        dialog {
-            display: flex;
-        }
-    </style>
-</noscript> -->
     </head>
     <body class="primary-font">
         <input id="mode" type="checkbox" hidden aria-hidden="true">
         <input id="debug" type="checkbox" hidden aria-hidden="true">
         <input id="profile" type="hidden" hidden aria-hidden="true">
         <input id="archive" type="hidden" hidden aria-hidden="true">
-        <!-- <div class="fixed inset-0" style="z-index: 2; background-image: linear-gradient(45deg, var(--blue-full-10), var(--blue-full-25))"></div> -->
         <main class="relative flex flex-col justify-content-between w-full"
               style="background-color: var(--background)">
             <div class="absolute inset-0"
@@ -247,7 +237,6 @@
                             <div role="dialog"
                                  id="menu_button-wrapper"
                                  class="relative flex tooltip-wrapper">
-                                <!-- onclick="event.preventDefault(); document.querySelector('#menu_dropdown').show(); window.location.hash = 'menu'; document.querySelector('#menu_button--close').focus()" -->
                                 <a href="#menu"
                                    tabindex="0"
                                    onclick="event.preventDefault(); openDialog('menu_button-wrapper', this, 'menu_button--close', 'menu');"
@@ -255,7 +244,6 @@
                                    class="z-2 inset-0"
                                    style="position: absolute"
                                    aria-label="Open dropdown menu"></a>
-                                <!-- onclick="document.querySelector('#menu_dropdown').close(); document.querySelector('#menu_button--open').focus()" -->
                                 <a href="#"
                                    tabindex="0"
                                    onclick="event.preventDefault(); closeDialog('#')"
@@ -285,7 +273,7 @@
                                    onclick="event.preventDefault(); closeDialog('#')"
                                    id="underlay_menu"
                                    class="fixed inset-0 cursor-default"></a>
-                                <dialog role="dialog" id="menu_dropdown" class="z-10 absolute pt-1/2">
+                                <dialog role="dialog" id="menu_dropdown" class="z-50 absolute pt-1/2">
                                     <div>
                                         <a href="https://cal.com/stepanjakl"
                                            target="_blank"
@@ -393,9 +381,8 @@
                                     <use xlink:href="images/icons.svg#close"></use>
                                 </svg>
                             </a>
-                            <div class="information">
+                            <div id="modal_profile_content">
                                 <dl>
-                                    <!-- <div style="padding-bottom: var(--segment-third)"> -->
                                     <dt>
                                         Photo:
                                     </dt>
@@ -418,21 +405,18 @@
                                     <dd>
                                         <span>Štěpán Jákl</span>
                                     </dd>
-                                    <!-- <div class="profile"> -->
                                     <dt>
                                         Summary:
                                     </dt>
-                                    <dd id="modal_profile_text">
+                                    <dd id="modal_profile_content_paragraph">
                                         <p>
-                                            Experienced and detail-oriented user interface engineer who specializes in crafting
+                                            Experienced and detail-oriented user interface engineer who specialises in crafting
                                             intuitive digital solutions. Committed to delivering high-quality results for
                                             projects with exciting propositions and realistic goals. Proficient in both back-end
-                                            and front-end development, with a focus on prioritizing user experience.
+                                            and front-end development, with a focus on prioritising user experience.
                                         </p>
                                         <p>
-                                            Excited to explore cutting-edge frameworks and tools while prioritizing foundational
-                                            web development elements like good semantics, cross-compatibility, and
-                                            accessibility.
+                                            Eager to explore cutting-edge frameworks and tools while maintaining a solid foundation in web development essentials such as good semantics, cross-compatibility, and accessibility.
                                         </p>
                                         <p>
                                             In recent years, my efforts have been devoted to building and overseeing a
@@ -499,16 +483,15 @@
                                         </a>
                                     </span>
                                 </dd>
-                                <!-- <div class="timezone" style="padding-bottom: var(--segment-third)"> -->
                                 <dt>
                                     Timezone:
                                 </dt>
                                 <dd id="modal_profile_timezone">
                                     <span>Europe/London</span>
-                                    <span id="live-timezone-time"></span>
+                                    <span id="modal_profile_timezone_live-time"></span>
                                     <script>
                                         const liveTimezoneTime = () => {
-                                            document.querySelector('#live-timezone-time').innerHTML = `(${new Intl.DateTimeFormat([], {
+                                            document.querySelector('#modal_profile_timezone_live-time').innerHTML = `(${new Intl.DateTimeFormat([], {
 											timeZone: 'Europe/London',
 											timeZoneName: 'short',
 											year: 'numeric',
@@ -654,66 +637,31 @@
                         <div style="position: relative;
                                     height: 100%;
                                     padding-bottom: var(--segment-half)">
-
-
-                            <!-- overflow-y: scroll; -->
                             <div id="modal_archive-wrapper"
                                  style="padding-top: 3rem;
                                         padding-left: 3rem;
                                         padding-right: 6rem">
-                                <div id="modal_archive-content" class="grid">
-                                    <div data-timeline-section="2024" class="flex flex-col">
-                                        <div class="sticky flex flex-col align-items-end"
-                                             style="row-gap: 1.25rem;
-                                                    top: var(--modal-button-close-inset);
-                                                    padding-bottom: 1.25rem">
-                                            <hr style="display: inline-flex;
-                                                       width: 100%;
-                                                       margin: 0;
-                                                       border: none;
-                                                       height: max(1px, 0.0625rem);
-                                                       background-color: var(--icon)">
-                                            <span style="display: inline-flex;
-                                                         text-align: right;
-                                                         font-family: 'Chakra Petch', monospace;
-                                                         font-size: 2.14285625rem;
-                                                         line-height: 1.5rem;
-                                                         font-weight: 400;
-                                                         color: var(--text-1)">2024</span>
+                                <div id="modal_archive-content">
+                                    <div id="modal_archive-content_section-title" data-timeline-section="2024">
+                                        <div>
+                                            <hr>
+                                            <span>2024</span>
+                                            <hr>
                                         </div>
                                     </div>
-                                    <div>
-                                        <div class="flex flex-col justify-content-between w-full"
-                                             style="row-gap: calc(var(--modal-button-close-inset) - max(1px, 0.0625rem))">
-                                            <hr style="display: inline-flex;
-                                                       width: 100%;
-                                                       margin: 0;
-                                                       border: none;
-                                                       height: max(1px, 0.0625rem);
-                                                       background-color: var(--icon)">
-                                            <hr style="display: inline-flex;
-                                                       width: 100%;
-                                                       margin: 0;
-                                                       border: none;
-                                                       height: max(1px, 0.0625rem);
-                                                       background-color: var(--icon)">
-                                            <hr style="display: inline-flex;
-                                                       width: 100%;
-                                                       margin: 0;
-                                                       border: none;
-                                                       height: max(1px, 0.0625rem);
-                                                       background-color: var(--icon)">
+                                    <div id="modal_archive-content_section" data-timeline-section="2024">
+                                        <div id="modal_archive-content_section-divider">
+                                            <hr>
+                                            <hr>
+                                            <hr>
                                         </div>
-                                        <div style="margin-top: 4rem">
+                                        <div>
 
                                             <h1 class="font-bold text-lg" style="margin-bottom: 2.5rem">
                                                 Project #1
                                             </h1>
 
                                             <div class="relative" data-carousel>
-                                                <!-- <button data-carousel-open-all>
-                                                <span class="text-xxs">Open all</span>
-                                            </button> -->
                                                 <div data-carousel-slides-wrapper>
                                                     <div data-carousel-slides>
                                                         <figure data-value="slide-1">
@@ -779,10 +727,11 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div data-timeline-section="2018"
+                                    <div
                                          class="flex flex-col"
                                          style="outline: max(1px, 0.0625rem) solid red">
                                         <div class="flex flex-col align-items-end"
+                                        data-timeline-section="2018"
                                              style="row-gap: 1.25rem;
                                                     position: sticky;
                                                     padding-bottom: 1.25rem">
@@ -806,7 +755,8 @@
                                                          font-weight: 400">2018</span>
                                         </div>
                                     </div>
-                                    <div style="height: 25rem; outline: max(1px, 0.0625rem) solid red">
+                                    <div style="height: 25rem; outline: max(1px, 0.0625rem) solid red"
+                                    data-timeline-section="2018">
                                         <div class="flex flex-col justify-content-between w-full"
                                              style="height: 1.25rem">
                                             <hr style="display: inline-flex;
@@ -834,22 +784,22 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="sticky"
-                                 style="bottom: calc(-1 * var(--segment-third)) /* padding-bottom: var(--segment-half) */">
+                            <div class="z-50 sticky" style="bottom: calc(-1 * var(--segment-third))">
                                 <div class="absolute"
                                      style="bottom: 0;
                                             left: calc(3rem + 3rem + 15rem );
-                                            right: calc(3rem + 3rem);
-                                            /* outline: max(1px, 0.0625rem) solid red */">
+                                            right: calc(3rem + 3rem)">
                                     <div id="horizontal-timeline-wrapper">
-                                        <!-- <horizontal-timeline labels="[2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014]"></horizontal-timeline> -->
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </dialog>
-                <div aria-hidden="true" tabindex="-1" id="underlay_modal" class="z-1 fixed inset-0 pointer-events-none">
+                <div aria-hidden="true"
+                     tabindex="-1"
+                     id="underlay_modal"
+                     class="z-1 fixed inset-0 pointer-events-none">
                 </div>
             </header>
             <div id="triangle-left"

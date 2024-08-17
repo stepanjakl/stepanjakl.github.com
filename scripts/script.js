@@ -2,71 +2,6 @@ const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0 |
 
 // const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream
 
-const handleTouchButtonClick = (element, event, callback, focusAfterClick) => {
-    event.preventDefault()
-
-    if (!isTouchDevice) {
-        callback()
-        return
-    }
-
-    element.clickCount = (element.clickCount || 0) + 1
-
-    if (!element.handleBlur) {
-        element.handleBlur = (() => {
-            const handleBlur = (event) => {
-                if (event.target !== document.activeElement) {
-                    element.clickCount = 0
-                    delete element.handleBlur
-                    event.target.removeAttribute('data-focus-after-click')
-                    event.target.removeEventListener('blur', handleBlur)
-                }
-            }
-            element.addEventListener('blur', handleBlur)
-        })()
-    }
-
-    if (element.clickCount === 2 || element.getAttribute('data-focus-after-click') === 'true') {
-        callback()
-
-        if (focusAfterClick) {
-            element.setAttribute('data-focus-after-click', 'true')
-            element.focus()
-
-            element.addEventListener('blur', () => { element.removeAttribute('data-focus-after-click') }, { once: true })
-        }
-    } else if (element.clickCount === 1) {
-        element.focus()
-    } else {
-        callback()
-    }
-}
-
-const initializeTimeline = () => {
-    window.timelineEl = document.createElement('horizontal-timeline')
-    timelineEl.setAttribute('labels', JSON.stringify([
-        2025, 2024, 2023, 2022, 2021, 2020,
-        2019, 2018, 2017, 2016, 2015, 2014
-    ]))
-
-    document.querySelector('#horizontal-timeline-wrapper').appendChild(timelineEl)
-
-    new HorizontalEdgeScroller({ id: 'timeline', element: document.querySelector('#timeline-content') })
-    new HorizontalDragScroll({ element: document.querySelector('#timeline-content') })
-}
-
-
-const openArchive = () => {
-    openDialog('modal_archive', 'menu_link_archive', null, 'archive')
-    if (!document.querySelector('#horizontal-timeline-wrapper horizontal-timeline')) {
-        initializeTimeline()
-    }
-    requestAnimationFrame(() => {
-        timelineEl.startIntersectionObserver()
-    })
-}
-
-
 class TextHighlighter {
     constructor() {
         this.originalText = ''
@@ -128,6 +63,10 @@ class KeyHandler {
 
         document.addEventListener('keydown', this.handleKeydown.bind(this))
         document.addEventListener('keyup', this.handleKeyup.bind(this))
+
+        window.addEventListener('blur', () => {
+            this.toggleTooltipActiveClass('remove')
+        })
     }
 
     handleKeydown(event) {
@@ -153,7 +92,9 @@ class KeyHandler {
                 break
         }
 
-        this.handleTooltipActiveClass(event)
+        requestAnimationFrame(() => {
+            this.handleTooltipActiveClass(event)
+        })
     }
 
     handleKeyup(event) {
@@ -169,7 +110,7 @@ class KeyHandler {
     toggleProfile(event) {
         event.preventDefault()
         if (window.location.hash === '#profile') {
-            aria.getCurrentDialog().close('#')
+            closeDialog('#')
         }
         else {
             openDialog('modal_profile', 'menu_link_profile', null, 'profile')
@@ -179,8 +120,7 @@ class KeyHandler {
     toggleArchive(event) {
         event.preventDefault()
         if (window.location.hash.includes('#archive')) {
-            timelineEl.stopIntersectionObserver()
-            aria.getCurrentDialog().close('#')
+            closeDialog('#')
         }
         else {
             openArchive()
@@ -192,7 +132,7 @@ class KeyHandler {
         const menuElement = document.querySelector(this.menuElementSelector)
         if (this.isAnimationFinished(menuElement)) {
             if (window.location.hash === '#menu') {
-                aria.getCurrentDialog().close('#')
+                closeDialog('#')
             } else {
                 openDialog('menu_button-wrapper', 'menu_button--open', 'menu_button--close', 'menu')
             }
@@ -211,7 +151,7 @@ class KeyHandler {
     }
 
     handleTooltipActiveClass(event) {
-        if (window.location.hash !== '') {
+        if (window.location.hash.split('#')[1] !== ('' || undefined)) {
             this.toggleTooltipActiveClass('remove')
         } else if (event.ctrlKey || event.metaKey) {
             if (window.location.hash === '') {
@@ -255,13 +195,13 @@ class WheelHandler {
         )
         const scrollPositionTop = modalElement.scrollTop
         if (verticalScrollDirection === 'up' && scrollPositionTop === 0) {
-            aria.getCurrentDialog()?.close('#')
+            closeDialog('#')
         }
     }
 
     handlePageVerticalScroll(verticalScrollDirection) {
         const scrollPositionY = window.scrollY || window.pageYOffset
-        const totalHeight = document.documentElement.scrollHeight
+        const totalHeight = document.body.scrollHeight
 
         if (verticalScrollDirection === 'down' && scrollPositionY + window.innerHeight >= totalHeight) {
             if (window.location.hash === '') {
@@ -273,7 +213,7 @@ class WheelHandler {
     handleHorizontalScroll(deltaX) {
         const horizontalScrollDirection = deltaX > 0 ? 'right' : 'left'
         const scrollPositionX = window.scrollX || window.pageXOffset
-        const totalWidth = document.documentElement.scrollWidth
+        const totalWidth = document.body.scrollWidth
 
         if (this.isAnimationFinished('.animate-fade-in-cta-2')) {
             if (horizontalScrollDirection === 'right' && scrollPositionX + window.innerWidth >= totalWidth) {
@@ -341,13 +281,13 @@ class TouchHandler {
         const scrollPositionTop = modalElement.scrollTop
 
         if (verticalScrollDirection === 'up' && scrollPositionTop === 0) {
-            aria.getCurrentDialog().close('#')
+            closeDialog('#')
         }
     }
 
     handlePageVerticalScroll(verticalScrollDirection) {
         const scrollPositionY = window.scrollY || window.pageYOffset
-        const totalHeight = document.documentElement.scrollHeight
+        const totalHeight = document.body.scrollHeight
 
         if (verticalScrollDirection === 'down' && scrollPositionY + window.innerHeight >= totalHeight) {
             if (window.location.hash === '') {
@@ -359,7 +299,7 @@ class TouchHandler {
     handleHorizontalScroll(touchEndX) {
         const horizontalScrollDirection = touchEndX > this.touchStartX ? 'right' : 'left'
         const scrollPositionX = window.scrollX
-        const totalWidth = document.documentElement.scrollWidth
+        const totalWidth = document.body.scrollWidth
 
         if (this.isAnimationFinished('.animate-fade-in-cta-2')) {
             if (horizontalScrollDirection === 'right' && scrollPositionX + window.innerWidth >= totalWidth) {
@@ -461,7 +401,7 @@ class HorizontalEdgeScroller {
     }
 
     onResize() {
-        this.edgeWidth = (this.options.edgeWidthRatio || 3) * parseFloat(getComputedStyle(document.documentElement).fontSize)
+        this.edgeWidth = (this.options.edgeWidthRatio || 3) * parseFloat(getComputedStyle(document.body).fontSize)
         this.setPseudoElementsWidth()
     }
 
@@ -473,7 +413,7 @@ class HorizontalEdgeScroller {
           [data-edge-scroll-id="${this.options.id}"]::before {
             content: '';
             position: absolute;
-            z-index: 1;
+            z-index: 5;
             display: block;
             inset: 0 auto 0 0;
             width: ${this.edgeWidth}px;
@@ -483,7 +423,7 @@ class HorizontalEdgeScroller {
           [data-edge-scroll-id="${this.options.id}"]::after {
             content: '';
             position: absolute;
-            z-index: 1;
+            z-index: 5;
             display: block;
             inset: 0 0 0 auto;
             width: ${this.edgeWidth}px;
@@ -712,22 +652,92 @@ class Carousel {
     }
 }
 
-const openDialogOnLoad = () => {
-    switch (window.location.hash.split('?')[0]) {
-        case '#profile':
-            openDialog('modal_profile', 'menu_link_profile', null, 'profile')
-            break
-        case '#archive':
-            openArchive()
-            break
-        case '#menu':
-            openDialog('menu_button-wrapper', 'menu_button--open', 'menu_button--close', 'menu')
-            break
+
+window.handleTouchButtonClick = (element, event, callback, focusAfterClick) => {
+    event.preventDefault()
+
+    if (!isTouchDevice) {
+        callback()
+        return
     }
+
+    element.clickCount = (element.clickCount || 0) + 1
+
+    if (!element.handleBlur) {
+        element.handleBlur = (() => {
+            const handleBlur = (event) => {
+                if (event.target !== document.activeElement) {
+                    element.clickCount = 0
+                    delete element.handleBlur
+                    event.target.removeAttribute('data-focus-after-click')
+                    event.target.removeEventListener('blur', handleBlur)
+                }
+            }
+            element.addEventListener('blur', handleBlur)
+        })()
+    }
+
+    if (element.clickCount === 2 || element.getAttribute('data-focus-after-click') === 'true') {
+        callback()
+
+        if (focusAfterClick) {
+            element.setAttribute('data-focus-after-click', 'true')
+            element.focus()
+
+            element.addEventListener('blur', () => { element.removeAttribute('data-focus-after-click') }, { once: true })
+        }
+    } else if (element.clickCount === 1) {
+        element.focus()
+    } else {
+        callback()
+    }
+}
+
+window,initializeTimeline = () => {
+    window.timelineEl = document.createElement('horizontal-timeline')
+    timelineEl.setAttribute('labels', JSON.stringify([
+        2025, 2024, 2023, 2022, 2021, 2020,
+        2019, 2018, 2017, 2016, 2015, 2014
+    ]))
+
+    document.querySelector('#horizontal-timeline-wrapper').appendChild(timelineEl)
+
+    new HorizontalEdgeScroller({ id: 'timeline', element: document.querySelector('#timeline-content') })
+    new HorizontalDragScroll({ element: document.querySelector('#timeline-content') })
+}
+
+window.openArchive = () => {
+    if (!document.querySelector('#horizontal-timeline-wrapper horizontal-timeline')) {
+        initializeTimeline()
+        timelineEl.startIntersectionObserver()
+    }
+    openDialog('modal_archive', 'menu_link_archive', null, 'archive')
+    /* requestAnimationFrame(() => {
+        timelineEl.startIntersectionObserver()
+    }) */
 }
 
 
 document.addEventListener('DOMContentLoaded', () => {
+    const openDialogOnLoad = () => {
+        switch (window.location.hash.split('?')[0]) {
+            case '#profile':
+                openDialog('modal_profile', 'menu_link_profile', null, 'profile')
+                break
+            case '#archive':
+                openArchive()
+                break
+            case '#menu':
+                openDialog('menu_button-wrapper', 'menu_button--open', 'menu_button--close', 'menu')
+                break
+        }
+    }
+
+    // Detect touch device
+    if (isTouchDevice) {
+        document.body.classList.add('touch-device')
+    }
+
     // Initialize the UI elements based on the current hash
     if (window.location.hash) {
         document.querySelectorAll(
@@ -737,6 +747,20 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         openDialogOnLoad()
     }
+
+    // Prevent the default behavior of scrolling to the hash
+    let scrollTop = document.body.scrollTop
+    window.addEventListener('scroll', () => {
+        scrollTop = document.body.scrollTop
+    })
+    window.addEventListener('hashchange', () => {
+        document.body.classList.add('overflow-hidden')
+        window.scroll(0, scrollTop)
+
+        requestAnimationFrame(() => {
+            document.body.classList.remove('overflow-hidden')
+        })
+    })
 
     // Initialize handlers
     new WheelHandler()
@@ -752,19 +776,5 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize popups
     document.querySelectorAll('[data-carousel-slides] figure a').forEach(element => {
         element.addEventListener('click', event => new Popup().open(element, event))
-    })
-
-    // Prevent the default behavior of scrolling to the hash
-    let scrollTop = document.documentElement.scrollTop
-    window.addEventListener('scroll', () => {
-        scrollTop = document.documentElement.scrollTop
-    })
-    window.addEventListener('hashchange', () => {
-        document.body.classList.add('overflow-hidden')
-        window.scroll(0, scrollTop)
-
-        requestAnimationFrame(() => {
-            document.body.classList.remove('overflow-hidden')
-        })
     })
 })
