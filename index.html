@@ -26,10 +26,10 @@
         <meta name="color-scheme" content="dark light">
         <meta name="keywords" content="developer, designer">
         <!-- Viewport -->
-        <!-- <meta name="viewport"
-       content="width=480, shrink-to-fit=yes, viewport-fit=contain"> -->
         <meta name="viewport"
-              content="width=device-width, initial-scale=1, viewport-fit=contain">
+       content="width=440, shrink-to-fit=yes, viewport-fit=contain">
+        <!-- <meta name="viewport"
+              content="width=device-width, initial-scale=1, viewport-fit=contain"> -->
 
         <!-- Cache -->
         <meta http-equiv="cache-control" content="no-cache">
@@ -110,10 +110,11 @@
                             <span></span>
                         </div>
                     </div>
-                    <div id="intro_right-column" class="z-1 flex flex-col align-items-start">
+                    <div id="intro_right-column" class="z-1 flex flex-col">
                         <h3 id="intro_right-column_title--primary"
                             class="inline-flex animate-fade-in-title select-none">
-                            <span style="--i:1">F</span><span style="--i:2">u</span><span style="--i:3">l</span><span style="--i:4">l</span><span style="--i:5">-</span><span style="--i:6">s</span><span style="--i:7">t</span><span style="--i:8">a</span><span style="--i:9">c</span><span style="--i:10">k</span><span style="--i:11">&nbsp;</span><span class="highlight-load" style="--i:12">d</span><span class="highlight-load" style="--i:13">e</span><span class="highlight-load" style="--i:14">v</span><span class="highlight-load" style="--i:15">e</span><span class="highlight-load" style="--i:16">l</span><span class="highlight-load" style="--i:17">o</span><span class="highlight-load" style="--i:18">p</span><span class="highlight-load" style="--i:19">e</span><span class="highlight-load" style="--i:20">r</span><span style="--i:21">&nbsp;</span>
+                            <span style="--i:1">F</span><span style="--i:2">u</span><span style="--i:3">l</span><span style="--i:4">l</span><span style="--i:5">-</span><span style="--i:6">s</span><span style="--i:7">t</span><span style="--i:8">a</span><span style="--i:9">c</span><span style="--i:10">k</span><span style="--i:11">&nbsp;</span><span class="highlight-load" style="--i:12">d</span><span class="highlight-load" style="--i:13">e</span><span class="highlight-load" style="--i:14">v</span><span class="highlight-load" style="--i:15">e</span><span class="highlight-load" style="--i:16">l</span><span class="highlight-load" style="--i:17">o</span><span class="highlight-load" style="--i:18">p</span><span class="highlight-load" style="--i:19">e</span><span class="highlight-load" style="--i:20">r</span>
+                            <!-- <span style="--i:21">&nbsp;</span> -->
                         </h3>
                         <h3 id="intro_right-column_title--secondary"
                             class="inline-flex animate-fade-in-title select-none"
@@ -145,7 +146,7 @@
                                 </abbr>
                             </div>
                         </div>
-                        <nav id="menu" class="relative grid animate-fade-in-cta-2">
+                        <nav id="menu" class="relative grid animate-fade-in-cta-2 align-self-start">
                             <div id="menu_email_button-wrapper"
                                  class="inline-flex tooltip-wrapper"
                                  style="place-self: self-start">
@@ -283,7 +284,7 @@
                                                 <use xlink:href="images/icons.svg#menu-call"></use>
                                             </svg>
                                             <span class="text-sm whitespace-nowrap">Virtual meeting</span>
-                                            <svg class="alig-self-start fill-current"
+                                            <svg class="align-self-start fill-current"
                                                  style="margin-left: 0.1875rem;
                                                         width: 1rem;
                                                         height: 1rem">
@@ -298,7 +299,7 @@
                                                 <use xlink:href="images/icons.svg#menu-linkedin"></use>
                                             </svg>
                                             <span class="text-sm whitespace-nowrap">LinkedIn profile</span>
-                                            <svg class="alig-self-start fill-current"
+                                            <svg class="align-self-start fill-current"
                                                  style="margin-left: 0.1875rem;
                                                         width: 1rem;
                                                         height: 1rem">
@@ -313,7 +314,7 @@
                                                 <use xlink:href="images/icons.svg#menu-github"></use>
                                             </svg>
                                             <span class="text-sm whitespace-nowrap">GitHub profile</span>
-                                            <svg class="alig-self-start fill-current"
+                                            <svg class="align-self-start fill-current"
                                                  style="margin-left: 0.1875rem;
                                                         width: 1rem;
                                                         height: 1rem">
@@ -637,10 +638,7 @@
                         <div style="position: relative;
                                     height: 100%;
                                     padding-bottom: var(--segment-half)">
-                            <div id="modal_archive-wrapper"
-                                 style="padding-top: 3rem;
-                                        padding-left: 3rem;
-                                        padding-right: 6rem">
+                            <div id="modal_archive-wrapper">
                                 <div id="modal_archive-content">
                                     <div id="modal_archive-content_section-title" data-timeline-section="2024">
                                         <div>
@@ -727,11 +725,9 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div
-                                         class="flex flex-col"
-                                         style="outline: max(1px, 0.0625rem) solid red">
+                                    <div class="flex flex-col" style="outline: max(1px, 0.0625rem) solid red">
                                         <div class="flex flex-col align-items-end"
-                                        data-timeline-section="2018"
+                                             data-timeline-section="2018"
                                              style="row-gap: 1.25rem;
                                                     position: sticky;
                                                     padding-bottom: 1.25rem">
@@ -755,8 +751,9 @@
                                                          font-weight: 400">2018</span>
                                         </div>
                                     </div>
-                                    <div style="height: 25rem; outline: max(1px, 0.0625rem) solid red"
-                                    data-timeline-section="2018">
+                                    <div style="height: 25rem;
+                                                outline: max(1px, 0.0625rem) solid red"
+                                         data-timeline-section="2018">
                                         <div class="flex flex-col justify-content-between w-full"
                                              style="height: 1.25rem">
                                             <hr style="display: inline-flex;
@@ -785,13 +782,13 @@
                                 </div>
                             </div>
                             <div class="z-50 sticky" style="bottom: calc(-1 * var(--segment-third))">
-                                <div class="absolute"
+                                <!-- <div class="absolute"
                                      style="bottom: 0;
                                             left: calc(3rem + 3rem + 15rem );
-                                            right: calc(3rem + 3rem)">
+                                            right: calc(3rem + 3rem)"> -->
                                     <div id="horizontal-timeline-wrapper">
                                     </div>
-                                </div>
+                                <!-- </div> -->
                             </div>
                         </div>
                     </div>
@@ -822,7 +819,7 @@
                     <span id="square-3"></span>
                     <span id="square-4"></span>
                 </div>
-                <div id="rectangle">
+                <div id="rectangle" class="flex-grow">
                 </div>
             </div>
         </footer>

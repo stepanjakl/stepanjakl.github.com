@@ -123,7 +123,7 @@ class KeyHandler {
             closeDialog('#')
         }
         else {
-            openArchive()
+            openDialog('modal_archive', 'menu_link_archive', null, 'archive')
         }
     }
 
@@ -693,7 +693,7 @@ window.handleTouchButtonClick = (element, event, callback, focusAfterClick) => {
     }
 }
 
-window,initializeTimeline = () => {
+window, initializeTimeline = () => {
     window.timelineEl = document.createElement('horizontal-timeline')
     timelineEl.setAttribute('labels', JSON.stringify([
         2025, 2024, 2023, 2022, 2021, 2020,
@@ -706,18 +706,6 @@ window,initializeTimeline = () => {
     new HorizontalDragScroll({ element: document.querySelector('#timeline-content') })
 }
 
-window.openArchive = () => {
-    if (!document.querySelector('#horizontal-timeline-wrapper horizontal-timeline')) {
-        initializeTimeline()
-        timelineEl.startIntersectionObserver()
-    }
-    openDialog('modal_archive', 'menu_link_archive', null, 'archive')
-    /* requestAnimationFrame(() => {
-        timelineEl.startIntersectionObserver()
-    }) */
-}
-
-
 document.addEventListener('DOMContentLoaded', () => {
     const openDialogOnLoad = () => {
         switch (window.location.hash.split('?')[0]) {
@@ -725,7 +713,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 openDialog('modal_profile', 'menu_link_profile', null, 'profile')
                 break
             case '#archive':
-                openArchive()
+                openDialog('modal_archive', 'menu_link_archive', null, 'archive')
                 break
             case '#menu':
                 openDialog('menu_button-wrapper', 'menu_button--open', 'menu_button--close', 'menu')
@@ -777,4 +765,30 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('[data-carousel-slides] figure a').forEach(element => {
         element.addEventListener('click', event => new Popup().open(element, event))
     })
+
+    // Initialize timeline
+    aria.addBackdrop('modal_archive')
+    requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+        })
+    })
+    initializeTimeline()
+    timelineEl.startIntersectionObserver()
+    const positionTimeline = () => {
+        console.log('positionTimeline')
+
+        const archiveWrapperEl = document.querySelector('#modal_archive-wrapper')
+        const archiveWrapperRect = archiveWrapperEl.getBoundingClientRect()
+        const timelineContentSectionEl = document.querySelector('#modal_archive-content_section')
+        const timelineContentSectionRect = timelineContentSectionEl.getBoundingClientRect()
+        console.log(archiveWrapperRect.left, timelineContentSectionRect.left)
+        console.log(archiveWrapperRect.right, timelineContentSectionRect.right)
+
+        const timelineWrapperEl = document.querySelector('#horizontal-timeline-wrapper')
+        timelineWrapperEl.style.setProperty('left', `${timelineContentSectionRect.left - archiveWrapperRect.left}px`)
+        timelineWrapperEl.style.setProperty('right', `${archiveWrapperRect.right - timelineContentSectionRect.right}px`)
+    }
+    // positionTimeline()
+    document.querySelector('#modal_archive .modal-content').addEventListener('transitionend', positionTimeline)
+    window.addEventListener('resize', positionTimeline)
 })

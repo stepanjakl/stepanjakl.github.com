@@ -25,12 +25,12 @@ class timeline extends HTMLElement {
                 horizontal-timeline {
                     display: flex;
                     transition: margin var(--animate-out-segment) var(--ease-in-quad);
-                    margin: 0 8rem;
+                    margin: 0 6rem;
                 }
 
                 horizontal-timeline:hover {
                     transition: margin var(--animate-in-segment) var(--ease-out-quad);
-                    margin: 0 4rem;
+                    margin: 0 2rem;
                 }
 
                 horizontal-timeline::before {
@@ -367,7 +367,9 @@ class timeline extends HTMLElement {
                 }
 
                 if (entry.isIntersecting) {
-                    if(window.location.hash.split('?year=')[1] === targetSection || !window.location.hash.includes(this.hash)) return
+                    console.log(targetSection, window.location.hash);
+
+                    if (window.location.hash.split('?year=')[1] === targetSection || !window.location.hash.includes(this.hash)) return
                     window.history.replaceState({}, '', window.location.pathname + window.location.search + window.location.hash.split('?')[0] + '?' + updateParams('year', targetSection))
                     await scrollParentToChildCenterHorizontal(timelineContentEl, targetLabelEl)
 
@@ -381,22 +383,6 @@ class timeline extends HTMLElement {
                     this.activeSection = targetSection
                 }
             })
-        }
-
-        this.startIntersectionObserver = () => {
-            setupIntersectionObserver(this.timelineContentEl, this.labelEls)
-        }
-
-        this.stopIntersectionObserver = () => {
-            this.intersectionObserver.disconnect()
-        }
-
-        const setupIntersectionObserver = (timelineContentEl, labelEls) => {
-            this.intersectionObserver = new IntersectionObserver(handleIntersection(timelineContentEl, labelEls), {
-                rootMargin: '-50% 0% -50% 0%',
-                threshold: 0
-            })
-            document.querySelectorAll('[data-timeline-section]').forEach(async (element) => await this.intersectionObserver.observe(element))
         }
 
         const initializeTimeline = (() => {
@@ -470,6 +456,22 @@ class timeline extends HTMLElement {
                 }
             })
         })()
+
+        const setupIntersectionObserver = (timelineContentEl, labelEls) => {
+            this.intersectionObserver = new IntersectionObserver(handleIntersection(timelineContentEl, labelEls), {
+                rootMargin: '-50% 0% -50% 0%',
+                threshold: 0
+            })
+            document.querySelectorAll('[data-timeline-section]').forEach(async (element) => await this.intersectionObserver.observe(element))
+        }
+
+        this.startIntersectionObserver = () => {
+            setupIntersectionObserver(this.timelineContentEl, this.labelEls)
+        }
+
+        this.stopIntersectionObserver = () => {
+            this.intersectionObserver.disconnect()
+        }
     }
 }
 

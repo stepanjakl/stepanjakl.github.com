@@ -84,13 +84,8 @@ aria.handleEscape = (event) => {
 
 document.addEventListener('keyup', aria.handleEscape)
 
-aria.Dialog = function (dialogId, focusAfterClosed, focusFirst, hash) {
+aria.addBackdrop = (dialogId) => {
     this.dialogNode = document.getElementById(dialogId)
-    if (!this.dialogNode) throw new Error(`No element found with id="${dialogId}".`)
-
-    const validRoles = ['dialog', 'alertdialog']
-    const isDialog = (this.dialogNode.getAttribute('role') || '').trim().split(/\s+/g).some(token => validRoles.includes(token))
-    if (!isDialog) throw new Error('Dialog() requires a DOM element with ARIA role of dialog or alertdialog.')
 
     const backdropClass = 'dialog-backdrop'
     this.backdropNode = this.dialogNode.parentNode.classList.contains(backdropClass)
@@ -102,6 +97,19 @@ aria.Dialog = function (dialogId, focusAfterClosed, focusFirst, hash) {
         this.dialogNode.parentNode.insertBefore(this.backdropNode, this.dialogNode)
         this.backdropNode.appendChild(this.dialogNode)
     }
+
+    return this.backdropNode
+}
+
+aria.Dialog = function (dialogId, focusAfterClosed, focusFirst, hash) {
+    this.dialogNode = document.getElementById(dialogId)
+    if (!this.dialogNode) throw new Error(`No element found with id="${dialogId}".`)
+
+    const validRoles = ['dialog', 'alertdialog']
+    const isDialog = (this.dialogNode.getAttribute('role') || '').trim().split(/\s+/g).some(token => validRoles.includes(token))
+    if (!isDialog) throw new Error('Dialog() requires a DOM element with ARIA role of dialog or alertdialog.')
+
+    this.backdropNode = aria.addBackdrop(dialogId)
 
     this.backdropNode.classList.add('active')
     document.body.classList.add(aria.Utils.dialogOpenClass)
@@ -130,23 +138,19 @@ aria.Dialog = function (dialogId, focusAfterClosed, focusFirst, hash) {
 
     this.addListeners()
     aria.OpenDialogList.push(this)
-    this.clearDialog()
-    // this.dialogNode.classList.remove('hidden')
 
     requestAnimationFrame(() => {
-        if (hash) window.location.hash = hash
+        requestAnimationFrame(() => {
+            if (hash) window.location.hash = hash
 
-        if (this.focusFirst) {
-            this.focusFirst.focus()
-        } else {
-            aria.Utils.focusFirstDescendant(this.dialogNode)
-        }
-        this.lastFocus = document.activeElement
+            if (this.focusFirst) {
+                this.focusFirst.focus()
+            } else {
+                aria.Utils.focusFirstDescendant(this.dialogNode)
+            }
+            this.lastFocus = document.activeElement
+        })
     })
-}
-
-aria.Dialog.prototype.clearDialog = function () {
-    this.dialogNode.querySelectorAll('input').forEach(input => (input.value = ''))
 }
 
 aria.Dialog.prototype.close = function (hash) {
