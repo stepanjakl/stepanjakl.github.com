@@ -405,10 +405,18 @@ class HorizontalEdgeScroller {
         this.setPseudoElementsWidth()
     }
 
-    setPseudoElementsWidth(selector, width) {
-        this.element.setAttribute('data-edge-scroll-id', this.options.id) /* parentElement */
+    setPseudoElementsWidth() {
+        this.element.setAttribute('data-edge-scroll-id', this.options.id)
 
-        const style = document.createElement('style')
+        const styleId = `horizontal-edge-scroll-style-${this.options.id}`
+        let style = document.getElementById(styleId)
+
+        if (!style) {
+            style = document.createElement('style')
+            style.id = styleId
+            document.head.appendChild(style)
+        }
+
         style.textContent = `
           [data-edge-scroll-id="${this.options.id}"]::before {
             content: '';
@@ -430,7 +438,6 @@ class HorizontalEdgeScroller {
             cursor: e-resize;
           }
         `
-        document.head.appendChild(style)
     }
 
     handleMouseOut() {
@@ -451,6 +458,7 @@ class HorizontalEdgeScroller {
     }
 
     handleMouseMove(event) {
+        if (window.matchMedia('(min-width: 45rem)').matches === false) return
         if (this.element.classList.contains('x-drag-scroll--dragging')) return
 
         const rect = this.element.getBoundingClientRect()
@@ -713,7 +721,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 openDialog('modal_profile', 'menu_link_profile', null, 'profile')
                 break
             case '#archive':
-                openDialog('modal_archive', 'menu_link_archive', null, 'archive')
+                const yearParam = window.location.hash.split('?year=')[1]
+                if (yearParam) {
+                    localStorage.setItem('archiveYear', yearParam)
+                }
+                openDialog('modal_archive', 'menu_link_archive', null, window.location.hash)
                 break
             case '#menu':
                 openDialog('menu_button-wrapper', 'menu_button--open', 'menu_button--close', 'menu')
@@ -774,21 +786,19 @@ document.addEventListener('DOMContentLoaded', () => {
     })
     initializeTimeline()
     timelineEl.startIntersectionObserver()
-    const positionTimeline = () => {
-        console.log('positionTimeline')
+    const positionTimeline = (event) => {
+        if (event && event.currentTarget !== event.target) return
 
         const archiveWrapperEl = document.querySelector('#modal_archive-wrapper')
         const archiveWrapperRect = archiveWrapperEl.getBoundingClientRect()
         const timelineContentSectionEl = document.querySelector('#modal_archive-content_section')
         const timelineContentSectionRect = timelineContentSectionEl.getBoundingClientRect()
-        console.log(archiveWrapperRect.left, timelineContentSectionRect.left)
-        console.log(archiveWrapperRect.right, timelineContentSectionRect.right)
 
         const timelineWrapperEl = document.querySelector('#horizontal-timeline-wrapper')
         timelineWrapperEl.style.setProperty('left', `${timelineContentSectionRect.left - archiveWrapperRect.left}px`)
         timelineWrapperEl.style.setProperty('right', `${archiveWrapperRect.right - timelineContentSectionRect.right}px`)
     }
-    // positionTimeline()
+    positionTimeline()
     document.querySelector('#modal_archive .modal-content').addEventListener('transitionend', positionTimeline)
     window.addEventListener('resize', positionTimeline)
 })

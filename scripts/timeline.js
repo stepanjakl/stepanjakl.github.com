@@ -25,12 +25,22 @@ class timeline extends HTMLElement {
                 horizontal-timeline {
                     display: flex;
                     transition: margin var(--animate-out-segment) var(--ease-in-quad);
-                    margin: 0 6rem;
+                    margin: 0 3rem;
                 }
 
                 horizontal-timeline:hover {
                     transition: margin var(--animate-in-segment) var(--ease-out-quad);
-                    margin: 0 2rem;
+                    margin: 0 1rem;
+                }
+
+                @media (min-width: 60rem) {
+                    horizontal-timeline {
+                        margin: 0 6rem;
+                    }
+
+                    horizontal-timeline:hover {
+                        margin: 0 2rem;
+                    }
                 }
 
                 horizontal-timeline::before {
@@ -293,6 +303,7 @@ class timeline extends HTMLElement {
         let firstLoad = true
 
         const scrollParentToChildCenterHorizontal = (parent, child) => {
+            if (parent === null || child === null) return
             return new Promise((resolve) => {
                 this.isScrolling = true
                 let parentRect = parent.getBoundingClientRect()
@@ -360,17 +371,11 @@ class timeline extends HTMLElement {
                 const targetLabelEl = this.querySelector(`[data-label-for="${targetSection}"]`)
                 const timelineEls = Array.from(this.querySelectorAll('#timeline div'))
 
-                const updateParams = (paramName, paramValue) => {
-                    const params = new URLSearchParams()
-                    params.set(paramName, paramValue)
-                    return params.toString()
-                }
-
                 if (entry.isIntersecting) {
-                    console.log(targetSection, window.location.hash);
+                    if (window.location.hash.includes(this.hash) && window.location.hash.split('?year=')[1] !== targetSection) {
+                        window.history.replaceState({}, '', window.location.pathname + window.location.hash.split('?')[0] + '?year=' + targetSection)
+                    }
 
-                    if (window.location.hash.split('?year=')[1] === targetSection || !window.location.hash.includes(this.hash)) return
-                    window.history.replaceState({}, '', window.location.pathname + window.location.search + window.location.hash.split('?')[0] + '?' + updateParams('year', targetSection))
                     await scrollParentToChildCenterHorizontal(timelineContentEl, targetLabelEl)
 
                     labelEls.forEach((labelEl) => labelEl.classList.remove('active'))
@@ -381,6 +386,8 @@ class timeline extends HTMLElement {
                     timelineEls[3 + (index === 0 ? 0 : index * 6)].classList.add('active')
 
                     this.activeSection = targetSection
+
+                    localStorage.setItem('archiveYear', targetSection)
                 }
             })
         }
@@ -398,15 +405,16 @@ class timeline extends HTMLElement {
             if (window.location.hash.includes('?year=')) {
                 const yearParam = window.location.hash.split('?year=')[1]
 
-                window.history.pushState({}, '', `${window.location.pathname + window.location.search}${this.hash}`)
+                window.history.pushState({}, '', `${window.location.pathname}${this.hash}`)
 
-                requestAnimationFrame(() => {
-                    window.history.replaceState({}, '', `${window.location.pathname + window.location.search}${this.hash}?year=${yearParam}`)
+                requestAnimationFrame(async () => {
+                    window.history.replaceState({}, '', `${window.location.pathname}${this.hash}?year=${yearParam}`)
                     openDialog('modal_archive', document.querySelector('#menu_link_archive'))
 
                     const targetElement = document.querySelector(`[data-timeline-section="${yearParam}"]`)
                     if (targetElement) {
                         scrollParentToChildVertical(modalArchiveEl, targetElement, 'instant')
+                        // await scrollParentToChildCenterHorizontal(this.timelineContentEl, this.querySelector(`[data-label-for="${yearParam}"]`))
                     }
                 })
             }

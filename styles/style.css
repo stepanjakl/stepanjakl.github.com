@@ -218,8 +218,7 @@ body {
     /* 210, 100, 25 */
     --modal-bg-blur: rgba(0, 66, 75, 0.65), rgba(0, 66, 75, 0.35);
 
-    --modal-icon-outer: var(--cyan-half-75);
-    --modal-icon-inner: var(--cyan-half-85);
+    --modal-icon: var(--cyan-half-85);
     --modal-icon-hover: var(--cyan-half-95);
 
     --modal-tag-bg: var(--cyan-three-quarters-45);
@@ -936,9 +935,9 @@ body {
     display: contents;
 }
 
-.has-dialog {
+/* .has-dialog {
     overflow: hidden !important;
-}
+} */
 
 
 /* Modal */
@@ -1051,9 +1050,9 @@ body {
     border-radius: var(--modal-button-close-border-radius);
     background-color: var(--inner-bg-light-2);
 }
-p
+
 #modal_button-close svg {
-    color: var(--modal-icon-inner);
+    color: var(--modal-icon);
 }
 
 #modal_profile_content, #modal_archive-content {
@@ -1259,6 +1258,10 @@ p
     padding-left: 1.5rem;
 } */
 
+#modal_archive-wrapper > input[type="checkbox"] {
+    display: none;
+}
+
 #modal_archive-content {
     display: grid;
     grid-auto-flow: row;
@@ -1268,7 +1271,6 @@ p
 #modal_archive-content_section-title {
     display: flex;
     flex-direction: column;
-    padding-bottom: 1.75rem;
 }
 
 #modal_archive-content_section-title > div {
@@ -1277,10 +1279,24 @@ p
     display: flex;
     flex-direction: column;
     row-gap: 1.25rem;
-    padding-bottom: 1.25rem
+    /* margin-bottom: 1.25rem */
 }
 
-#modal_archive-content_section-title > div hr {
+#modal_archive-content_section-title > div label {
+    position: absolute;
+    inset: 0;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+    appearance: none;
+    background: none;
+    border: none;
+    text-indent: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+#modal_archive-content_section-title > div hr, #modal_archive-content_section-content > hr:first-child {
     display: inline-flex;
     width: 100%;
     margin: 0;
@@ -1300,11 +1316,12 @@ p
     color: var(--text-1)
 }
 
-#modal_archive-content_section:nth-child(2n+1) {
+/* #modal_archive-content_section:nth-child(2n+1) {
     padding-bottom: 3rem;
-}
+} */
 
-#modal_archive-content_section:nth-child(2n):not(:last-child) {
+/* #modal_archive-content_section:nth-child(2n):not(:last-child) { */
+#modal_archive-content_section {
     display: flex;
     flex-direction: column;
     padding-bottom: 6rem;
@@ -1329,6 +1346,16 @@ p
     background-color: var(--icon)
 }
 
+#modal_archive-content_section-content {
+    display: flex;
+    flex-direction: column;
+    /* padding-top: 1.25rem; */
+}
+
+#modal_archive-content_section-content > hr:first-child {
+    margin-top: 1.25rem;
+}
+
 @media (min-width: 45rem) {
     /* #modal_archive-wrapper {
         padding-top: 2rem;
@@ -1337,18 +1364,6 @@ p
 
     #modal_archive-content {
         padding: var(--segment-third) 0 var(--segment-third) var(--segment-third);
-    }
-
-    #modal_archive-content_section-title > div hr:nth-of-type(2) {
-        display: none;
-    }
-
-    #modal_archive-content_section-title > div span {
-        text-align: right;
-        align-self: end;
-    }
-
-    #modal_archive-content {
         grid-template-columns: minmax(20%, max-content) minmax(0, 1fr);
         gap: 3rem;
     }
@@ -1359,6 +1374,23 @@ p
 
     #modal_archive-content_section-divider {
         order: 0;
+    }
+
+    /* #modal_archive-content_section {
+        padding-top: 0;
+    } */
+
+    /* #modal_archive-content_section-title > div hr:nth-of-type(2) {
+        display: none;
+    } */
+
+    #modal_archive-content_section-title > div span {
+        text-align: right;
+        align-self: end;
+    }
+
+    #modal_archive-content_section-content > hr:first-child {
+        display: none;
     }
 }
 
@@ -1588,10 +1620,28 @@ p
 /* Timeline */
 
 #horizontal-timeline-wrapper {
+    display: none;
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
+}
+
+
+[data-edge-scroll-id]::before,
+[data-edge-scroll-id]::after {
+    display: none !important;
+}
+
+@media (min-width: 45rem) {
+    #horizontal-timeline-wrapper {
+        display: block;
+    }
+
+    [data-edge-scroll-id]::before,
+    [data-edge-scroll-id]::after {
+        display: block !important;
+    }
 }
 
 

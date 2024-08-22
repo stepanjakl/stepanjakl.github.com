@@ -639,12 +639,14 @@
                                     height: 100%;
                                     padding-bottom: var(--segment-half)">
                             <div id="modal_archive-wrapper">
+                                <input type="checkbox" id="timeline_section_year-2024" checked>
                                 <div id="modal_archive-content">
                                     <div id="modal_archive-content_section-title" data-timeline-section="2024">
                                         <div>
+                                            <label for="timeline_section_year-2024">2024</label>
                                             <hr>
                                             <span>2024</span>
-                                            <hr>
+                                            <!-- <hr> -->
                                         </div>
                                     </div>
                                     <div id="modal_archive-content_section" data-timeline-section="2024">
@@ -653,12 +655,11 @@
                                             <hr>
                                             <hr>
                                         </div>
-                                        <div>
-
+                                        <div id="modal_archive-content_section-content">
+                                            <hr>
                                             <h1 class="font-bold text-lg" style="margin-bottom: 2.5rem">
                                                 Project #1
                                             </h1>
-
                                             <div class="relative" data-carousel>
                                                 <div data-carousel-slides-wrapper>
                                                     <div data-carousel-slides>
@@ -725,18 +726,13 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="flex flex-col" style="outline: max(1px, 0.0625rem) solid red">
+                                    <div class="flex flex-col">
                                         <div class="flex flex-col align-items-end"
                                              data-timeline-section="2018"
                                              style="row-gap: 1.25rem;
                                                     position: sticky;
-                                                    padding-bottom: 1.25rem">
-                                            <hr style="display: inline-flex;
-                                                       width: 100%;
-                                                       margin: 0;
-                                                       border: none;
-                                                       height: max(1px, 0.0625rem);
-                                                       background-color: var(--icon)">
+                                                    padding-bottom: 1.25rem;
+                                                    margin-top: 1.25rem;">
                                             <hr style="display: inline-flex;
                                                        width: 100%;
                                                        margin: 0;
@@ -751,8 +747,7 @@
                                                          font-weight: 400">2018</span>
                                         </div>
                                     </div>
-                                    <div style="height: 25rem;
-                                                outline: max(1px, 0.0625rem) solid red"
+                                    <div style="height: 25rem;"
                                          data-timeline-section="2018">
                                         <div class="flex flex-col justify-content-between w-full"
                                              style="height: 1.25rem">

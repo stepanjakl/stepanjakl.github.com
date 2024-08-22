@@ -794,6 +794,17 @@ a#menu_link_profile:hover, a#menu_link_profile:focus, a#menu_link_profile.toolti
 }
 
 
+/* Modals - Archive */
+
+#modal_archive-content_section {
+    transition: opacity var(--animate-out-segment) linear, padding var(--animate-out-segment) var(--ease-in-quad), height var(--animate-out-segment) var(--ease-in-quad);
+}
+
+input[id^="timeline_section_year-"]:checked ~ #modal_archive-content [data-timeline-section] {
+    transition: opacity var(--animate-in-segment) linear, padding var(--animate-in-segment) var(--ease-out-quad), height var(--animate-in-segment) var(--ease-out-quad);
+}
+
+
 /* Modals - Horizontal Timeline */
 
 #horizontal-timeline-wrapper {

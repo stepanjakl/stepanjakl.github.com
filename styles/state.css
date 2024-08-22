@@ -29,9 +29,6 @@
     /* 210, 100, 70 */
     --modal-bg-blur: rgba(0, 188, 210, 0.45), rgba(0, 188, 210, 0.15);
 
-    --modal-icon-outer-bg: var(--cyan-half-65);
-    --modal-icon-outer: var(--cyan-half-95);
-
     --modal-tag-bg: var(--cyan-three-quarters-80);
 
     --footer-square-1: var(--highlight-primary);
@@ -227,4 +224,13 @@
 #debug:checked~#archive:target~main [data-carousel-slides] figure a {
     border: solid transparent;
     border-width: max(1px, 0.0625rem);
+}
+
+@media (max-width: 45rem) {
+    #timeline_section_year-2024:not(:checked) ~ #modal_archive-content #modal_archive-content_section[data-timeline-section="2024"] {
+        visibility: hidden;
+        opacity: 0;
+        height: 0;
+        padding: 0;
+    }
 }
