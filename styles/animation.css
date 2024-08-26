@@ -804,6 +804,20 @@ input[id^="timeline_section_year-"]:checked ~ #modal_archive-content [data-timel
     transition: opacity var(--animate-in-segment) linear, padding var(--animate-in-segment) var(--ease-out-quad), height var(--animate-in-segment) var(--ease-out-quad);
 }
 
+#modal_archive-content_section-title > div label:hover + div svg {
+
+}
+
+#modal_archive-content_section-title > div svg {
+    transition: color var(--animate-out-segment-2\/3) linear, background-color var(--animate-out-segment-2\/3) linear, border var(--animate-out-segment-2\/3) linear;
+}
+
+#modal_archive-content_section-title > div label:hover + div svg, #modal_archive-content_section-title > div label:focus + div svg {
+    transition: color var(--animate-in-segment-2\/3) linear, background-color var(--animate-in-segment-2\/3) linear, border var(--animate-in-segment-2\/3) linear;
+    color: var(--modal-icon-hover);
+    background-color: var(--highlight-secondary);
+}
+
 
 /* Modals - Horizontal Timeline */
 
@@ -928,7 +942,7 @@ input[id^="timeline_section_year-"]:checked ~ #modal_archive-content [data-timel
     z-index: -1;
     pointer-events: none;
     opacity: 0;
-    transition: opacity var(--animate-out-segment) linear;
+    transition: opacity var(--animate-out-segment) linear, visibility 0s var(--animate-out-segment), z-index 0s var(--animate-out-segment);
     will-change: opacity;
 }
 

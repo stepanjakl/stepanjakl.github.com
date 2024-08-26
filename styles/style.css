@@ -1269,16 +1269,17 @@ body {
 }
 
 #modal_archive-content_section-title {
+    position: relative;
     display: flex;
     flex-direction: column;
+    padding: 1.25rem 0;
+    border-top: solid max(1px, 0.0625rem) var(--icon);
 }
 
 #modal_archive-content_section-title > div {
-    position: sticky;
-    top: var(--modal-button-close-inset);
     display: flex;
     flex-direction: column;
-    row-gap: 1.25rem;
+    /* row-gap: 1.25rem; */
     /* margin-bottom: 1.25rem */
 }
 
@@ -1296,15 +1297,6 @@ body {
     overflow: hidden;
 }
 
-#modal_archive-content_section-title > div hr, #modal_archive-content_section-content > hr:first-child {
-    display: inline-flex;
-    width: 100%;
-    margin: 0;
-    border: none;
-    height: max(1px, 0.0625rem);
-    background-color: var(--icon)
-}
-
 #modal_archive-content_section-title > div span {
     display: inline-flex;
     align-self: start;
@@ -1315,6 +1307,17 @@ body {
     font-weight: 400;
     color: var(--text-1)
 }
+
+#modal_archive-content_section-title > div svg {
+    fill: var(--modal-icon);
+    background-color: var(--inner-bg-light-2);
+    width: 1rem;
+    height: 1rem;
+    padding: 0.25rem;
+    border-radius: 999rem;
+    box-sizing: content-box;
+}
+
 
 /* #modal_archive-content_section:nth-child(2n+1) {
     padding-bottom: 3rem;
@@ -1349,12 +1352,13 @@ body {
 #modal_archive-content_section-content {
     display: flex;
     flex-direction: column;
-    /* padding-top: 1.25rem; */
+    padding-top: 2.5rem;
+    border-top: solid max(1px, 0.0625rem) var(--icon);
 }
 
-#modal_archive-content_section-content > hr:first-child {
+/* #modal_archive-content_section-content > hr:first-child {
     margin-top: 1.25rem;
-}
+} */
 
 @media (min-width: 45rem) {
     /* #modal_archive-wrapper {
@@ -1384,13 +1388,27 @@ body {
         display: none;
     } */
 
+    #modal_archive-content_section-title {
+        position: sticky;
+        top: var(--modal-button-close-inset);
+    }
+
     #modal_archive-content_section-title > div span {
         text-align: right;
         align-self: end;
     }
 
-    #modal_archive-content_section-content > hr:first-child {
+    #modal_archive-content_section-title > div svg {
         display: none;
+    }
+
+    #modal_archive-content_section-title > div label {
+        display: none;
+    }
+
+    #modal_archive-content_section-content {
+        border-top: none;
+        padding-top: unset;
     }
 }
 
@@ -1404,6 +1422,10 @@ body {
         padding: var(--segment-half) 0 var(--segment-half) var(--segment-half);
     }
 }
+
+/* @media (max-width: 45rem) {
+
+} */
 
 
 /* Modal - Archive - Carousel */

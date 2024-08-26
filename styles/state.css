@@ -227,7 +227,8 @@
 }
 
 @media (max-width: 45rem) {
-    #timeline_section_year-2024:not(:checked) ~ #modal_archive-content #modal_archive-content_section[data-timeline-section="2024"] {
+    #timeline_section_year-2024:not(:checked) ~ #modal_archive-content #modal_archive-content_section[data-timeline-section="2024"],
+    #timeline_section_year-2018:not(:checked) ~ #modal_archive-content #modal_archive-content_section[data-timeline-section="2018"] {
         visibility: hidden;
         opacity: 0;
         height: 0;

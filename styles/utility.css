@@ -168,6 +168,24 @@ body {
     display: table;
 }
 
+.text-p {
+    font-size: 1.07143125rem;
+    line-height: 1.625rem;
+    display: inline;
+}
+
+#text-p::before {
+    content: "";
+    margin-bottom: -0.4333em;
+    display: table;
+}
+
+#text-p::after {
+    content: "";
+    margin-top: -0.3833em;
+    display: table;
+}
+
 /*
 .text-xs, .text-sm, .text-md, .text-lg, .text-xl {
     font-size: 0.75rem;

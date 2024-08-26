@@ -596,15 +596,16 @@ class Carousel {
             entries.forEach(entry => {
                 const target = entry.target
                 if (entry.isIntersecting) {
+                    console.log(entry.target)
+
                     this.activeSlide.set(target)
                     target.classList.add('active')
                     this.dotEls.forEach((dotEl, i) => {
                         const isCurrent = i === this.slideEls.indexOf(entry.target)
                         dotEl.toggleAttribute('aria-current', isCurrent)
-
-                        if (isCurrent) {
+                        /* if (isCurrent) {
                             dotEl.focus()
-                        }
+                        } */
                     })
                 } else {
                     target.classList.remove('active')
