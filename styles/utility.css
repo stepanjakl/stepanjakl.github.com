@@ -186,30 +186,6 @@ body {
     display: table;
 }
 
-/*
-.text-xs, .text-sm, .text-md, .text-lg, .text-xl {
-    font-size: 0.75rem;
-}
-
-@media (min-width: 45rem) {
-    .text-xs, .text-sm, .text-md, .text-lg, .text-xl {
-        font-size: 0.875rem;
-    }
-}
-
-@media (min-width: 75rem) {
-    .text-xs, .text-sm, .text-md, .text-lg, .text-xl {
-        font-size: 1rem;
-    }
-}
-
-@media (min-width: 160rem) {
-    .text-xs, .text-sm, .text-md, .text-lg, .text-xl {
-        font-size: 1.125rem;
-    }
-}
-*/
-
 
 /* Display */
 
@@ -404,17 +380,6 @@ body {
     padding-left: calc(var(--segment) / 2);
     padding-right: calc(var(--segment) / 2);
 }
-
-/* @media (var(--breakpoint-sm)) {
-    .pt-24-sm {
-        padding-top: 1.5rem;
-    }
-
-    .pb-24-sm {
-        padding-bottom: 1.5rem;
-    }
-
-} */
 
 
 /* Max Width */

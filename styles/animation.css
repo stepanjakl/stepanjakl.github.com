@@ -62,7 +62,6 @@ body {
 .animate-fade-in-name>div>span {
     animation-duration: 2.5s, 0.225s, 0.775s;
     animation-delay: calc(var(--initial-delay) + var(--i) * 30ms);
-    /* animation-delay: calc(var(--initial-delay) + var(--i) * 10ms), calc(var(--initial-delay) + var(--i) * 15ms), calc(var(--initial-delay) + var(--i) * 15ms), calc(var(--initial-delay) + var(--i) * 15ms); */
 }
 
 .animate-fade-in-title>span {
@@ -602,6 +601,7 @@ a#menu_link_profile:hover, a#menu_link_profile:focus, a#menu_link_profile.toolti
     }
 }
 
+
 /* Menu Dropdown */
 
 #menu_dropdown {
@@ -627,15 +627,12 @@ a#menu_link_profile:hover, a#menu_link_profile:focus, a#menu_link_profile.toolti
 
 #menu_dropdown a:first-child:before,
 #menu_dropdown a:first-child:after {
-    /* inset: min(-1px, -0.0625rem) 0 0 0; */
     border-radius: 0.3125rem 0.3125rem 0 0;
-    /* border-radius: 0.1875rem 0.1875rem 0.09375rem 0.09375rem; */
 }
 
 #menu_dropdown label:last-child:before,
 #menu_dropdown label:last-child:after {
     border-radius: 0 0 0.3125rem 0.3125rem;
-    /* border-radius: 0.09375rem 0.09375rem 0.1875rem 0.1875rem; */
 }
 
 #menu_dropdown a::before,
@@ -648,16 +645,6 @@ a#menu_link_profile:hover, a#menu_link_profile:focus, a#menu_link_profile.toolti
     inset: min(-1px, -0.0625rem) min(-1px, -0.0625rem) 0 min(-1px, -0.0625rem);
     z-index: 1;
     background-image: linear-gradient(to right, rgba(0, 118, 132, 0.75), rgba(0, 118, 132, 0.15)); /* 210, 100, 45 */
-
-    /* transition: opacity var(--animate-out-segment-2\/3) linear, inset var(--animate-out-segment-2\/3) var(--ease-in-quad);
-    transform: translate3d(0,0,0);
-    content: "";
-    opacity: 0;
-    position: absolute;
-    inset: 0.5625rem 0.625rem 0.625rem 0.625rem;
-    z-index: 0;
-    background-color: var(--highlight-secondary);
-    border-radius: 0.09375rem; */
 }
 
 #menu_dropdown a::after,
@@ -693,10 +680,6 @@ a#menu_link_profile:hover, a#menu_link_profile:focus, a#menu_link_profile.toolti
 #menu_dropdown label:focus-within::after  {
     transition: opacity var(--animate-in-segment) linear, inset var(--animate-in-segment) var(--ease-out-quad);
     opacity: 1;
-    /* transition: opacity var(--animate-in-segment-2\/3) linear, inset var(--animate-in-segment-2\/3) var(--ease-out-quad);
-    transform: translate3d(0,0,0);
-    opacity: 1;
-    inset: 0.1875rem 0.25rem 0.25rem 0.25rem; */
 }
 
 #menu_dropdown a span,
@@ -734,7 +717,6 @@ a#menu_link_profile:hover, a#menu_link_profile:focus, a#menu_link_profile.toolti
 
 #menu_dropdown label#menu_dropdown_light-mode::before {
     background-image: linear-gradient(to right, rgba(238, 213, 0, 0.75), rgba(238, 213, 0, 0)); /* 75, 100, 85  */
-    /* background-color: var(--yellow); */
 }
 
 #menu_dropdown label#menu_dropdown_light-mode::after {
@@ -743,7 +725,6 @@ a#menu_link_profile:hover, a#menu_link_profile:focus, a#menu_link_profile.toolti
 
 #menu_dropdown label#menu_dropdown_debug::before {
     background-image: linear-gradient(to right, rgba(0, 95, 241, 0.75), rgba(0, 95, 241, 0)); /* 260, 100, 45 */
-    /* background-color: var(--highlight-primary); */
 }
 
 #menu_dropdown label#menu_dropdown_debug::after {
@@ -843,7 +824,6 @@ input[id^="timeline_section_year-"]:checked ~ #modal_archive-content [data-timel
     transition: border-radius var(--animate-out-segment) var(--ease-in-quad), column-gap var(--animate-out-segment) var(--ease-in-quad), padding var(--animate-out-segment) var(--ease-in-quad), margin var(--animate-out-segment) var(--ease-in-quad);
     column-gap: 0.625rem;
     padding: 0.625rem 0.9375rem;
-    /* margin: 0.375rem 0; */
     border-radius: 0.5rem;
 }
 
@@ -856,14 +836,14 @@ input[id^="timeline_section_year-"]:checked ~ #modal_archive-content [data-timel
 }
 
 [data-carousel-nav] button {
-    transition: background-color var(--animate-out-segment) linear; /* width var(--animate-out-segment) var(--ease-in-quad), height var(--animate-out-segment) var(--ease-in-quad) */
+    transition: background-color var(--animate-out-segment) linear;
     width: 0.5rem;
     height: 0.5rem;
     background-color: var(--inner-bg-light-4);
 }
 
 [data-carousel-nav]:hover button {
-    transition: background-color var(--animate-in-segment) linear; /*  width var(--animate-in-segment) var(--ease-out-quad), height var(--animate-in-segment) var(--ease-out-quad) */
+    transition: background-color var(--animate-in-segment) linear;
     width: 0.75rem;
     height: 0.75rem;
 }
@@ -880,7 +860,6 @@ input[id^="timeline_section_year-"]:checked ~ #modal_archive-content [data-timel
 }
 
 [data-carousel-nav]:hover button[aria-current] {
-    /* transition: width 0s, height 0s, background-color var(--animate-in-segment) linear; */
     width: 2.75rem;
 }
 
@@ -903,19 +882,6 @@ input[id^="timeline_section_year-"]:checked ~ #modal_archive-content [data-timel
     transition: background-color var(--animate-in-segment-2\/3) linear;
     background-color: var(--inner-bg-light-6);
 }
-
-/* [data-carousel-nav] {
-    transition: transform var(--animate-out-segment) var(--ease-in-quad);
-}
-
-[data-carousel-nav]:hover {
-    transition: transform var(--animate-in-segment) var(--ease-out-quad);
-    transform: scale(1.2);
-}
-
-[data-carousel-nav] button {
-    transition: width 0.2s var(--ease-in-out-quad), background-color 0.15s var(--ease-in-out-quad);
-} */
 
 
 /* Modals - Close Button */
